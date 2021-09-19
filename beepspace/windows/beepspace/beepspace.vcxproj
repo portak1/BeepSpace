@@ -5,7 +5,7 @@
     <CppWinRTOptimized>true</CppWinRTOptimized>
     <CppWinRTRootNamespaceAutoMerge>true</CppWinRTRootNamespaceAutoMerge>
     <MinimalCoreWin>true</MinimalCoreWin>
-    <ProjectGuid>{b8565fc7-7abd-4a7e-8c88-994c48e109b8}</ProjectGuid>
+    <ProjectGuid>{36ad5634-0379-4004-bc1a-70637d462747}</ProjectGuid>
     <ProjectName>beepspace</ProjectName>
     <RootNamespace>beepspace</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
@@ -16,7 +16,7 @@
     <WindowsTargetPlatformVersion Condition=" '$(WindowsTargetPlatformVersion)' == '' ">10.0.18362.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformMinVersion>10.0.16299.0</WindowsTargetPlatformMinVersion>
     <PackageCertificateKeyFile>beepspace_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>20F86C34DB342B7EFD3B5B18EF3C10C48A6F9F4A</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>697439A76B0AC987FDDFDE55256C226CA09D9C8D</PackageCertificateThumbprint>
     <PackageCertificatePassword>password</PackageCertificatePassword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

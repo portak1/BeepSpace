@@ -1,4 +1,15 @@
 {
-  "name": "beepspace",
-  "displayName": "beepspace"
+    "name": "beepspace",
+    "displayName": "beepspace",
+    "expo": {
+        "name": "beepspace",
+        "icon": "./path/to/your/app-icon.png",
+        "version": "1.0.0",
+        "slug": "your-app-slug",
+        "ios": {
+            "bundleIdentifier": "com.yourcompany.yourappname",
+            "buildNumber": "1.0.0"
+        }
+
+    }
 }
