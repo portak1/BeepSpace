@@ -11,5 +11,6 @@
             "buildNumber": "1.0.0"
         }
 
-    }
+    },
+    "@react-navigation/native": "^5.1.5"
 }
