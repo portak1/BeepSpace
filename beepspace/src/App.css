@@ -102,3 +102,569 @@ form{
   outline: 0;
   box-shadow: 0 0 0 0.2rem #fc0f4eab;
 }
+
+
+/* sidebar*/
+
+h1 {
+  font-size: 50px;
+  line-height: 40px;
+  font-weight: 100;
+}
+p {
+  margin-bottom: 1em;
+}
+a {
+  color: #61C7B3;
+  text-decoration: none;
+  transition-duration: 0.3s;
+}
+a:hover {
+  color: #338f7d;
+  transition-duration: 0.05s;
+  text-decoration: none;
+}
+.circle-icon {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  line-height: 28px;
+  border: 2px solid #B4BBC1;
+  border-radius: 100px;
+  font-size: 14px;
+  color: #B4BBC1;
+  cursor: pointer;
+  display: block;
+  float: left;
+}
+.circle-icon.small {
+  height: 25px;
+  width: 25px;
+  line-height: 23px;
+  font-size: 11px;
+}
+.circle-icon:hover {
+  color: #57636C;
+  border-color: #57636C;
+}
+.circle-icon.red {
+  color: #D23B3D;
+  border-color: #D23B3D;
+}
+.circle-icon.red:hover {
+  color: #791C1E;
+  border-color: #791C1E;
+}
+.checkbox-wrapper {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  position: relative;
+  display: inline-block;
+  box-shadow: inset 0 0 0 1px #A3ADB2;
+  border-radius: 1px;
+}
+.checkbox-wrapper input {
+  opacity: 0;
+  cursor: pointer;
+}
+.checkbox-wrapper input:checked ~ label {
+  opacity: 1;
+}
+.checkbox-wrapper label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+  background: #A3ADB2;
+  opacity: 0;
+  transition-duration: 0.05s;
+}
+.checkbox-wrapper label:hover {
+  background: #95a1a6;
+  opacity: 0.5;
+}
+.checkbox-wrapper label:active {
+  background: #87949b;
+}
+#sidebar {
+  position: fixed;
+  top: 0;
+  min-width: 300px;
+  left: 0;
+  height: 100%;
+  width: 20%;
+  background: #242d2d;
+  transition-duration: 0.3s;
+  z-index: 5;
+}
+#sidebar,
+#sidebar a {
+  color: #ABB4BE;
+}
+#sidebar .logo-container {
+  font-weight: 100;
+  font-size: 50px;
+  line-height: 40px;
+  text-align: center;
+  margin: 50px 0;
+  cursor: pointer;
+}
+#sidebar .logo-container .logo {
+  position: relative;
+  top: -6px;
+  font-size: 25px;
+  margin-right: 15px;
+  padding: 10px;
+  border: 2px solid #61C7B3;
+  border-radius: 100px;
+  text-indent: 1px;
+  color: #61C7B3;
+}
+#sidebar .compose-button {
+  border-radius: 100px;
+  padding: 13px 20px;
+  text-align: center;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #61C7B3;
+  border: 2px solid #61C7B3;
+  display: block;
+  margin: 0 50px 30px 50px;
+  cursor: pointer;
+}
+#sidebar .compose-button:hover {
+  color: #ABB4BE;
+  border-color: #ABB4BE;
+}
+#sidebar .menu-segment {
+  padding: 0 50px 0 70px;
+}
+#sidebar .menu-segment ul,
+#sidebar .menu-segment li {
+  margin: 0;
+  padding: 0;
+}
+#sidebar .menu-segment .ball.pink {
+  border-color: #EA4C89;
+}
+#sidebar .menu-segment .ball.green {
+  border-color: #9AE14F;
+}
+#sidebar .menu-segment .ball.blue {
+  border-color: #1BC3E1;
+}
+#sidebar .menu-segment li.title {
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 10px 0;
+  color: #465162;
+}
+#sidebar .menu-segment li.title .icon {
+  float: right;
+}
+#sidebar .menu-segment li.active a,
+#sidebar .menu-segment li.active a:hover {
+  background: #151b1a;
+  transition: ease-in-out 300ms;
+}
+#sidebar .menu-segment li a {
+  display: block;
+  margin: 0 -50px 0 -70px;
+  padding: 10px 50px 10px 70px;
+}
+#sidebar .menu-segment li a:hover {
+  background: #2c3b38;
+}
+#sidebar .menu-segment li .italic-link {
+  margin-left: -30px;
+  font-style: italic;
+  color: #465162;
+}
+#sidebar .menu-segment li .italic-link,
+#sidebar .menu-segment li .italic-link:hover {
+  background: transparent;
+}
+#sidebar .menu-segment li .italic-link:hover {
+  color: #ABB4BE;
+}
+#sidebar .menu-segment .labels li a span,
+#sidebar .menu-segment .chat li a span {
+  display: block;
+  border: 5px solid red;
+  border-radius: 100px;
+  margin-top: 6px;
+}
+#sidebar .menu-segment .labels.labels li a span,
+#sidebar .menu-segment .chat.labels li a span {
+  float: right;
+}
+#sidebar .menu-segment .labels.chat li a span,
+#sidebar .menu-segment .chat.chat li a span {
+  float: left;
+  margin-right: 10px;
+}
+#sidebar .menu-segment .chat li a {
+  padding-left: 50px;
+}
+#sidebar .separator {
+  margin: 30px 35px;
+  height: 1px;
+  background: #2D3138;
+}
+#sidebar .bottom-padding {
+  height: 100px;
+}
+#sidebar > .nano-pane {
+  background: transparent;
+}
+#sidebar > .nano-pane .nano-slider {
+  background: rgba(255, 255, 255, 0.1);
+}
+.sidebar-toggle-btn {
+  width: 20px;
+  margin-top: 1px;
+  padding: 11px 0 0 0;
+  float: left;
+  position: relative;
+  display: block;
+  cursor: pointer;
+  transition-duration: 0.3s;
+  transition-delay: 0.5s;
+  opacity: 0;
+  position: absolute;
+  margin-right: 0;
+}
+  .sidebar-toggle-btn {
+  transition-delay: 0s;
+}
+ .sidebar-toggle-btn .line {
+  height: 3px;
+  display: block;
+  background: #888;
+  margin-bottom: 4px;
+  transition-duration: 0.5s;
+  transition-delay: 0.5s;
+}
+.sidebar-toggle-btn .line-angle1 {
+  transform: rotate(-120deg);
+}
+.sidebar-toggle-btn .line-angle2 {
+  transform: rotate(120deg);
+}
+.sidebar-toggle-btn .line-angle1 {
+  width: 8px;
+  margin: 0;
+  position: absolute;
+  top: 15px;
+  left: -11px;
+  transform: rotate(-60deg);
+}
+.sidebar-toggle-btn .line-angle2 {
+  width: 8px;
+  margin: 0;
+  position: absolute;
+  top: 21px;
+  left: -11px;
+  transform: rotate(60deg);
+}
+
+@media only screen and (min-width: 1499px) {
+  #main .overlay {
+    display: none;
+  }
+}
+
+    @media only screen and (max-width: 1024px) {
+      #sidebar {
+        transform: translateX(-100%);
+        width: 75% !important;
+
+      }
+      .crossIconCol{
+        width: 100%;
+        margin-left: 35px;
+      }
+      .crossIcon{        
+      float: right !important;
+      text-align: right !important;
+        margin-top: 15px;
+        display: initial !important;
+    
+      }
+      #main {
+        left: 0;
+        box-shadow: none;
+      }
+       #main {
+        transform: translateX(-20%);
+        width: 100% !important;
+      }
+      
+       .sidebar-toggle-btn {
+        margin-right: 20px;
+        opacity: 1;
+        width: 20px;
+      }
+      .show-sidebar #sidebar {
+        transform: none;
+      }
+      .show-sidebar #main {
+        transform: translateX(0px);
+
+      }
+     
+    }
+   
+    
+
+    .nano {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    .nano > .nano-content {
+      position: absolute;
+      overflow: scroll;
+      overflow-x: hidden;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+    .nano > .nano-content:focus {
+      outline: none;
+    }
+    .nano > .nano-content::-webkit-scrollbar {
+      visibility: hidden;
+    }
+    .has-scrollbar > .nano-content::-webkit-scrollbar {
+      visibility: visible;
+    }
+    .nano > .nano-pane {
+      background: rgba(117, 117, 117, 0.2);
+      position: absolute;
+      width: 8px;
+      right: 8px;
+      top: 8px;
+      bottom: 8px;
+      visibility: hidden\9;
+      /* Target only IE7 and IE8 with this hack */
+      opacity: 0.01;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      -webkit-transition: 0.3s;
+      -moz-transition: 0.3s;
+      -o-transition: 0.3s;
+      transition: 0.3s;
+    }
+    .nano > .nano-pane > .nano-slider {
+      background: #444;
+      background: #C7C7C7;
+      position: relative;
+      -moz-border-radius: 3px;
+      -webkit-border-radius: 3px;
+      border-radius: 3px;
+      -webkit-transition: 0.3s;
+      -moz-transition: 0.3s;
+      -o-transition: 0.3s;
+      transition: 0.3s;
+      -webkit-transition-property: background;
+      -moz-transition-property: background;
+      -o-transition-property: background;
+      transition-property: background;
+    }
+    .nano > .nano-pane:hover > .nano-slider,
+    .nano > .nano-pane.active > .nano-slider {
+      background: #A6A6A6;
+    }
+    .nano:hover > .nano-pane,
+    .nano-pane.active,
+    .nano-pane.flashed {
+      visibility: visible\9;
+      /* Target only IE7 and IE8 with this hack */
+      opacity: 0.99;
+    }
+
+    #main {
+      position: fixed;
+      top: 0;
+      left:20%;
+      width: 81%;
+      background: #151b1a;
+      bottom: 0;
+      right: 0;
+      z-index: 4;
+      transition-duration: 0.3s;
+      padding-left: 4px;
+    }
+
+    .mainContainer{
+      width: 100%;
+      height: 100%;
+    }
+
+    #root{
+      width: 100%;
+      height: 100%;
+    }
+    @media only screen and (min-width: 1024px) {
+    .crossIcon{
+      display: none !important;
+    }
+}
+
+
+.messagesBox{
+  border-radius: 5px;
+  border: 3px solid #444a49;
+  width: 90% !important;
+  margin: 20px;
+  box-shadow: 13px 20px 9px 8px #00000052;
+  background-color: #1d2725;
+}
+
+.send-message{
+  border-top-left-radius: 5px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 5px;
+    border-right: none !important;
+  border: 3px solid #444a49;
+  box-shadow: 13px 20px 9px 8px #00000052;
+  background-color: #1d2725;
+  color: #C7C7C7;
+}
+
+.h-20{
+  margin-top: 5%;
+  height: 25% !important;
+  min-height: 50px !important;
+
+}
+
+.sendMessageRow{
+  width: 90% !important;
+  margin: 20px;
+
+
+}
+
+.btn-odeslat{
+  border-top-left-radius: 0px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 0px;
+  border: 3px solid #444a49;
+  box-shadow: 13px 20px 9px 8px #00000052;
+  background-color: #1d2725;
+  color: #C7C7C7;
+  font-size: 1.5rem;
+}
+
+.btn-odeslat:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem #1d27254b;
+  color: #ced9dd !important;
+
+}
+
+
+
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2%;
+  margin-right: 2%;
+  text-align: left;
+}
+
+.message {
+  border-radius: 20px;
+  padding: 8px 15px;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  display: inline-block;
+}
+
+.yours {
+  align-items: flex-start;
+}
+
+.yours .message {
+  margin-right: 25%;
+  background-color: #eee;
+  position: relative;
+}
+
+.yours .message.last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  left: -7px;
+  height: 20px;
+  width: 20px;
+  background: #eee;
+  border-bottom-right-radius: 15px;
+}
+.yours .message.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: -10px;
+  width: 10px;
+  height: 20px;
+  background: #1D2725;
+  border-bottom-right-radius: 10px;
+}
+
+.mine {
+  align-items: flex-end;
+}
+
+.mine .message {
+  color: white;
+  margin-left: 25%;
+  background: #61C7B3;
+  position: relative;
+}
+
+.mine .message.last:before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 0;
+  right: -8px;
+  height: 20px;
+  width: 20px;
+  background: #61C7B3;
+  border-bottom-left-radius: 15px;
+}
+
+
+
+
+.mine .message.last:after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  right: -10px;
+  width: 10px;
+  height: 20px;
+  background: #1D2725;
+  border-bottom-left-radius: 10px;
+}
+
+.messagesBox{
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding-bottom: 15px;
+}

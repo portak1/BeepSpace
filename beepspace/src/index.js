@@ -6,6 +6,10 @@ import Login from './Login';
 import Register from './Register';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+  
+
+
+
 
 ReactDOM.render(
   <Router>
