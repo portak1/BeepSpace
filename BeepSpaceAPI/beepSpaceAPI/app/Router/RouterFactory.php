@@ -15,7 +15,7 @@ final class RouterFactory
 	public static function createRouter(): RouteList
 	{
 		$router = new RouteList;
-		$router->addRoute('Pepegac', 'Pepegac:default');
+		$router->addRoute('Pepegac?id=<id>&heslo=<heslo>', 'Pepegac:default');
 
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');
 

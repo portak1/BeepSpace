@@ -1,13 +1,26 @@
 <?php
-use Contributte\ApiRouter\ApiRoute;
+
+declare(strict_types=1);
+
+namespace App\Presenters;
+
+use Nette;
+
+
 
 class PepegacPresenter extends Nette\Application\UI\Presenter
 {
 
-	public function renderDefault()
+	public function renderDefault(int $id, string $heslo)
     {
-        $data = ['pepegac' => 'nette'];
+       
+        $data = [
+            "id" => $id,
+            "heslo" => $heslo
+        ];
 	    return $this->sendJson($data);
-    }
+    }   
+
+
 
 }

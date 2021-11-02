@@ -3,9 +3,13 @@ import './App.css';
 import $ from 'jquery';
 import Sidebar from './components/sidebar';
 import Message from './components/smallComponents/chatComponents/message';
-
-
+import RequestHandler from './Handlers/RequestHandler';
+import ParameterHandler from './Handlers/ParameterHandler';
 function App() {
+
+
+
+
   return (
 
     
@@ -13,8 +17,9 @@ function App() {
       <div id="main" class="text-center">
         <a class="sidebar-toggle-btn trigger-toggle-sidebar"><span class="line"></span><span class="line"></span><span class="line"></span><span class="line line-angle1"></span><span class="line line-angle2"></span></a>
         <div id="messageBox" class=" messagesBox mx-auto h-75">
-    {returnAllMesages()}
-    {setChat()}
+    {//returnAllMesages()}
+    
+}{setChat()}
         </div>
         <div class="row sendMessageRow mx-auto h-20">
         <input type="text" placeholder="zadejte zprávu zde..." class=" send-message col-10 mx-auto h-20 "></input> 
@@ -29,6 +34,7 @@ function App() {
 
   );
 }
+const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
 
 
 function setChat(){
@@ -40,8 +46,9 @@ function setChat(){
 }
 
 function returnAllMesages(){
-  var arrOfMesages = [];
-  var jsonData = getJSONData();
+  var arrOfMesages = []; 
+
+  var jsonData = requestHandler.jSONrequester("Pepegac",[new ParameterHandler("id",20),new ParameterHandler("heslo", "test")]);
   for(let i = 0; i < jsonData.length; i++){
     if(i != jsonData.length-1){
       if(jsonData[i+1].mine != jsonData[i].mine){
@@ -56,20 +63,13 @@ function returnAllMesages(){
   return arrOfMesages;
 }
 
-function getJSONData() {
 
-  var returnData = false;
+var jsonData = requestHandler.jSONrequester("Pepegac",[new ParameterHandler("id",20),new ParameterHandler("heslo", "test")]);
 
-  $.ajax({
-      url:"https://616fdd9623781c0017289677.mockapi.io/messages/messages",
-      async: false,
 
-      success: function (data) {
-          returnData = data;
-      }
-  });
-  return returnData;
-}
+
+console.log(jsonData);
+
 
 
 

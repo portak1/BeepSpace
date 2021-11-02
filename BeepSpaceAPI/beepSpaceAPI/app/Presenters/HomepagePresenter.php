@@ -11,15 +11,10 @@ final class HomepagePresenter extends Nette\Application\UI\Presenter
 {
     public function renderDefault()
     {
-        $data = ['hello' => 'nette'];
+        $data = [];
 	    return $this->sendJson($data);
     }
 
-    public function renderTest()
-    {
-
-        $data = ['bye' => 'nette'];
-        return $this->sendJson($data);
-    }
+    
 
 }
