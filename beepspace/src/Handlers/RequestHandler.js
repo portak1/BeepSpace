@@ -7,7 +7,7 @@ class RequestHandler extends  React.Component{
     
 
     constructor(basicUrl){
-
+        super();
         this.basicUrl = basicUrl;
     }
     

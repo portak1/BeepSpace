@@ -16,6 +16,13 @@ final class RouterFactory
 	{
 		$router = new RouteList;
 		$router->addRoute('Pepegac?id=<id>&heslo=<heslo>', 'Pepegac:default');
+		$router->addRoute('Message?[create=<create>][&user=<user>][&content=<content>][&date=<date>]',array(
+			'presenter' => 'Message',
+			'action'    => 'default',
+			'create'    => 0,
+			'content'   => '',
+			'date'      =>''
+		));
 
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');
 

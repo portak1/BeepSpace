@@ -5,6 +5,7 @@ class ParameterHandler extends  React.Component{
     parameterContent = "";
 
     constructor(parameterName,parameterContent){
+        super();
         this.parameterContent = parameterContent;
         this.parameterName = parameterName;
     }
