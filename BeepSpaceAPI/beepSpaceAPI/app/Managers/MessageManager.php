@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 use App\Entity\Message as Message;
 use DatabaseController as Controller;
-
+use UserManager as UserManager;
 class MessageManager
 {
 
     /**
      *  @var Controller
      */
-    public $controller;
+    private $controller;
+    /**
+     *  @var UserManager
+     */
+    private $userManager;
 
     public function __construct()
     {
         $this->controller = new Controller('mysql:host=localhost;dbname=beepspace', 'root', '');
+        $this->userManager = new UserManager();
     }
 
 
@@ -34,15 +39,26 @@ class MessageManager
         return $this->controller->sql("INSERT INTO messages (message_date, user_id, content) VALUES (' $date','$userId','$content')");
     }
 
-    public function getMessages($user)
-    {
-        
-        $result = $this->controller->sql("SELECT content, users.username as username, message_date FROM messages JOIN users WHERE users.id = messages.user_id AND username = '$user'");
+    public function getMessages($user,$reciever)
+    {   
+    
+
+        $user = $this->userManager->returnUser($user);
+        $reciever = $this->userManager->returnUser($reciever);
+
+        $result = $this->controller->sql("SELECT content, user_id, reciever_id, message_date FROM messages WHERE user_id = '$user->id' AND reciever_id = '$reciever->id' OR user_id = '$reciever->id' AND reciever_id = '$user->id'");
         $arrayOfUsers = array();
         foreach ($result as $row) {
-            array_push($arrayOfUsers, new Message($row->username, $row->message_date, $row->content));
+            if($row->user_id ==$user->id){
+                array_push($arrayOfUsers, new Message($user->name,$reciever->name, $row->message_date, $row->content,true));
+            }else{
+                array_push($arrayOfUsers, new Message($reciever->name,$user->name, $row->message_date, $row->content,false));
+            }
         }
 
         return $arrayOfUsers;
     }
+
+
+    
 }

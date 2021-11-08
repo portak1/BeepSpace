@@ -1,5 +1,7 @@
 import { ReactComponent as Logo } from '.././storage/images/astroLogo.svg';
-
+import SidebarUser from './smallComponents/sidebarUser';
+import UserController from '../Controllers/UserController';
+const userController = new UserController();
 function Sidebar(props) {
     return (
         <aside id="sidebar" class="nano">
@@ -39,7 +41,7 @@ function Sidebar(props) {
                 <div class="menu-segment">
                     <ul class="chat">
                         <li class="title">Chat <span class="icon">+</span></li>
-                        <li><a href="#"><span class="ball green"></span>Honza Port</a></li>
+                        <SidebarUser user={userController.getUser().username} reciever="petrPepega"/>
                         <li><a href="#"><span class="ball pink"></span>Jan Mráz</a></li>
                         <li><a href="#"><span class="ball blue"></span>Daniel Seiner</a></li>
                         <li><a href="#" class="italic-link">zobrazit offline list</a></li>

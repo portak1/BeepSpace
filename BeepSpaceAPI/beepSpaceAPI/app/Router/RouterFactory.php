@@ -15,13 +15,20 @@ final class RouterFactory
 	public static function createRouter(): RouteList
 	{
 		$router = new RouteList;
-		$router->addRoute('Pepegac?id=<id>&heslo=<heslo>', 'Pepegac:default');
-		$router->addRoute('Message?[create=<create>][&user=<user>][&content=<content>][&date=<date>]',array(
+		$router->addRoute('Message?[create=<create>][&user=<user>][&reciever=<reciever>][&content=<content>][&date=<date>]',array(
 			'presenter' => 'Message',
 			'action'    => 'default',
 			'create'    => 0,
 			'content'   => '',
 			'date'      =>''
+		));
+		$router->addRoute('User?[username=<username>][&password=<password>][&email=<email>][&number=<number>][&birth=<birth>][&type=<type>]',array(
+			'presenter' => 'User',
+			'action'    => 'default',
+			'email'    => '',
+			'number'    => 0,
+			'birth'    => '',		
+			 'type'	    => 'login'
 		));
 
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');

@@ -1,5 +1,10 @@
 import Filter from "./components/Filter";
 import { ReactComponent as Logo } from './storage/images/astroLogo.svg';
+import $ from 'jquery'
+import RequestHandler from "./Handlers/RequestHandler";
+import sha256 from "js-sha256";
+import ParameterHandler from "./Handlers/ParameterHandler";
+const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
 
 function Register() {
     return (
@@ -14,17 +19,23 @@ function Register() {
 
                         </a>
                         <div class="text-center">
-                        <h1><div class="row mx-auto text-center"><div className="beep ml-auto">Beep</div><div className="mr-auto">Space</div></div></h1>
-                        <h3><div class="row mx-auto mt-5 text-center"><div className="ml-auto mr-2">Registrovat </div><div className="mr-auto">se</div></div></h3>
+                            <h1><div class="row mx-auto text-center"><div className="beep ml-auto">Beep</div><div className="mr-auto">Space</div></div></h1>
+                            <h3><div class="row mx-auto mt-5 text-center"><div className="ml-auto mr-2">Registrovat </div><div className="mr-auto">se</div></div></h3>
                         </div>
                         <div class="card-text">
+                        <div class="alert alert-danger alert-dismissible fade" id="userExists" role="alert">Uživatel Již existuje</div>
+                                <div class="alert alert-danger alert-dismissible fade" id="emptyCredentials" role="alert">Vynechané jméno nebo heslo.</div>
+                                <div class="alert alert-danger alert-dismissible fade" id="wrongPass" role="alert">Hesla se neshododují</div>
 
-                            <div class="alert alert-danger alert-dismissible fade" id="wrongCredetials" role="alert">Špatné jméno nebo heslo.</div>
-                            <div class="alert alert-danger alert-dismissible fade" id="emptyCredentials" role="alert">Vynechané jméno nebo heslo.</div>
-                            <form method="post" onSubmit={handleSubmit}>
+                            <form method="post" onSubmit={handleThis}>
+                               
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Uživatelské jméno</label>
-                                    <input type="text" class="form-control form-control-sm" name="SESSION_USER" id="exampleInputEmail1" aria-describedby="emailHelp" required></input>
+                                    <label for="exampleInputUsername1">uživatelské jméno</label>
+                                    <input type="text" class="form-control form-control-sm" name="USER" id="exampleInputUsername1" required></input>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">e-mail</label>
+                                    <input type="text" class="form-control form-control-sm" name="EMAIL" id="exampleInputEmail1" aria-describedby="emailHelp" required></input>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Heslo</label>
@@ -35,12 +46,16 @@ function Register() {
                                     <input type="password" class="form-control form-control-sm" name="CONFIRM_PASSWORD" id="exampleInputPassword2" required></input>
                                 </div>
                                 <div class="form-group">
+                                    <label for="exampleInputNumber1">tel</label>
+                                    <input type="number" class="form-control form-control-sm" name="USER" id="exampleInputNumber1" required></input>
+                                </div>
+                                <div class="form-group">
                                     <label for="exampleInputDate"></label>
                                     <input type="date" class="form-control form-control-sm" name="DATUM" id="exampleInputDate" required></input>
                                 </div>
 
                                 <div className="text-center">
-                                    Již máte účet? přihlašte se<a class="text-center" href="../login"> zde
+                                    Již máte účet? pihlašte se<a class="text-center" href="../login"> zde
                                     </a>
                                 </div>
 
@@ -57,10 +72,35 @@ function Register() {
 
 }
 
+function handleThis(event) {
+    event.preventDefault();
+    if($("#exampleInputPassword1").val()!=$("#exampleInputPassword2").val()){
+        $("#wrongPass").removeClass("fade");
+        return;
+    }
+    let response = requestHandler.jSONrequester("User", [
+        new ParameterHandler("username", $("#exampleInputUsername1").val()),
+        new ParameterHandler("password",sha256($("#exampleInputPassword1").val())),
+        new ParameterHandler("email",$("#exampleInputEmail1").val()),
+        new ParameterHandler("number",$("#exampleInputNumber1").val()),
+        new ParameterHandler("birth",$("#exampleInputDate").val()),
+        new ParameterHandler("type","REGISTRATION")
+    ]);
+    if(response.state =="USER_EXIST"){
+        $("#userExists").removeClass("fade");
+        return;
+    }
+    console.log(response);
+    relocate("/login")
+}
 
-function handleSubmit(event){
+
+function relocate(location){
+    window.location.replace(location);
 
 }
+
+
 
 
 

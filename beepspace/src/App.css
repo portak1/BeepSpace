@@ -668,3 +668,9 @@ a:hover {
   overflow-x: hidden;
   padding-bottom: 15px;
 }
+.userButton{
+    background: none;
+    color: #ABB4BE;
+    border: 0px;
+    margin-left: -5px;
+}

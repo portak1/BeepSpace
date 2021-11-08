@@ -1,6 +1,14 @@
 import Filter from "./components/Filter";
 import { ReactComponent as Logo } from './storage/images/astroLogo.svg';
+import ParameterHandler from "./Handlers/ParameterHandler";
+import RequestHandler from "./Handlers/RequestHandler";
+import $ from 'jquery'
+import { sha256 } from "js-sha256";
+import UserController from "./Controllers/UserController";
+import { useState } from "react";
 
+const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
+const userController = new UserController();
 function Login() {
     return (
 
@@ -19,15 +27,14 @@ function Login() {
                         <div class="card-text">
 
                             <div class="alert alert-danger alert-dismissible fade" id="wrongCredetials" role="alert">Špatné jméno nebo heslo.</div>
-                            <div class="alert alert-danger alert-dismissible fade" id="emptyCredentials" role="alert">Vynechané jméno nebo heslo.</div>
-                            <form method="post" onSubmit={handleSubmit}>
+                            <form method="post" onSubmit={handleLogin}>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Jméno</label>
-                                    <input type="text" class="form-control form-control-sm" name="SESSION_USER" id="exampleInputEmail1" aria-describedby="emailHelp" required></input>
+                                    <input type="text" class="form-control form-control-sm" name="SESSION_USER" id="loginUsername" aria-describedby="emailHelp" required></input>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Heslo</label>
-                                    <input type="password" class="form-control form-control-sm" name="PASSWORD" id="exampleInputPassword1" required></input>
+                                    <input type="password" class="form-control form-control-sm" name="PASSWORD" id="loginPassword" required></input>
                                 </div>
 
                                 <div className="text-center">
@@ -49,9 +56,23 @@ function Login() {
 }
 
 
-function handleSubmit(event){
+function handleLogin(event){    
+    event.preventDefault();
 
+    let response = requestHandler.jSONrequester("User", [
+        new ParameterHandler("username", $("#loginUsername").val()),
+        new ParameterHandler("password",sha256($("#loginPassword").val()))
+    ]);
+
+    if(response.state=="WRONG"){
+        $("#wrongCredetials").removeClass("fade");
+        return;
+    }    
+    userController.logIn(response.name,response.email,response.number,response.birth);
+    console.log(JSON.parse(userController.session.getItem("user")));
+    userController.relocate("/");
 }
+
 
 
 

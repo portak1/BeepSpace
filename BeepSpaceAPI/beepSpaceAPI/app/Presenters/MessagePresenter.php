@@ -13,8 +13,11 @@ use MessageManager;
 class MessagePresenter extends Nette\Application\UI\Presenter
 {
 
-    public $messageManager;
-	public function renderDefault(bool $create, string $user,string $content, string $date)
+/**
+     *  @var MessageManager
+     */
+    private $messageManager;
+	public function renderDefault(bool $create, string $user,string $reciever,string $content, string $date)
     {
         $this->messageManager = new MessageManager();
        if($create){
@@ -22,7 +25,7 @@ class MessagePresenter extends Nette\Application\UI\Presenter
                 "state" => $this->messageManager->createNewMessage($content,$user,$date)
             ];
        }else{
-           $data = $this->messageManager->getMessages($user);
+           $data = $this->messageManager->getMessages($user,$reciever);
        }
 
       
