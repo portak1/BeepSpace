@@ -49,4 +49,14 @@ class UserManager
             return new User($row->username,$row->id, $row->email, $row->number, $row->birth);
         }
     }
+
+    public function returnAllUsers(){
+        $arrayOfUsers = array();
+        $result =  $this->controller->sql("SELECT id, username, email,number,birth FROM users");
+        foreach ($result as $row) {
+            array_push($arrayOfUsers,new User($row->username,$row->id, $row->email, $row->number, $row->birth));
+             
+        }
+        return $arrayOfUsers;
+    }
 }

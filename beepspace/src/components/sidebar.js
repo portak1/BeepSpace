@@ -1,22 +1,48 @@
 import { ReactComponent as Logo } from '.././storage/images/astroLogo.svg';
 import SidebarUser from './smallComponents/sidebarUser';
 import UserController from '../Controllers/UserController';
+import RequestHandler from '../Handlers/RequestHandler';
+import ParameterHandler from '../Handlers/ParameterHandler';
+import React from 'react';
 const userController = new UserController();
+const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
+var userArray = [];
+
 function Sidebar(props) {
+    var elementArray = [];
+    userArray = requestHandler.jSONrequester("User", [
+        new ParameterHandler("type", "ALL")
+    ]);
+
+
+    //logo
+
+    // <a class="navbar-brand-login text-center" href="">
+    //<div class="mx-auto beepLogo"><Logo></Logo></div></a>
+
     return (
         <aside id="sidebar" class="nano">
             <div class="nano-content">
                 <div class="row text-center mx-auto">
-                <div class="col crossIconCol"><i class="fas fa-times crossIcon"></i></div>
+                    <div class="col crossIconCol"><i class="fas fa-times crossIcon"></i></div>
                 </div>
                 <div class="row text-center mx-auto">
 
-                    <div class="col text-center">
-                        
-                            <a class="navbar-brand-login text-center" href="">
-                        <div class="mx-auto beepLogo"><Logo></Logo></div>
+                    <div class="col mt-3 userBox pb-3 text-center">
+                        <h1>{userController.getUser().username}</h1>
 
-                    </a><br></br><h1>BeepSpace</h1>
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn topBoxButton"><i class="fas fa-search"></i></button>
+                            </div>
+                            <div class="col">
+                                <button class="btn topBoxButton"><i class="fab fa-connectdevelop"></i></button>
+                            </div>
+                            <div class="col">
+                                <button onClick={userController.logOut} class="btn topBoxButton"><i class="fas fa-sign-out-alt"></i></button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
                 <menu class="menu-segment">
@@ -41,7 +67,11 @@ function Sidebar(props) {
                 <div class="menu-segment">
                     <ul class="chat">
                         <li class="title">Chat <span class="icon">+</span></li>
-                        <SidebarUser user={userController.getUser().username} reciever="petrPepega"/>
+                        {userArray.map((data, id) => {
+                            return <SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} reciever={data.name} />
+                        })}
+
+
                         <li><a href="#"><span class="ball pink"></span>Jan Mráz</a></li>
                         <li><a href="#"><span class="ball blue"></span>Daniel Seiner</a></li>
                         <li><a href="#" class="italic-link">zobrazit offline list</a></li>

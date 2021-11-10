@@ -673,4 +673,26 @@ a:hover {
     color: #ABB4BE;
     border: 0px;
     margin-left: -5px;
+    cursor: pointer;
+}
+
+.userBox{
+  border-bottom: 2px solid #bababa52;
+}
+
+.topBoxButton{
+  width: 100% !important;
+  color: #ABB4BE ;
+  font-size: x-large;
+  border: 1px solid rgba(0, 255, 208, 0.299) !important;
+}
+
+.topBoxButton:hover{
+  width: 100% !important;
+  border-radius: 1px !important;
+  color: rgb(0, 255, 208) ;
+}
+.topBoxButton:focus{
+  background-color:rgba(0, 255, 208, 0.149) ;
+  box-shadow: 0 0 0 0.2rem rgb(0, 255, 208) !important;
 }

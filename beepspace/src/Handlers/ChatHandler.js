@@ -10,37 +10,40 @@ class ChatHandler extends Component {
     userController = new UserController();
     requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
     messageController = new MessageController();
+    chat = [];
     constructor() {
         super();
-        this.state = {
-            chat: []
-        }
 
     }
+
 
 
     render() {
-        return (
-            <div id="messageBox" class=" messagesBox mx-auto h-75">
-                {this.state.chat}
-                {this.settingChat()}
-            </div>
-        );
+        if (this.props.chatUser) {
+            this.fillChat(this.userController.getUser().username, this.props.chatUser.reciever);
+            return (
+                <div id="messageBox" class=" messagesBox mx-auto h-75">
+                    {this.chat}
+                    {console.log(this.props.chatUser.reciever)}
+                    { }
+                </div>
+            );
+        }
+            return (
+                <div id="messageBox" class=" messagesBox mx-auto h-75"> 
+                </div>
+            );
+
     }
 
-
-    componentDidMount() {
-        this.fillChat("admin","petrPepega");
-    }
+    
 
     fillChat(user, reciever) {
-        this.setState({
-             chat: this.messageController.returnAllMesages(this.requestHandler.jSONrequester("Message", [new ParameterHandler("user", user), new ParameterHandler("reciever", reciever)]))
-             });
+        this.chat = this.messageController.returnAllMesages(this.requestHandler.jSONrequester("Message", [
+            new ParameterHandler("user", user),
+            new ParameterHandler("reciever", reciever)]))
+
         this.settingChat();
-        console.log(this.messageController.returnAllMesages(this.requestHandler.jSONrequester("Message", [new ParameterHandler("user", user), new ParameterHandler("reciever", reciever)])))
-
-
     }
 
     settingChat() {

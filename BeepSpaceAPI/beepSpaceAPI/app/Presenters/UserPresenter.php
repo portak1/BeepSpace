@@ -20,9 +20,12 @@ class UserPresenter extends Nette\Application\UI\Presenter
     {
         $this->userManager = new UserManager();
         if($type == "REGISTRATION"){
-            $this->data = [
+            return $this->sendJson([
                 "state" => $this->userManager->createUser($username,$password,$email,$number,$birth)
-            ];
+            ]);
+        }
+        if($type == "ALL"){
+            return $this->sendJson($this->userManager->returnAllUsers());
         }
         if($this->userManager->checkLogin($username,$password)){
             $this->data = $this->userManager->returnUser($username);

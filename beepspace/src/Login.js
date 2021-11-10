@@ -69,8 +69,6 @@ function handleLogin(event){
         return;
     }    
     userController.logIn(response.name,response.email,response.number,response.birth);
-    console.log(JSON.parse(userController.session.getItem("user")));
-    userController.relocate("/");
 }
 
 

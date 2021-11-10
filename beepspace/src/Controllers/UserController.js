@@ -1,28 +1,25 @@
 import React from "react";
-import Message from "../components/smallComponents/chatComponents/message";
 import User from "../Entity/UserEntity";
 class UserController extends React.Component {
 
-
-  session = null;
-  user = null;
-
+  
   constructor() {
     super();
-    this.session = window.sessionStorage;
   }
 
 
 
   logIn(username, email, number, birth) {
     this.user = new User(username, email, number, birth);
-    this.session.setItem("user", JSON.stringify(this.user));
+    window.sessionStorage.setItem("user", JSON.stringify(this.user));   
+       window.location.replace("/");
+
     
   }
 
 
   isLoggedIn() {
-    if (this.session.getItem("user") != null) {
+    if (window.sessionStorage.getItem("user") != null) {
       return true;
     }
     return false;
@@ -31,18 +28,20 @@ class UserController extends React.Component {
   
 
   logOut() {
-    this.session.setItem("user", null);
-    this.user = null;
+    window.sessionStorage.setItem("user", null);
+    window.location.replace("/login");
   }
 
   getUser(){
-    return JSON.parse(this.session.getItem("user"));
+    if(this.isLoggedIn()){
+      return JSON.parse(window.sessionStorage.getItem("user"));
+    }else{
+      window.location.replace("/login");
+
+    }
   }
 
-  relocate(location) {
-    window.location.replace(location);
-
-  }
+  
 }
 
 

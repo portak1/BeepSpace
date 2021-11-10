@@ -26,6 +26,8 @@ final class RouterFactory
 			'presenter' => 'User',
 			'action'    => 'default',
 			'email'    => '',
+			'username' => '',
+			'password' => '',
 			'number'    => 0,
 			'birth'    => '',		
 			 'type'	    => 'login'

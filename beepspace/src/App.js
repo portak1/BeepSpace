@@ -7,25 +7,31 @@ import { useState } from 'react';
 import UserController from './Controllers/UserController';
 const userController = new UserController();
 if(!userController.isLoggedIn()&&window.location.pathname!="/login"&&window.location.pathname!="/register"){
-  userController.relocate("/login");
+  window.location.replace("/login");
 }
 
-const chatHandler = new ChatHandler();
+
 
 function App() {
+
+  const [chatUser, setChatUser] = useState();
+  const handleInputUser = (inputValue) => {
+    setChatUser({reciever:inputValue});
+  }
 
   return (
     <div class="mainContainer">
       <div id="main" class="text-center">
         <a class="sidebar-toggle-btn trigger-toggle-sidebar"><span class="line"></span><span class="line"></span><span class="line"></span><span class="line line-angle1"></span><span class="line line-angle2"></span></a>
-        <ChatHandler/>
+        <ChatHandler chatUser = {chatUser}/>
         <div class="row sendMessageRow mx-auto h-20">
+          
           <input type="text" placeholder="zadejte zprávu zde..." class=" send-message col-10 mx-auto h-20 "></input>
           <button  class="btn btn-odeslat col-2 h-20"><i class="far fa-paper-plane"></i></button>
         </div>
 
       </div>
-      <Sidebar></Sidebar>
+      <Sidebar handleInputUser={handleInputUser}></Sidebar>
 
     </div>
 
