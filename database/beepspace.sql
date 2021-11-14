@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Stř 03. lis 2021, 17:28
+-- Vytvořeno: Ned 14. lis 2021, 11:19
 -- Verze serveru: 10.4.18-MariaDB
 -- Verze PHP: 8.0.3
 
@@ -31,17 +31,17 @@ CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
   `message_date` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
-  `content` longtext COLLATE utf16_czech_ci NOT NULL
+  `content` longtext COLLATE utf16_czech_ci NOT NULL,
+  `reciever_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
 -- Vypisuji data pro tabulku `messages`
 --
 
-INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`) VALUES
-(1, '0000-00-00 00:00:00', 1, 'ahoj ja jsem morgi'),
-(3, '0000-00-00 00:00:00', 1, 'ahoj ja jsem morgi'),
-(4, '0000-00-00 00:00:00', 1, 'ahoj ja jsem morgi');
+INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id`) VALUES
+(6, '2021-11-04 13:30:18', 1, 'petr je vlastně totalní noob', 7),
+(7, '2021-11-04 13:30:18', 7, 'je no', 1);
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`) VALUES
-(1, 'case0304', 'honzaport@seznam.cz', 'morzi', 601543636, '2003-04-10');
+(1, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'honzaport@seznam.cz', 'admin', 601543636, '2003-04-10'),
+(7, '23d27446488226d4eb68c249489c893ab3a9603842ff7900312ce71656a4211c', 'petr@jsinoob.cz', 'petrPepega', 8, '2021-11-27'),
+(8, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'hrouzek@noob123.com', 'hrouzek', 601543636, '2021-11-27');
 
 --
 -- Indexy pro exportované tabulky
@@ -74,7 +76,8 @@ INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`) V
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `user_id` (`user_id`) USING BTREE;
+  ADD KEY `user_id` (`user_id`) USING BTREE,
+  ADD KEY `reciever_id` (`reciever_id`);
 
 --
 -- Indexy pro tabulku `users`
@@ -90,13 +93,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Omezení pro exportované tabulky
@@ -106,7 +109,8 @@ ALTER TABLE `users`
 -- Omezení pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`reciever_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
