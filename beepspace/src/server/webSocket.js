@@ -32,7 +32,7 @@ export const startWebsocketConnection = () => {
   }
 
   // We assign the send method of the connection to the exported
-  // send variable that we defined earlier
+  // send variable that we definced earlier
   send = ws.send.bind(ws)
 }
 

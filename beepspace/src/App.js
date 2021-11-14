@@ -5,30 +5,49 @@ import Sidebar from './components/sidebar';
 import ChatHandler from './Handlers/ChatHandler';
 import { useState } from 'react';
 import UserController from './Controllers/UserController';
+import ParameterHandler from './Handlers/ParameterHandler';
+import RequestHandler from './Handlers/RequestHandler';
+import MessageController from './Controllers/MessageController';
+import TextInput from './components/smallComponents/chatComponents/TextInput';
+const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
 const userController = new UserController();
-if(!userController.isLoggedIn()&&window.location.pathname!="/login"&&window.location.pathname!="/register"){
-  window.location.replace("/login");
-}
+const messageController = new MessageController();
+
+
+var userHolder = "";
 
 
 
 function App() {
-
+  checkIfReady();
   const [chatUser, setChatUser] = useState();
+  const [messages, setMessages] = useState();
   const handleInputUser = (inputValue) => {
-    setChatUser({reciever:inputValue});
+    setChatUser(inputValue);
+    
   }
+
+ 
+ 
+
+
+  if(userHolder !=chatUser&& chatUser){
+    userHolder = chatUser;
+    setMessages(getMessages(userController.getUser().username,chatUser))
+  }
+
+
 
   return (
     <div class="mainContainer">
+          {checkIfReady()}
       <div id="main" class="text-center">
         <a class="sidebar-toggle-btn trigger-toggle-sidebar"><span class="line"></span><span class="line"></span><span class="line"></span><span class="line line-angle1"></span><span class="line line-angle2"></span></a>
-        <ChatHandler chatUser = {chatUser}/>
-        <div class="row sendMessageRow mx-auto h-20">
-          
-          <input type="text" placeholder="zadejte zprávu zde..." class=" send-message col-10 mx-auto h-20 "></input>
-          <button  class="btn btn-odeslat col-2 h-20"><i class="far fa-paper-plane"></i></button>
-        </div>
+        <ChatHandler messages={messages} chatUser={chatUser}/>
+        
+
+        <TextInput/>
+        
 
       </div>
       <Sidebar handleInputUser={handleInputUser}></Sidebar>
@@ -39,6 +58,19 @@ function App() {
   );
 }
 
+
+function checkIfReady(){
+  if(!userController.isLoggedIn()&&window.location.pathname!="/login"&&window.location.pathname!="/register"){
+    window.location.replace("/login");
+  }
+}
+
+
+function getMessages(user, reciever) {
+  return messageController.returnAllMesages(requestHandler.jSONrequester("Message", [
+      new ParameterHandler("user", user),
+      new ParameterHandler("reciever", reciever)]))
+}
 
 
 $(document).ready(function ($) {

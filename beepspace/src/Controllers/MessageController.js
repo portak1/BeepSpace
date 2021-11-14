@@ -25,9 +25,10 @@ class MessageController extends  React.Component{
       }
     }
     return arrOfMesages;
-  }
-  
+    }
 
+
+    
 
 
 }

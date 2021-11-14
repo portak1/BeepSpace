@@ -1,3 +1,22 @@
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(81, 255, 214);
+  border-radius: 10px;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
 .background{
   height: 100% !important;
   width: 100% !important;
@@ -520,12 +539,36 @@ a:hover {
 
 
 .messagesBox{
-  border-radius: 5px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+
   border: 3px solid #444a49;
   width: 90% !important;
   margin: 20px;
+  margin-top: 0px;
   box-shadow: 13px 20px 9px 8px #00000052;
   background-color: #1d2725;
+  height: 90% !important;
+}
+
+.nameBox{
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 0px;
+  height: 10% !important;
+  border-bottom: none;
+  border: 3px solid #444a49;
+  width: 90% !important;
+  margin: 20px;
+  vertical-align: middle;
+  margin-bottom: 0px;
+  box-shadow: 13px 20px 9px 8px #00000052;
+  background-color: #1d2725;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .send-message{
@@ -695,4 +738,15 @@ a:hover {
 .topBoxButton:focus{
   background-color:rgba(0, 255, 208, 0.149) ;
   box-shadow: 0 0 0 0.2rem rgb(0, 255, 208) !important;
+}
+
+.buttonCustom{
+  margin-top: 5.5% !important;
+  
+}
+
+.jmeno{
+  height: 100%;
+  color: #51FFD6 !important;
+  margin-top: 1.5% !important;
 }

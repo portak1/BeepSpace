@@ -68,7 +68,8 @@ function Sidebar(props) {
                     <ul class="chat">
                         <li class="title">Chat <span class="icon">+</span></li>
                         {userArray.map((data, id) => {
-                            return <SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} reciever={data.name} />
+                            if(data.name != userController.getUser().username)
+                                return <SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} reciever={data.name} />
                         })}
 
 
