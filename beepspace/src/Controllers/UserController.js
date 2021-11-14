@@ -12,7 +12,7 @@ class UserController extends React.Component {
   logIn(username, email, number, birth) {
     this.user = new User(username, email, number, birth);
     window.sessionStorage.setItem("user", JSON.stringify(this.user));   
-       window.location.replace("/");
+      window.location.replace("/");
 
     
   }

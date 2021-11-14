@@ -4,7 +4,7 @@ import $ from 'jquery'
 import RequestHandler from "./Handlers/RequestHandler";
 import sha256 from "js-sha256";
 import ParameterHandler from "./Handlers/ParameterHandler";
-const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
+const requestHandler = new RequestHandler();
 
 function Register() {
     return (

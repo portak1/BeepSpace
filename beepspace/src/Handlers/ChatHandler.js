@@ -8,7 +8,7 @@ import ParameterHandler from "./ParameterHandler";
 
 class ChatHandler extends Component {
     userController = new UserController();
-    requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
+    requestHandler = new RequestHandler();
     messageController = new MessageController();
     chat = [];
     constructor() {

@@ -5,9 +5,8 @@ import RequestHandler from "./Handlers/RequestHandler";
 import $ from 'jquery'
 import { sha256 } from "js-sha256";
 import UserController from "./Controllers/UserController";
-import { useState } from "react";
 
-const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
+const requestHandler = new RequestHandler();
 const userController = new UserController();
 function Login() {
     return (
@@ -22,7 +21,7 @@ function Login() {
 
                         </a>
                         <div class="text-center">
-                        <h1><div class="row mx-auto text-center"><div className="beep ml-auto">Beep</div><div className="mr-auto">Space</div></div></h1>
+                            <h1><div class="row mx-auto text-center"><div className="beep ml-auto">Beep</div><div className="mr-auto">Space</div></div></h1>
                         </div>
                         <div class="card-text">
 
@@ -56,19 +55,22 @@ function Login() {
 }
 
 
-function handleLogin(event){    
+function handleLogin(event) {
     event.preventDefault();
 
     let response = requestHandler.jSONrequester("User", [
         new ParameterHandler("username", $("#loginUsername").val()),
-        new ParameterHandler("password",sha256($("#loginPassword").val()))
+        new ParameterHandler("password", sha256($("#loginPassword").val()))
     ]);
 
-    if(response.state=="WRONG"){
+    if (response.state == "WRONG") {
         $("#wrongCredetials").removeClass("fade");
         return;
-    }    
-    userController.logIn(response.name,response.email,response.number,response.birth);
+    }
+    
+    userController.logIn(response.name, response.email, response.number, response.birth);
+
+
 }
 
 

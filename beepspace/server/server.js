@@ -1,45 +1,44 @@
-// server/index.js
+const express = require("express");
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
+var 
+const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
-// import the express and express-ws libraries
-const express = require('express')
-const expressWs = require('express-ws')
+io.on("message", (arg) => {
 
-// create a new express application
-const app = express()
-// decorate the app instance with express-ws to have it
-// implement websockets
-expressWs(app)
+});
 
-// Create a new set to hold each clients socket connection
-const connections = new Set()
+io.emit("clientOnline",{
 
-// We define a handler that will be called everytime a new
-// Websocket connection is made
-const wsHandler = (ws) => {
-  // Add the connection to our set
-  connections.add(ws)
+})
 
-  // We define the handler to be called everytime this
-  // connection receives a new message from the client
-  ws.on('message', (message) => {
-    // Once we receive a message, we send it to all clients
-    // in the connection set
-    connections.forEach((conn) => conn.send(message))
-  })
+io.on('connection', function (socket) {
+  // Set the initial channel for the socket
+  // Just like you set the property of any
+  // other object in javascript
+  socket.channel = "";
 
-  // Once the client disconnects, the `close` handler is called
-  ws.on('close', () => {
-    // The closed connection is removed from the set
-    connections.delete(ws)
-  })
-}
+  // When the client joins a channel, save it to the socket
+  socket.on("joinChannel", function (data) {
+      socket.channel = data.channel;
+  });
 
-// add our websocket handler to the '/chat' route
-app.ws('/chat', wsHandler)
+  // When the client sends a message...
+  socket.on("message", function (data) {
+      // ...emit a "message" event to every other socket
+      socket.broadcast.emit("message", {
+          channel: socket.channel,
+          message: data.message
+      });
+  });
+});
 
-// host the static files in the build directory
-// (we will be using this later)
-app.use(express.static('build'))
-
-// start the server, listening to port 8080
-app.listen(3000)
+httpServer.listen(3001);
