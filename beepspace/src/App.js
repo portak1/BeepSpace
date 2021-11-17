@@ -14,7 +14,7 @@ import Message from './components/smallComponents/chatComponents/message';
 const requestHandler = new RequestHandler();
 const userController = new UserController();
 const messageController = new MessageController();
-const socket = io("http://localhost:3001/");
+const socket = io("http://10.0.2.15:3001/");
 socket.on("connect", () => {
 });
 var userHolder = "";

@@ -46,11 +46,11 @@ function Register() {
                                     <input type="password" class="form-control form-control-sm" name="CONFIRM_PASSWORD" id="exampleInputPassword2" required></input>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputNumber1">tel</label>
+                                    <label for="exampleInputNumber1">telefonní číslo</label>
                                     <input type="number" class="form-control form-control-sm" name="USER" id="exampleInputNumber1" required></input>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputDate"></label>
+                                    <label for="exampleInputDate">Datum narození</label>
                                     <input type="date" class="form-control form-control-sm" name="DATUM" id="exampleInputDate" required></input>
                                 </div>
 
