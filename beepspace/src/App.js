@@ -9,34 +9,80 @@ import RequestHandler from './Handlers/RequestHandler';
 import MessageController from './Controllers/MessageController';
 import TextInput from './components/smallComponents/chatComponents/TextInput';
 import { io } from "socket.io-client";
+import Message from './components/smallComponents/chatComponents/message';
 
 const requestHandler = new RequestHandler();
 const userController = new UserController();
 const messageController = new MessageController();
-
+const socket = io("http://localhost:3001/");
+socket.on("connect", () => {
+});
 var userHolder = "";
 
+var index = 0;
+let indexForRecieve = 1;
+
 function App() {
+
+  //check basic parameters for site
   checkIfReady();
+  //connection to socket
+
+
+  //useStates for chat and chat settings
   const [chatUser, setChatUser] = useState();
   const [messages, setMessages] = useState();
 
+  // function to handle sidebar user click
   const handleInputUser = (inputValue) => {
+    socket.emit("joinChannel", { channel: inputValue });
     setChatUser(inputValue);
   }
 
-  const socket = io("http://localhost:3001/");
-    socket.on("connect", () => {
-            
-    });
 
+
+
+  //function for sending data to database and to socket
+  const sendMessage = (content) => {
+    console.log("send: "+ messages)
+    messageController.sendMessage(content, chatUser);
+    socket.emit("message2", {
+      origin: userController.getUser().username,
+      reciever: chatUser,
+      content: content,
+      index: index
+    })
+    index++;
+    //let newMessageArray = messageController.pushNewMessage(content, true, messages);
+   // setMessages([...newMessageArray]);
+    setMessages(messages=>[...messages,<Message content={content} owner={true} last={true} />])
+
+  }
+
+  //prevent from user refreshing after click
   if (userHolder != chatUser && chatUser) {
     userHolder = chatUser;
     setMessages(getMessages(userController.getUser().username, chatUser))
   }
 
+
+  //socket rerender data
+  socket.on("message2", function (data) {
+    if (data.index != indexForRecieve) {
+      if (data.origin == chatUser && data.reciever == userController.getUser().username) {
+        if (chatUser != null && messages != null) {
+          
+          setMessages(messages=>[...messages,<Message content={data.message} owner={false} last={true} />])
+          indexForRecieve = data.index;
+
+        }
+      }
+    }
+  })
+
+  //rendering app
   return (
-    
+
     <div class="mainContainer">
       {checkIfReady()}
       <div id="main" class="text-center">
@@ -44,7 +90,7 @@ function App() {
         <ChatHandler messages={messages} chatUser={chatUser} />
 
 
-        <TextInput />
+        <TextInput chatUser={chatUser} sendMessageFunction={sendMessage} />
 
 
       </div>

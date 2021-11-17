@@ -22,7 +22,7 @@ class MessagePresenter extends Nette\Application\UI\Presenter
         $this->messageManager = new MessageManager();
        if($create){
             $data = [
-                "state" => $this->messageManager->createNewMessage($content,$user,$date)
+                "state" => $this->messageManager->createNewMessage($content,$user,$reciever,$date)
             ];
        }else{
            $data = $this->messageManager->getMessages($user,$reciever);

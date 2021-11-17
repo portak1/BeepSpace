@@ -16,7 +16,7 @@ class RequestHandler extends  React.Component{
     jSONrequester(requestType, requestParameter){
     var returnData = false;
     $.ajax({
-        url: this.pcUrl + requestType + "?" + this.parameterForming(requestParameter),
+        url: this.url + requestType + "?" + this.parameterForming(requestParameter),
         async: false,
   
         success: function (data) {

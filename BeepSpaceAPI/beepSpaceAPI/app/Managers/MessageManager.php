@@ -24,10 +24,10 @@ class MessageManager
     }
 
 
-    public function createNewMessage($content, $user, $date)
+    public function createNewMessage($content, $user,$reciever, $date)
     {
         $result = $this->controller->sql("SELECT id FROM users WHERE username='$user'");
-        $userId = false;
+        $userId = false;        
         foreach ($result as $row) {
             $userId = $row->id;
         }
@@ -36,7 +36,17 @@ class MessageManager
             return "neexistuje zadaný uživatel";
         }
 
-        return $this->controller->sql("INSERT INTO messages (message_date, user_id, content) VALUES (' $date','$userId','$content')");
+        $result = $this->controller->sql("SELECT id FROM users WHERE username='$reciever'");
+        $recieverId = false;        
+        foreach ($result as $row) {
+            $recieverId = $row->id;
+        }
+
+        if(!$recieverId){
+            return "neexistuje zadaný uživatel";
+        }
+
+        return $this->controller->sql("INSERT INTO messages (message_date, user_id, reciever_id, content) VALUES (' $date','$userId','$recieverId','$content')");
     }
 
     public function getMessages($user,$reciever)

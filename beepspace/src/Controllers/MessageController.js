@@ -1,11 +1,15 @@
 import React from "react";
 import Message from "../components/smallComponents/chatComponents/message";
-
+import ParameterHandler from "../Handlers/ParameterHandler";
+import RequestHandler from "../Handlers/RequestHandler";
+import UserController from "./UserController";
 class MessageController extends  React.Component{
     
 
     constructor(){
         super();
+        this.requestHandler = new RequestHandler();
+        this.userController = new UserController();
     }
 
 
@@ -28,6 +32,30 @@ class MessageController extends  React.Component{
     }
 
 
+
+    pushNewMessage(content,mine,array){
+      var arrOfMesages = array;
+
+      
+      if(arrOfMesages == null){ 
+        arrOfMesages =[];
+      }
+
+      arrOfMesages.push(<Message content={content} owner={mine} last={true} />)
+      return arrOfMesages;
+    }
+
+
+    sendMessage(content,reciever){
+      this.requestHandler.jSONrequester("Message",[
+      new ParameterHandler("create",1),
+      new ParameterHandler("user", this.userController.getUser().username),
+      new ParameterHandler("reciever",reciever),
+      new ParameterHandler("content",content),
+      new ParameterHandler("date", new Date())]
+      
+      )
+    }
     
 
 

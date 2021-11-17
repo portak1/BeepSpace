@@ -1,19 +1,22 @@
 import React, { Component } from "react"
-
 export default class TextInput extends Component {
+    
     constructor(props) {
         super(props)
         this.input = React.createRef()
     }
 
     sendMessage() {
-        this.props.onSend && this.props.onSend(this.input.current.value)
-        this.input.current.value = ''
+        if(this.input.current.value !=''){
+            this.props.sendMessageFunction(this.input.current.value);
+            this.input.current.value = ''
+        }
     }
 
     sendMessageIfEnter(e) {
+        
         if (e.keyCode === 13) {
-            this.sendMessage()
+            this.sendMessage(e)
         }
     }
     render() {

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
 import $ from 'jquery'
 import UserController from "../Controllers/UserController";
 import RequestHandler from "./RequestHandler";
