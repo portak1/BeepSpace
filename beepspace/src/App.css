@@ -266,15 +266,68 @@ a:hover {
   margin: 0;
   padding: 0;
 }
-#sidebar .menu-segment .ball.pink {
-  border-color: #EA4C89;
+#sidebar .menu-segment .ball.offline {
+  border-color: #5b5b5b;
 }
-#sidebar .menu-segment .ball.green {
-  border-color: #9AE14F;
+#sidebar .menu-segment .ball.online {
+  border-color: #84ff00;
 }
 #sidebar .menu-segment .ball.blue {
   border-color: #1BC3E1;
 }
+input[type="search"]
+{
+    font-size:larger;
+    height: 100%;
+  
+  }
+
+  .searchUser{
+    margin-right: -30px !important;
+    margin-left: 0px;
+  }
+.modal-dialog{
+  height: 100% !important;
+}
+
+.modalClasses{
+  background-color: rgb(57, 57, 57) !important;
+  color: white;
+  border: 2px solid #51FFD6 !important;
+}
+
+.btnOdebrat{
+  background-color: rgb(208, 208, 208);
+  color: black;
+  margin: 0px !important;
+}
+
+.btnOdebrat:focus{
+  box-shadow: 0 0 0 0.2rem rgb(0 0 0 / 82%);
+}
+
+.modalCloseButton{
+  margin: 0px !important;
+  color: white !important;
+}
+.btnPridat{
+  margin: 0px !important;
+}
+.tlacitko{
+  padding-left: 30px;
+  border-left: 1px solid gray;
+}
+
+.userLine{
+  background-color: rgb(74, 74, 74);
+  border-radius: 2px;
+  border: 1px solid black;
+  padding: 10px !important;
+  margin-right: -30px !important;
+  margin-left: 0px;
+  color: white !important;
+}
+
 #sidebar .menu-segment li.title {
   text-transform: uppercase;
   font-weight: 600;

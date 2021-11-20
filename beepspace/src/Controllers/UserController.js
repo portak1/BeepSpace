@@ -32,6 +32,8 @@ class UserController extends React.Component {
     window.location.replace("/login");
   }
 
+  
+
   getUser(){
     if(this.isLoggedIn()){
       return JSON.parse(window.sessionStorage.getItem("user"));

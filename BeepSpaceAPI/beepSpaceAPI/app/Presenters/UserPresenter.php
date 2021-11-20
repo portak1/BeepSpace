@@ -27,6 +27,9 @@ class UserPresenter extends Nette\Application\UI\Presenter
         if($type == "ALL"){
             return $this->sendJson($this->userManager->returnAllUsers());
         }
+        if($type == "ONE"){
+            return $this->sendJson(($this->userManager->returnUser($username)));
+        }
         if($this->userManager->checkLogin($username,$password)){
             $this->data = $this->userManager->returnUser($username);
          }else{

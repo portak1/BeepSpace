@@ -23,9 +23,9 @@ function Register() {
                             <h3><div class="row mx-auto mt-5 text-center"><div className="ml-auto mr-2">Registrovat </div><div className="mr-auto">se</div></div></h3>
                         </div>
                         <div class="card-text">
-                        <div class="alert alert-danger alert-dismissible fade" id="userExists" role="alert">Uživatel Již existuje</div>
-                                <div class="alert alert-danger alert-dismissible fade" id="emptyCredentials" role="alert">Vynechané jméno nebo heslo.</div>
-                                <div class="alert alert-danger alert-dismissible fade" id="wrongPass" role="alert">Hesla se neshododují</div>
+                            <div class="alert alert-danger alert-dismissible fade" id="userExists" role="alert">Uživatel Již existuje</div>
+                            <div class="alert alert-danger alert-dismissible fade" id="emptyCredentials" role="alert">Vynechané jméno nebo heslo.</div>
+                            <div class="alert alert-danger alert-dismissible fade" id="wrongPass" role="alert">Hesla se neshododují</div>
 
                             <form method="post" onSubmit={handleThis}>
                                
@@ -74,28 +74,31 @@ function Register() {
 
 function handleThis(event) {
     event.preventDefault();
-    if($("#exampleInputPassword1").val()!=$("#exampleInputPassword2").val()){
+
+
+    if ($("#exampleInputPassword1").val() != $("#exampleInputPassword2").val()) {
         $("#wrongPass").removeClass("fade");
         return;
     }
     let response = requestHandler.jSONrequester("User", [
         new ParameterHandler("username", $("#exampleInputUsername1").val()),
-        new ParameterHandler("password",sha256($("#exampleInputPassword1").val())),
-        new ParameterHandler("email",$("#exampleInputEmail1").val()),
-        new ParameterHandler("number",$("#exampleInputNumber1").val()),
-        new ParameterHandler("birth",$("#exampleInputDate").val()),
-        new ParameterHandler("type","REGISTRATION")
+        new ParameterHandler("password", sha256($("#exampleInputPassword1").val())),
+        new ParameterHandler("email", $("#exampleInputEmail1").val()),
+        new ParameterHandler("number", $("#exampleInputNumber1").val()),
+        new ParameterHandler("birth", $("#exampleInputDate").val()),
+        new ParameterHandler("type", "REGISTRATION")
     ]);
-    if(response.state =="USER_EXIST"){
+    if (response.state == "USER_EXIST") {
         $("#userExists").removeClass("fade");
         return;
     }
-    console.log(response);
+
+
     relocate("/login")
 }
 
 
-function relocate(location){
+function relocate(location) {
     window.location.replace(location);
 
 }

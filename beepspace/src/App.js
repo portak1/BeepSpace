@@ -10,13 +10,12 @@ import MessageController from './Controllers/MessageController';
 import TextInput from './components/smallComponents/chatComponents/TextInput';
 import { io } from "socket.io-client";
 import Message from './components/smallComponents/chatComponents/message';
+import FriendModal from './components/smallComponents/chatComponents/modal';
 
 const requestHandler = new RequestHandler();
 const userController = new UserController();
 const messageController = new MessageController();
-const socket = io("http://10.0.2.15:3001/");
-socket.on("connect", () => {
-});
+
 var userHolder = "";
 
 var index = 0;
@@ -27,25 +26,35 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
+  const socket = io("http://10.0.2.157:3001/");
+  socket.on("connect", () => {
+    if (userController.isLoggedIn()) {
+      socket.emit("userJoin", {
+        user: userController.getUser().username
+      })
+    }
 
+  });
 
   //useStates for chat and chat settings
   const [chatUser, setChatUser] = useState();
   const [messages, setMessages] = useState();
-
+  const [modalShow, setModalShow] = useState(false);
   // function to handle sidebar user click
   const handleInputUser = (inputValue) => {
     socket.emit("joinChannel", { channel: inputValue });
     setChatUser(inputValue);
   }
 
-
+  const setModalState = () => {
+    setModalShow(!modalShow);
+    console.log("test")
+  }
 
 
   //function for sending data to database and to socket
   const sendMessage = (content) => {
-    console.log("send: "+ messages)
-    messageController.sendMessage(content, chatUser);
+    console.log("send: " + messages)
     socket.emit("message2", {
       origin: userController.getUser().username,
       reciever: chatUser,
@@ -54,8 +63,9 @@ function App() {
     })
     index++;
     //let newMessageArray = messageController.pushNewMessage(content, true, messages);
-   // setMessages([...newMessageArray]);
-    setMessages(messages=>[...messages,<Message content={content} owner={true} last={true} />])
+    // setMessages([...newMessageArray]);
+    setMessages(messages => [...messages, <Message content={content} owner={true} last={true} />])
+    messageController.sendMessage(content, chatUser);
 
   }
 
@@ -71,8 +81,8 @@ function App() {
     if (data.index != indexForRecieve) {
       if (data.origin == chatUser && data.reciever == userController.getUser().username) {
         if (chatUser != null && messages != null) {
-          
-          setMessages(messages=>[...messages,<Message content={data.message} owner={false} last={true} />])
+
+          setMessages(messages => [...messages, <Message content={data.message} owner={false} last={true} />])
           indexForRecieve = data.index;
 
         }
@@ -94,7 +104,8 @@ function App() {
 
 
       </div>
-      <Sidebar handleInputUser={handleInputUser}></Sidebar>
+      <Sidebar setModalShow={setModalState} socket={socket} handleInputUser={handleInputUser}></Sidebar>
+      <FriendModal closeModal={setModalState} state={modalShow} />
 
     </div>
 
