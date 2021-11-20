@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 17, 2021 at 09:15 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.12
+-- Počítač: 127.0.0.1
+-- Vytvořeno: Sob 20. lis 2021, 12:06
+-- Verze serveru: 10.4.18-MariaDB
+-- Verze PHP: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `beepspace`
+-- Databáze: `beepspace`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- Struktura tabulky `messages`
 --
 
 CREATE TABLE `messages` (
@@ -36,22 +36,10 @@ CREATE TABLE `messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `messages`
+-- Vypisuji data pro tabulku `messages`
 --
 
 INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id`) VALUES
-(6, '2021-11-04 13:30:18', 1, 'petr je vlastně totalní noob', 7),
-(7, '2021-11-04 13:30:18', 7, 'je no', 1),
-(8, '0000-00-00 00:00:00', 1, 'ahoj', 8),
-(9, '0000-00-00 00:00:00', 1, '???', 8),
-(10, '0000-00-00 00:00:00', 8, 'no', 1),
-(11, '0000-00-00 00:00:00', 8, 'to', 1),
-(12, '0000-00-00 00:00:00', 8, 'si', 1),
-(13, '0000-00-00 00:00:00', 8, 'delas', 1),
-(14, '0000-00-00 00:00:00', 8, 'prdel???', 1),
-(15, '0000-00-00 00:00:00', 1, 'noob', 8),
-(16, '0000-00-00 00:00:00', 8, 'co to je?', 1),
-(17, '0000-00-00 00:00:00', 8, 'halloooo?', 1),
 (18, '0000-00-00 00:00:00', 8, 'cus', 1),
 (19, '0000-00-00 00:00:00', 8, 'nazdar', 1),
 (20, '0000-00-00 00:00:00', 8, 'jak je?', 1),
@@ -86,12 +74,40 @@ INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id
 (49, '0000-00-00 00:00:00', 1, 'Nazdaar⚽️', 11),
 (50, '0000-00-00 00:00:00', 11, 'Suoer vysledek', 1),
 (51, '0000-00-00 00:00:00', 11, 'Dvě vítězství 💪', 1),
-(52, '0000-00-00 00:00:00', 11, 'Ahoj', 9);
+(52, '0000-00-00 00:00:00', 11, 'Ahoj', 9),
+(53, '0000-00-00 00:00:00', 12, '1', 1),
+(54, '0000-00-00 00:00:00', 1, 'pepego)', 12),
+(224, '0000-00-00 00:00:00', 1, 'tesst', 15),
+(225, '0000-00-00 00:00:00', 1, 'ahoj', 15),
+(226, '0000-00-00 00:00:00', 1, 'fj', 15),
+(227, '0000-00-00 00:00:00', 15, 'nmec', 12),
+(228, '0000-00-00 00:00:00', 15, 'pepego', 1),
+(229, '0000-00-00 00:00:00', 15, 'pepego', 1),
+(230, '0000-00-00 00:00:00', 1, 'noob', 15),
+(231, '0000-00-00 00:00:00', 1, 'noboo', 15),
+(232, '0000-00-00 00:00:00', 1, 'b', 15),
+(233, '0000-00-00 00:00:00', 1, 'b', 15),
+(234, '0000-00-00 00:00:00', 1, 'b', 15),
+(235, '0000-00-00 00:00:00', 1, 'd', 15),
+(236, '0000-00-00 00:00:00', 15, 'haah', 1),
+(237, '0000-00-00 00:00:00', 15, 'noob', 1),
+(238, '0000-00-00 00:00:00', 1, 'ahoj :)', 16),
+(239, '0000-00-00 00:00:00', 1, 'jhaajajaj', 16),
+(240, '0000-00-00 00:00:00', 1, 'noobe', 16),
+(241, '0000-00-00 00:00:00', 16, 'avoj', 1),
+(242, '0000-00-00 00:00:00', 1, ':)', 16),
+(243, '0000-00-00 00:00:00', 16, 'tonjsem ja ', 1),
+(244, '0000-00-00 00:00:00', 1, '😍😍', 16),
+(245, '0000-00-00 00:00:00', 16, '🥺🥺🥺🥺🥺', 1),
+(246, '0000-00-00 00:00:00', 1, '🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺', 16),
+(247, '0000-00-00 00:00:00', 1, 'ahoj', 11),
+(248, '0000-00-00 00:00:00', 1, 'jak je?', 11),
+(249, '0000-00-00 00:00:00', 11, 'Dneska bomba⚽️', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktura tabulky `users`
 --
 
 CREATE TABLE `users` (
@@ -100,27 +116,30 @@ CREATE TABLE `users` (
   `email` text COLLATE utf16_czech_ci NOT NULL,
   `username` text COLLATE utf16_czech_ci NOT NULL,
   `number` int(11) NOT NULL,
-  `birth` date NOT NULL
+  `birth` date NOT NULL,
+  `friends_id` text COLLATE utf16_czech_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `users`
+-- Vypisuji data pro tabulku `users`
 --
 
-INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`) VALUES
-(1, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'honzaport@seznam.cz', 'admin', 601543636, '2003-04-10'),
-(7, '23d27446488226d4eb68c249489c893ab3a9603842ff7900312ce71656a4211c', 'petr@jsinoob.cz', 'petrPepega', 8, '2021-11-27'),
-(8, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'hrouzek@noob123.com', 'hrouzek', 601543636, '2021-11-27'),
-(9, '3fca867ff2af052b4ce704b3c022b286a2427ec466499a34231c42393e9ca5d4', 'annaportova07@gmail.com', 'Andulilinka', 606071697, '2021-11-17'),
-(10, '01cfc1a0bc86dad5a725d776ff1864d1afd748dd932fc86e5406680da66bd147', 'portova.hana@seznam.cz', 'Haminka', 607123687, '1974-02-24'),
-(11, 'd099cf21d256abaa7bae2330dca322b6eb79274b2191249168215be6150ab05b', 'janport@centrum.cz', 'Klayman', 724143676, '1972-09-15');
+INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`, `friends_id`) VALUES
+(1, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'honzaport@seznam.cz', 'admin', 601543636, '2003-04-10', ''),
+(8, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'hrouzek@noob123.com', 'hrouzek', 601543636, '2021-11-27', ''),
+(9, '3fca867ff2af052b4ce704b3c022b286a2427ec466499a34231c42393e9ca5d4', 'annaportova07@gmail.com', 'Andulilinka', 606071697, '2021-11-17', ''),
+(10, '01cfc1a0bc86dad5a725d776ff1864d1afd748dd932fc86e5406680da66bd147', 'portova.hana@seznam.cz', 'Haminka', 607123687, '1974-02-24', ''),
+(11, 'd099cf21d256abaa7bae2330dca322b6eb79274b2191249168215be6150ab05b', 'janport@centrum.cz', 'Klayman', 724143676, '1972-09-15', ''),
+(12, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'pepega@gmail.com', 'honzik', 123, '2021-11-23', ''),
+(15, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'honzaMASIOFMmlkmff', 'honza', 23442, '0004-03-31', ''),
+(16, 'd97d87d4da285adebd7f7b322eaf12930392eb65e51c1062de307ecb6552bab2', 'jana.placha123@seznam.cz', 'tojsemjazabijak', 739716379, '1998-04-10', '');
 
 --
--- Indexes for dumped tables
+-- Indexy pro exportované tabulky
 --
 
 --
--- Indexes for table `messages`
+-- Indexy pro tabulku `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
@@ -128,33 +147,33 @@ ALTER TABLE `messages`
   ADD KEY `reciever_id` (`reciever_id`);
 
 --
--- Indexes for table `users`
+-- Indexy pro tabulku `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pro tabulky
 --
 
 --
--- AUTO_INCREMENT for table `messages`
+-- AUTO_INCREMENT pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=250;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- Constraints for dumped tables
+-- Omezení pro exportované tabulky
 --
 
 --
--- Constraints for table `messages`
+-- Omezení pro tabulku `messages`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
