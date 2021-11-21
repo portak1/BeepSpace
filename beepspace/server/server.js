@@ -39,6 +39,20 @@ io.on('connection', function (socket) {
         });
 
     });
+
+    socket.on("userPause",function(data){
+      socket.broadcast.emit("clientPause", {
+        user :data.user
+      })
+    })
+
+    socket.on("disconnectUser",function(data){
+      socket.broadcast.emit("clientOffline",{
+        user : data.user
+      })
+      socket.disconnect();
+    })
+
   });
 
 httpServer.listen(3001);

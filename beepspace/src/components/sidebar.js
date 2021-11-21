@@ -24,6 +24,9 @@ function Sidebar(props) {
     // <a class="navbar-brand-login text-center" href="">
     //<div class="mx-auto beepLogo"><Logo></Logo></div></a>
 
+    const logOut = () =>{
+        userController.logOut(props.socket);
+    }
     return (
         <aside id="sidebar" class="nano">
             <div class="nano-content">
@@ -43,7 +46,7 @@ function Sidebar(props) {
                                 <button class="btn topBoxButton" onClick={showCallButtons}><i class="fab fa-connectdevelop"></i></button>
                             </div>
                             <div class="col">
-                                <button onClick={userController.logOut} class="btn topBoxButton"><i class="fas fa-sign-out-alt"></i></button>
+                                <button onClick={logOut} class="btn topBoxButton"><i class="fas fa-sign-out-alt"></i></button>
                             </div>
                         </div>
 
@@ -56,7 +59,7 @@ function Sidebar(props) {
                                 <button class="btn topBoxButton"><i class="fab fa-connectdevelop"></i></button>
                             </div>
                             <div class="col">
-                                <button onClick={userController.logOut} class="btn topBoxButton"><i class="fas fa-sign-out-alt"></i></button>
+                                <button onClick={logOut} class="btn topBoxButton"><i class="fas fa-sign-out-alt"></i></button>
                             </div>
 
                         </div>
@@ -77,8 +80,17 @@ function Sidebar(props) {
                     <ul class="chat">
                         <li class="title">Chat <span class="icon">+</span></li>
                         {userArray.map((data, id) => {
-                            if (data.name != userController.getUser().username)
-                                return <SidebarUser handleInputUser={props.handleInputUser} key={id} user={userController.getUser().username} socket={props.socket} reciever={data.name} />
+                            var friendsState = requestHandler.jSONrequester("User",[
+                                new ParameterHandler("type", "IS-FRIENDS"),
+                                new ParameterHandler("id", userController.getUser().id),
+                                new ParameterHandler("id2",data.id)
+                            ])
+                            
+                            if (data.name != userController.getUser().username){
+                                if(friendsState.state){
+                                    return <SidebarUser handleInputUser={props.handleInputUser} key={id} user={userController.getUser().username} online={data.online} socket={props.socket} reciever={data.name} />
+                                }
+                            }
                         })}
 
 

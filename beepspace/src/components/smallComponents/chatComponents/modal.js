@@ -4,24 +4,33 @@ import Modal from "react-bootstrap/Modal";
 import ModalUser from "../modalUser";
 import RequestHandler from "../../../Handlers/RequestHandler";
 import ParameterHandler from "../../../Handlers/ParameterHandler";
+import UserController from "../../../Controllers/UserController";
 
 export default function FriendModal(params) {
     const requestHandler = new RequestHandler();
+    const userController = new UserController();
 
     const [users, setUsers] = useState();
 
     const input = React.createRef();
-    const search = () => {
 
-        if(input.current.value != ""){
+
+
+    const search = () => {
+        if(input.current.value != "" && input.current.value != userController.getUser().username){
             let user = requestHandler.jSONrequester("User", [
                 new ParameterHandler("type","ONE"),
                 new ParameterHandler("username", input.current.value)
             ])
-            console.log(user)
             if (user != null) {
-                setUsers(<ModalUser name={user.name} userId={user.id}/>);
-    
+                var friendsState = requestHandler.jSONrequester("User",[
+                    new ParameterHandler("type", "IS-FRIENDS"),
+                    new ParameterHandler("id", userController.getUser().id),
+                    new ParameterHandler("id2",user.id)
+                ])
+                console.log(friendsState)
+                setUsers(<ModalUser name={user.name} friendsState={friendsState.state} userId={user.id}/>);
+                
             }else {
             setUsers(null);
             }
@@ -34,8 +43,29 @@ export default function FriendModal(params) {
         if (e.keyCode === 13) {
             search(e)
         }
+
     }
 
+    const liveSearch = () =>{
+        if(input.current.value != ""&& input.current.value != userController.getUser().username){
+            let user = requestHandler.jSONrequester("User", [
+                new ParameterHandler("type","ONE"),
+                new ParameterHandler("username", input.current.value)
+            ])
+            if (user != null) {
+                var friendsState = requestHandler.jSONrequester("User",[
+                    new ParameterHandler("type", "IS-FRIENDS"),
+                    new ParameterHandler("id", userController.getUser().id),
+                    new ParameterHandler("id2",user.id)
+                ])
+                console.log(friendsState)
+                setUsers(<ModalUser name={user.name} friendsState={friendsState.state} userId={user.id}/>);
+                
+            }else {
+            setUsers(null);
+            }
+        }
+    }
 
 
 
@@ -54,7 +84,7 @@ export default function FriendModal(params) {
             <Modal.Body>
                 <div class="row searchUser w-100 mb-5">
                     <div class="col-8">
-                        <input type="search" class="form-control" ref={input} onKeyDown={searchOnEnter} placeholder="Hledat uživatele" aria-label="Search" />
+                        <input type="search" class="form-control" ref={input} onChange={liveSearch} onKeyDown={searchOnEnter}  placeholder="Hledat uživatele" aria-label="Search" />
                     </div>
                     <div class="col-4">
                         <button type="submit" class="form-control " onClick={search} value="" aria-label="Search" ><i class="fas fa-search"></i></button>

@@ -26,14 +26,25 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io("http://10.0.2.157:3001/");
+  const socket = io("http://10.0.2.15:3001/");
   socket.on("connect", () => {
     if (userController.isLoggedIn()) {
       socket.emit("userJoin", {
         user: userController.getUser().username
       })
+      requestHandler.jSONrequester("User", [
+        new ParameterHandler("type", "SET-ONLINE"),
+        new ParameterHandler("id", userController.getUser().id)
+      ]);
+
     }
 
+  });
+  socket.on("disconnect", () => {
+    requestHandler.jSONrequester("User", [
+      new ParameterHandler("type", "SET-OFFLINE"),
+      new ParameterHandler("id", userController.getUser().id)
+    ]);
   });
 
   //useStates for chat and chat settings
@@ -48,9 +59,27 @@ function App() {
 
   const setModalState = () => {
     setModalShow(!modalShow);
-    console.log("test")
   }
+  window.onfocus = function () {
+    socket.emit("userJoin", {
+      user: userController.getUser().username
+    })
+    requestHandler.jSONrequester("User", [
+      new ParameterHandler("type", "SET-ONLINE"),
+      new ParameterHandler("id", userController.getUser().id)
+    ]);
+  };
 
+  
+  window.onblur = function () {
+    requestHandler.jSONrequester("User", [
+      new ParameterHandler("type", "SET-PAUSED"),
+      new ParameterHandler("id", userController.getUser().id)
+    ]);
+    socket.emit("userPause", {
+      user: userController.getUser().username
+    });
+  };
 
   //function for sending data to database and to socket
   const sendMessage = (content) => {
@@ -62,13 +91,10 @@ function App() {
       index: index
     })
     index++;
-    //let newMessageArray = messageController.pushNewMessage(content, true, messages);
-    // setMessages([...newMessageArray]);
     setMessages(messages => [...messages, <Message content={content} owner={true} last={true} />])
     messageController.sendMessage(content, chatUser);
 
   }
-
   //prevent from user refreshing after click
   if (userHolder != chatUser && chatUser) {
     userHolder = chatUser;

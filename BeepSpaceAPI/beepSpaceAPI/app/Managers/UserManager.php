@@ -41,22 +41,93 @@ class UserManager
         return false;
     }
 
-    
-
-    public function returnUser($username)
+    public function getFriends($id)
     {
-        $result =  $this->controller->sql("SELECT id, username, email,number,birth FROM users WHERE username = '$username'");
+        $result = $this->controller->sql("SELECT friends_id FROM users WHERE id ='$id'");
         foreach ($result as $row) {
-            return new User($row->username,$row->id, $row->email, $row->number, $row->birth);
+            return $row->friends_id;
         }
     }
 
-    public function returnAllUsers(){
-        $arrayOfUsers = array();
-        $result =  $this->controller->sql("SELECT id, username, email,number,birth FROM users");
+
+
+    public function returnUser($username)
+    {
+        $result =  $this->controller->sql("SELECT id, username, email,number,birth, online FROM users WHERE username = '$username'");
         foreach ($result as $row) {
-            array_push($arrayOfUsers,new User($row->username,$row->id, $row->email, $row->number, $row->birth));
-             
+            return new User($row->username, $row->id, $row->email, $row->number, $row->birth, $row->online);
+        }
+    }
+
+    public function addFriend($id, $id2)
+    {
+        $array = $this->getFriends($id). "," . $id2;
+        $result = $this->controller->sql("UPDATE users SET friends_id = '$array' WHERE id = '$id'");
+        foreach ($result as $row) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isFriend($id, $id2){
+        $array = explode(",",$this->getFriends($id));
+
+        if (($key = array_search($id2, $array)) !== false){
+            return true;
+        }
+        return false;
+    }
+
+
+    public function removeFriend($id, $id2){
+        $array = explode(",",$this->getFriends($id));
+
+        if (($key = array_search($id2, $array)) !== false) {
+            unset($array[$key]);
+            $implodedArray = implode(",", $array);
+            $result = $this->controller->sql("UPDATE users SET friends_id = '$implodedArray' WHERE id = '$id'");
+            foreach ($result as $row) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+
+
+    }
+
+    
+    public function setPause($id){
+        $result = $this->controller->sql("UPDATE users SET online = 3 WHERE id = '$id'");
+        foreach ($result as $row) {
+            return true;
+        }
+        return false;
+    }
+
+    public function setOnline($id){
+        $result = $this->controller->sql("UPDATE users SET online = 1 WHERE id = '$id'");
+            foreach ($result as $row) {
+                return true;
+            }
+            return false;
+    }
+
+    public function setOffline($id){
+        $result = $this->controller->sql("UPDATE users SET online = 0 WHERE id = '$id'");
+            foreach ($result as $row) {
+                return true;
+            }
+            return false;
+    }
+
+
+    public function returnAllUsers()
+    {
+        $arrayOfUsers = array();
+        $result =  $this->controller->sql("SELECT id, username, email,number,birth, online FROM users");
+        foreach ($result as $row) {
+            array_push($arrayOfUsers, new User($row->username, $row->id, $row->email, $row->number, $row->birth,$row->online));
         }
         return $arrayOfUsers;
     }

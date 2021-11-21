@@ -22,15 +22,17 @@ final class RouterFactory
 			'content'   => '',
 			'date'      =>''
 		));
-		$router->addRoute('User?[username=<username>][&password=<password>][&email=<email>][&number=<number>][&birth=<birth>][&type=<type>]',array(
-			'presenter' => 'User',
-			'action'    => 'default',
+		$router->addRoute('User?[username=<username>][&password=<password>][&email=<email>][&id=<id>][&id2=<id2>][&number=<number>][&birth=<birth>][&type=<type>]',array(
+			'presenter'=> 'User',
+			'action'   => 'default',
 			'email'    => '',
 			'username' => '',
 			'password' => '',
-			'number'    => 0,
+			'id'       => 0,
+			'id2'       => 0,			
+			'number'   => 0,
 			'birth'    => '',		
-			 'type'	    => 'login'
+			 'type'	   => 'login'
 		));
 
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');

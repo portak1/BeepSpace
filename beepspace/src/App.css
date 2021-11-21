@@ -272,6 +272,9 @@ a:hover {
 #sidebar .menu-segment .ball.online {
   border-color: #84ff00;
 }
+#sidebar .menu-segment .ball.paused {
+  border-color: #ff9100;
+}
 #sidebar .menu-segment .ball.blue {
   border-color: #1BC3E1;
 }
