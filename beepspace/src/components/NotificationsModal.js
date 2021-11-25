@@ -10,18 +10,37 @@ import { useState } from "react";
 export default function NotificationsModal(params) {
     const requestHandler = new RequestHandler();
     const userController = new UserController();
-    const [notifications,setNotifications] = useState();
     var userArray = [];
-    userArray = requestHandler.jSONrequester("Notification",[
+
+    userArray = requestHandler.jSONrequester("Notifications",[
         new ParameterHandler("type","GET"),
         new ParameterHandler("user", userController.getUser().username)
     ])
 
-    console.log(userArray);
-  
-   
+    console.log(userArray)
 
+    const [notifications,setNotifications] = useState(userArray.map((data,id)=>{
+        if(data.type =="message"){
+            return <Notification key={id} notId={data.id} user={data.user} content={data.content}  />;
+        }else{
+           return <Notification key={id} notId={data.id}  addNotification={true} user={data.user} />
+        }
+    }));
 
+    const removeNotification = (key) =>{
+        
+       var index = notifications.map((data,id)=>{
+            if(data.key == key) return id;
+        })
+        
+        setNotifications(notifications.splice(index,1))
+        
+    }
+
+    
+
+//<Notification addNotification={true} user="janicka" />
+  //             <Notification user="janicka" content="ahoj ja jsem janicka a jsem frayerka" />
 
     return (
 
@@ -37,9 +56,8 @@ export default function NotificationsModal(params) {
             </Modal.Header>
             <Modal.Body>
 
-               <Notification addNotification={true} user="janicka" />
-               <Notification user="janicka" content="ahoj ja jsem janicka a jsem frayerka" />
-
+               
+                {notifications}
             </Modal.Body>
         </Modal>
 

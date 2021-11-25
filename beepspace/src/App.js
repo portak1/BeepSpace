@@ -27,7 +27,7 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io("http://172.20.10.3:3001/");
+  const socket = io("http://10.0.2.15:3001/");
   socket.on("connect", () => {
     if (userController.isLoggedIn()) {
       socket.emit("userJoin", {

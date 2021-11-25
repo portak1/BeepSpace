@@ -59,16 +59,12 @@ class UserPresenter extends Nette\Application\UI\Presenter
                 "state" => $this->userManager->setPause($id)
             ]);
         }
-
+        
         if($type == "SET-OFFLINE"){
             return $this->sendJson([
                 "state" => $this->userManager->setOffline($id)
             ]);
         }
-
-
-
-
         if ($this->userManager->checkLogin($username, $password)) {
             $this->data = $this->userManager->returnUser($username);
         } else {

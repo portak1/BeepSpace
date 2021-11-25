@@ -68,12 +68,13 @@ class UserManager
 
     public function addFriend($id, $id2)
     {
-        $array = $this->getFriends($id). "," . $id2;
+        $array = count((array)$this->getFriends($id))>0 ? $this->getFriends($id). "," . $id2 : $id2;
+       
+        $array2 = count((array)$this->getFriends($id2))>0 ? $this->getFriends($id2) . "," . $id : $id;
+
         $result = $this->controller->sql("UPDATE users SET friends_id = '$array' WHERE id = '$id'");
-        foreach ($result as $row) {
-            return true;
-        }
-        return false;
+        $resul2 = $this->controller->sql("UPDATE users SET friends_id = '$array2' WHERE id = '$id2'");
+        return true;
     }
 
     public function isFriend($id, $id2){

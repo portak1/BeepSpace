@@ -6,6 +6,11 @@ namespace App\Entity;
 
 class Notification{
 
+
+ /**
+     *  @var int
+     */
+    public $id;
     /**
      *  @var string
      */
@@ -28,23 +33,27 @@ class Notification{
      /**
      *  @var bool
      */
-    public $addFriend;
+    public $type;
 
 
-    public function __construct($user,$reciever,$date,$content,$addFriend){
+    public function __construct($id,$user,$reciever,$date,$content,$type){
         $this->setUser($user);
         $this->setDate($date);
         $this->setContent($content);
         $this->setReciever($reciever);
-        $this->setAddFriend($addFriend);
+        $this->setType($type);
+        $this->setId($id);
     }
 
+    private function setId($id){
+        $this->id = $id;
+    }
     private function setUser($user){
         $this->user = $user;
     }
 
-    private function setAddFriend($addFriend){
-        $this->addFriend = $addFriend;
+    private function setType($type){
+        $this->type = $type;
     }
     public function getUser(){
         return $this->user;
