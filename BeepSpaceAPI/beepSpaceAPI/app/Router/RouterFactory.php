@@ -34,6 +34,15 @@ final class RouterFactory
 			'birth'    => '',		
 			 'type'	   => 'login'
 		));
+		$router->addRoute('Notification?[type=<type>][&user=<user>][&reciever=<reciever>][&content=<content>][&date=<date>][&addNotification=<addNotification>]',array(
+			'presenter' => 'Notification',
+			'action'    => 'default',
+			'type'    => "GET",
+			'content'   => '',
+			'reciever '=> '',
+			'date'      =>'',
+			'addNotification' => 0
+		));
 
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');
 

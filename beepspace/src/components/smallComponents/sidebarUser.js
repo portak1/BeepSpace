@@ -17,7 +17,7 @@ function SidebarUser(props) {
     const [online, setOnline] = useState(props.online ? "ball online" :"ball offline"); 
 
 
-
+console.log("Test")
     user = props.user;
     reciever = props.reciever;
     chatHandler = props.chatHandler;

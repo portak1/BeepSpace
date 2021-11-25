@@ -304,7 +304,21 @@ input[type="search"]
   color: black;
   margin: 0px !important;
 }
+.btnPrijmout{
 
+}
+.btnOdmitnout{
+  border: 0px !important;
+}
+
+.notificationText{
+  overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 4; /* number of lines to show */
+           line-clamp: 4; 
+   -webkit-box-orient: vertical;
+}
 .btnOdebrat:focus{
   box-shadow: 0 0 0 0.2rem rgb(0 0 0 / 82%);
 }

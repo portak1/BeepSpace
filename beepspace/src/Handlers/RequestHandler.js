@@ -4,7 +4,7 @@ import React from 'react';
 
 class RequestHandler extends React.Component {
 
-    url = 'http://10.0.2.157/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/';
+    url = 'http://172.20.10.3/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/';
     pcUrl = 'http://10.0.2.15/githubProjects/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/';
     constructor() {
         super();
@@ -15,7 +15,7 @@ class RequestHandler extends React.Component {
     jSONrequester(requestType, requestParameter) {
         var returnData = false;
         $.ajax({
-            url: this.pcUrl + requestType + "?" + this.parameterForming(requestParameter),
+            url: this.url + requestType + "?" + this.parameterForming(requestParameter),
             async: false,
 
             success: function (data) {

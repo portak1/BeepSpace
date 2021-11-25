@@ -59,6 +59,13 @@ class UserManager
         }
     }
 
+    public function returnUserById($id){
+        $result =  $this->controller->sql("SELECT id, username, email,number,birth, online FROM users WHERE id = '$id'");
+        foreach ($result as $row) {
+            return new User($row->username, $row->id, $row->email, $row->number, $row->birth, $row->online);
+        }
+    }
+
     public function addFriend($id, $id2)
     {
         $array = $this->getFriends($id). "," . $id2;

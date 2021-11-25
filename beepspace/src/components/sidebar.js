@@ -8,9 +8,10 @@ import React from 'react';
 const userController = new UserController();
 const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
 var userArray = [];
-
+var rendered = false;
+var usersFriendsArray = [];
 function Sidebar(props) {
-    var elementArray = [];
+
  
 
 
@@ -18,11 +19,21 @@ function Sidebar(props) {
         new ParameterHandler("type", "ALL")
     ]);
 
-
-    //logo
-
-    // <a class="navbar-brand-login text-center" href="">
-    //<div class="mx-auto beepLogo"><Logo></Logo></div></a>
+    if(!rendered){
+        rendered = true;
+        usersFriendsArray =  userArray.map((data, id) => {
+            var friendsState = requestHandler.jSONrequester("User",[
+                new ParameterHandler("type", "IS-FRIENDS"),
+                new ParameterHandler("id", userController.getUser().id),
+                new ParameterHandler("id2",data.id)
+            ])
+            if (data.name != userController.getUser().username){
+                if(friendsState.state){
+                    return <SidebarUser handleInputUser={props.handleInputUser} key={id} user={userController.getUser().username} online={data.online} socket={props.socket} reciever={data.name} />
+                }
+            }
+        })
+    }
 
     const logOut = () =>{
         userController.logOut(props.socket);
@@ -47,6 +58,12 @@ function Sidebar(props) {
                             </div>
                             <div class="col">
                                 <button onClick={logOut} class="btn topBoxButton"><i class="fas fa-sign-out-alt"></i></button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                            <button class="btn topBoxButton w-100" onClick={props.setNModalShow}><i class="fas fa-mail-bulk"></i>   </button>
+
                             </div>
                         </div>
 
@@ -79,19 +96,7 @@ function Sidebar(props) {
                 <div class="menu-segment">
                     <ul class="chat">
                         <li class="title">Chat <span class="icon">+</span></li>
-                        {userArray.map((data, id) => {
-                            var friendsState = requestHandler.jSONrequester("User",[
-                                new ParameterHandler("type", "IS-FRIENDS"),
-                                new ParameterHandler("id", userController.getUser().id),
-                                new ParameterHandler("id2",data.id)
-                            ])
-                            
-                            if (data.name != userController.getUser().username){
-                                if(friendsState.state){
-                                    return <SidebarUser handleInputUser={props.handleInputUser} key={id} user={userController.getUser().username} online={data.online} socket={props.socket} reciever={data.name} />
-                                }
-                            }
-                        })}
+                        {usersFriendsArray}
 
 
                     </ul>

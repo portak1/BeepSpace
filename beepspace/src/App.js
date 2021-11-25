@@ -11,6 +11,7 @@ import TextInput from './components/smallComponents/chatComponents/TextInput';
 import { io } from "socket.io-client";
 import Message from './components/smallComponents/chatComponents/message';
 import FriendModal from './components/smallComponents/chatComponents/modal';
+import NotificationsModal from './components/NotificationsModal';
 
 const requestHandler = new RequestHandler();
 const userController = new UserController();
@@ -26,7 +27,7 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io("http://10.0.2.15:3001/");
+  const socket = io("http://172.20.10.3:3001/");
   socket.on("connect", () => {
     if (userController.isLoggedIn()) {
       socket.emit("userJoin", {
@@ -51,6 +52,7 @@ function App() {
   const [chatUser, setChatUser] = useState();
   const [messages, setMessages] = useState();
   const [modalShow, setModalShow] = useState(false);
+  const [NModalShow, setNModalShow] = useState(false);
   // function to handle sidebar user click
   const handleInputUser = (inputValue) => {
     socket.emit("joinChannel", { channel: inputValue });
@@ -59,6 +61,9 @@ function App() {
 
   const setModalState = () => {
     setModalShow(!modalShow);
+  }
+  const setAnotherModal = () =>{
+    setNModalShow(!NModalShow);
   }
   window.onfocus = function () {
     socket.emit("userJoin", {
@@ -102,6 +107,7 @@ function App() {
   }
 
 
+
   //socket rerender data
   socket.on("message2", function (data) {
     if (data.index != indexForRecieve) {
@@ -124,15 +130,13 @@ function App() {
       <div id="main" class="text-center">
         <a class="sidebar-toggle-btn trigger-toggle-sidebar"><span class="line"></span><span class="line"></span><span class="line"></span><span class="line line-angle1"></span><span class="line line-angle2"></span></a>
         <ChatHandler messages={messages} chatUser={chatUser} />
-
-
         <TextInput chatUser={chatUser} sendMessageFunction={sendMessage} />
 
 
       </div>
-      <Sidebar setModalShow={setModalState} socket={socket} handleInputUser={handleInputUser}></Sidebar>
+    <Sidebar setModalShow={setModalState} setNModalShow={setAnotherModal} socket={socket} handleInputUser={handleInputUser}></Sidebar>
       <FriendModal closeModal={setModalState} state={modalShow} />
-
+      <NotificationsModal closeModal={setAnotherModal} state={NModalShow}/>
     </div>
 
 
