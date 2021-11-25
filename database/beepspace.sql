@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 21, 2021 at 09:17 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.12
+-- Počítač: 127.0.0.1
+-- Vytvořeno: Čtv 25. lis 2021, 10:32
+-- Verze serveru: 10.4.18-MariaDB
+-- Verze PHP: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `beepspace`
+-- Databáze: `beepspace`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- Struktura tabulky `messages`
 --
 
 CREATE TABLE `messages` (
@@ -36,7 +36,7 @@ CREATE TABLE `messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `messages`
+-- Vypisuji data pro tabulku `messages`
 --
 
 INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id`) VALUES
@@ -109,12 +109,24 @@ INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id
 (253, '0000-00-00 00:00:00', 1, 'Ahoj', 11),
 (254, '0000-00-00 00:00:00', 8, 'ahoj', 1),
 (255, '0000-00-00 00:00:00', 8, 'pepego', 1),
-(256, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8);
+(256, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8),
+(257, '0000-00-00 00:00:00', 1, 'noob', 8),
+(258, '0000-00-00 00:00:00', 1, 'paneboze', 8),
+(259, '0000-00-00 00:00:00', 1, 'achjo', 8),
+(260, '0000-00-00 00:00:00', 1, '¨', 8),
+(261, '0000-00-00 00:00:00', 1, '¨', 8),
+(262, '0000-00-00 00:00:00', 1, '¨', 8),
+(263, '0000-00-00 00:00:00', 1, 'Pici', 8),
+(264, '0000-00-00 00:00:00', 1, 'test', 8),
+(265, '0000-00-00 00:00:00', 1, 'test', 11),
+(266, '0000-00-00 00:00:00', 1, 'coeee', 11),
+(267, '0000-00-00 00:00:00', 1, 'coooe', 11),
+(268, '0000-00-00 00:00:00', 1, 'noobe', 11);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifications`
+-- Struktura tabulky `notifications`
 --
 
 CREATE TABLE `notifications` (
@@ -122,13 +134,22 @@ CREATE TABLE `notifications` (
   `content` text COLLATE utf16_czech_ci NOT NULL,
   `date` datetime NOT NULL,
   `type` text COLLATE utf16_czech_ci NOT NULL,
-  `origin_id` int(11) NOT NULL
+  `origin_id` int(11) NOT NULL,
+  `reciever_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+
+--
+-- Vypisuji data pro tabulku `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `content`, `date`, `type`, `origin_id`, `reciever_id`) VALUES
+(1, 'ahoj more tady zinant', '2021-11-02 14:09:15', 'message', 9, 1),
+(8, '', '2021-11-23 14:12:17', 'add', 1, 10);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktura tabulky `users`
 --
 
 CREATE TABLE `users` (
@@ -143,7 +164,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `users`
+-- Vypisuji data pro tabulku `users`
 --
 
 INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`, `friends_id`, `online`) VALUES
@@ -157,11 +178,11 @@ INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`, `
 (16, 'd97d87d4da285adebd7f7b322eaf12930392eb65e51c1062de307ecb6552bab2', 'jana.placha123@seznam.cz', 'tojsemjazabijak', 739716379, '1998-04-10', '', 0);
 
 --
--- Indexes for dumped tables
+-- Indexy pro exportované tabulky
 --
 
 --
--- Indexes for table `messages`
+-- Indexy pro tabulku `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
@@ -169,56 +190,58 @@ ALTER TABLE `messages`
   ADD KEY `reciever_id` (`reciever_id`);
 
 --
--- Indexes for table `notifications`
+-- Indexy pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `origin_id` (`origin_id`);
+  ADD UNIQUE KEY `origin_id` (`origin_id`),
+  ADD KEY `reciever_id` (`reciever_id`);
 
 --
--- Indexes for table `users`
+-- Indexy pro tabulku `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pro tabulky
 --
 
 --
--- AUTO_INCREMENT for table `messages`
+-- AUTO_INCREMENT pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=257;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=269;
 
 --
--- AUTO_INCREMENT for table `notifications`
+-- AUTO_INCREMENT pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- Constraints for dumped tables
+-- Omezení pro exportované tabulky
 --
 
 --
--- Constraints for table `messages`
+-- Omezení pro tabulku `messages`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`reciever_id`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `notifications`
+-- Omezení pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
-  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`origin_id`) REFERENCES `users` (`id`);
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`origin_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `notifications_ibfk_2` FOREIGN KEY (`reciever_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
