@@ -22,6 +22,15 @@ io.on('connection', function (socket) {
   });
 
 
+  socket.on("addUser",function(data){
+
+    socket.broadcast.emit("addLocalUser",{
+      origin: data.localUser,
+      reciever: data.username
+    } 
+    )
+  })
+
   socket.on("userJoin",function(data){
     socket.broadcast.emit("clientOnline",{
       user: data.user

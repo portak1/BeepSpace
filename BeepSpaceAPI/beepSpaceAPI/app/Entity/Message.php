@@ -30,19 +30,28 @@ class Message{
      */
     public $mine;
 
+      /**
+     *  @var bool
+     */
+    public $isChatMessage;
 
-    public function __construct($user,$reciever,$date,$content,$mine){
+    
+    public function __construct($user,$reciever,$date,$content,$mine,$isChatMessage){
         $this->setUser($user);
         $this->setDate($date);
         $this->setContent($content);
         $this->setReciever($reciever);
         $this->setMine($mine);
+        $this->setIsChatMessage($isChatMessage);
     }
 
     private function setUser($user){
         $this->user = $user;
     }
 
+    private function setIsChatMessage($isChatMessage){
+        $this->isChatMessage = $isChatMessage;
+    }
     private function setMine($mine){
         $this->mine = $mine;
     }

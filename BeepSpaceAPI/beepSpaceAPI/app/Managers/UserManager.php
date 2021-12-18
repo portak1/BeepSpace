@@ -87,6 +87,14 @@ class UserManager
     }
 
 
+    public function convertIDtoName($id){
+
+        $result = $this->controller->sql("SELECT * FROM users WHERE id='$id'");
+        foreach($result as $row){
+            return new User($row->username,$row->id,$row->email,$row->number,$row->birth,$row->online);
+        }
+    }
+
     public function removeFriend($id, $id2){
         $array = explode(",",$this->getFriends($id));
 
@@ -104,6 +112,19 @@ class UserManager
 
     }
 
+
+    public function convertNameToID($username){
+        $result = $this->controller->sql("SELECT id FROM users WHERE username='$username'");
+        $userId = false;        
+        foreach ($result as $row) {
+            $userId = $row->id;
+        }
+
+        if(!$userId){
+            return "neexistuje zadaný uživatel";
+        }
+        return $userId;
+    }
     
     public function setPause($id){
         $result = $this->controller->sql("UPDATE users SET online = 3 WHERE id = '$id'");

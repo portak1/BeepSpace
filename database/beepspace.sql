@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 25, 2021 at 01:48 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.12
+-- Počítač: 127.0.0.1
+-- Vytvořeno: Sob 18. pro 2021, 11:30
+-- Verze serveru: 10.4.18-MariaDB
+-- Verze PHP: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,34 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `beepspace`
+-- Databáze: `beepspace`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- Struktura tabulky `groupchat`
+--
+
+CREATE TABLE `groupchat` (
+  `id` int(11) NOT NULL,
+  `name` text COLLATE utf16_czech_ci NOT NULL,
+  `color` text COLLATE utf16_czech_ci NOT NULL,
+  `users` text COLLATE utf16_czech_ci NOT NULL,
+  `connected_users` text COLLATE utf16_czech_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+
+--
+-- Vypisuji data pro tabulku `groupchat`
+--
+
+INSERT INTO `groupchat` (`id`, `name`, `color`, `users`, `connected_users`) VALUES
+(1, 'pepegacChat', '#FFFFFFFF', '1,', '1,');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `messages`
 --
 
 CREATE TABLE `messages` (
@@ -32,101 +53,123 @@ CREATE TABLE `messages` (
   `message_date` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
   `content` longtext COLLATE utf16_czech_ci NOT NULL,
-  `reciever_id` int(11) NOT NULL
+  `reciever_id` int(11) NOT NULL,
+  `isChatMessage` tinyint(1) NOT NULL,
+  `chat_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `messages`
+-- Vypisuji data pro tabulku `messages`
 --
 
-INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id`) VALUES
-(18, '0000-00-00 00:00:00', 8, 'cus', 1),
-(19, '0000-00-00 00:00:00', 8, 'nazdar', 1),
-(20, '0000-00-00 00:00:00', 8, 'jak je?', 1),
-(21, '0000-00-00 00:00:00', 1, 'joo dobrý', 8),
-(22, '0000-00-00 00:00:00', 1, 'co ty?', 8),
-(23, '0000-00-00 00:00:00', 1, 'Ahoj', 9),
-(24, '0000-00-00 00:00:00', 1, 'Jak je?', 9),
-(25, '0000-00-00 00:00:00', 9, '👹', 1),
-(26, '0000-00-00 00:00:00', 1, '😂😂😂', 9),
-(27, '0000-00-00 00:00:00', 1, 'Ty jsi noob ', 9),
-(28, '0000-00-00 00:00:00', 9, 'Koukni se na moji stěnu ', 1),
-(29, '0000-00-00 00:00:00', 1, 'Proč?', 9),
-(30, '0000-00-00 00:00:00', 1, '😐😐😐', 9),
-(31, '0000-00-00 00:00:00', 9, '🤣', 1),
-(32, '0000-00-00 00:00:00', 9, '😮‍💨', 1),
-(33, '0000-00-00 00:00:00', 1, '😂😂😂', 9),
-(34, '0000-00-00 00:00:00', 1, 'Pozdrav mamku', 9),
-(35, '0000-00-00 00:00:00', 9, 'Jak jako', 1),
-(36, '0000-00-00 00:00:00', 9, 'Přes tu aplikaci ?', 1),
-(37, '0000-00-00 00:00:00', 9, 'Nebo jak to myslíš ?', 1),
-(38, '0000-00-00 00:00:00', 9, 'Mám ti udělat svačinu ?', 1),
-(39, '0000-00-00 00:00:00', 9, 'Hej', 1),
-(40, '0000-00-00 00:00:00', 9, '🎄', 1),
-(41, '0000-00-00 00:00:00', 1, 'Jo pls', 9),
-(42, '0000-00-00 00:00:00', 1, 'No jako přes tu aplikaci', 9),
-(43, '0000-00-00 00:00:00', 1, '👾', 9),
-(44, '0000-00-00 00:00:00', 1, 'Ahoj mami!💖', 10),
-(45, '0000-00-00 00:00:00', 10, 'Ahooooj', 1),
-(46, '0000-00-00 00:00:00', 10, '😲', 1),
-(47, '0000-00-00 00:00:00', 1, '❤️👍🏻✅', 10),
-(48, '0000-00-00 00:00:00', 11, 'Ahoj', 1),
-(49, '0000-00-00 00:00:00', 1, 'Nazdaar⚽️', 11),
-(50, '0000-00-00 00:00:00', 11, 'Suoer vysledek', 1),
-(51, '0000-00-00 00:00:00', 11, 'Dvě vítězství 💪', 1),
-(52, '0000-00-00 00:00:00', 11, 'Ahoj', 9),
-(53, '0000-00-00 00:00:00', 12, '1', 1),
-(54, '0000-00-00 00:00:00', 1, 'pepego)', 12),
-(224, '0000-00-00 00:00:00', 1, 'tesst', 15),
-(225, '0000-00-00 00:00:00', 1, 'ahoj', 15),
-(226, '0000-00-00 00:00:00', 1, 'fj', 15),
-(227, '0000-00-00 00:00:00', 15, 'nmec', 12),
-(228, '0000-00-00 00:00:00', 15, 'pepego', 1),
-(229, '0000-00-00 00:00:00', 15, 'pepego', 1),
-(230, '0000-00-00 00:00:00', 1, 'noob', 15),
-(231, '0000-00-00 00:00:00', 1, 'noboo', 15),
-(232, '0000-00-00 00:00:00', 1, 'b', 15),
-(233, '0000-00-00 00:00:00', 1, 'b', 15),
-(234, '0000-00-00 00:00:00', 1, 'b', 15),
-(235, '0000-00-00 00:00:00', 1, 'd', 15),
-(236, '0000-00-00 00:00:00', 15, 'haah', 1),
-(237, '0000-00-00 00:00:00', 15, 'noob', 1),
-(238, '0000-00-00 00:00:00', 1, 'ahoj :)', 16),
-(239, '0000-00-00 00:00:00', 1, 'jhaajajaj', 16),
-(240, '0000-00-00 00:00:00', 1, 'noobe', 16),
-(241, '0000-00-00 00:00:00', 16, 'avoj', 1),
-(242, '0000-00-00 00:00:00', 1, ':)', 16),
-(243, '0000-00-00 00:00:00', 16, 'tonjsem ja ', 1),
-(244, '0000-00-00 00:00:00', 1, '😍😍', 16),
-(245, '0000-00-00 00:00:00', 16, '🥺🥺🥺🥺🥺', 1),
-(246, '0000-00-00 00:00:00', 1, '🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺', 16),
-(247, '0000-00-00 00:00:00', 1, 'ahoj', 11),
-(248, '0000-00-00 00:00:00', 1, 'jak je?', 11),
-(249, '0000-00-00 00:00:00', 11, 'Dneska bomba⚽️', 1),
-(250, '0000-00-00 00:00:00', 1, 'Azoj', 8),
-(251, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8),
-(252, '0000-00-00 00:00:00', 1, 'jhahahah', 8),
-(253, '0000-00-00 00:00:00', 1, 'Ahoj', 11),
-(254, '0000-00-00 00:00:00', 8, 'ahoj', 1),
-(255, '0000-00-00 00:00:00', 8, 'pepego', 1),
-(256, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8),
-(257, '0000-00-00 00:00:00', 1, 'noob', 8),
-(258, '0000-00-00 00:00:00', 1, 'paneboze', 8),
-(259, '0000-00-00 00:00:00', 1, 'achjo', 8),
-(260, '0000-00-00 00:00:00', 1, '¨', 8),
-(261, '0000-00-00 00:00:00', 1, '¨', 8),
-(262, '0000-00-00 00:00:00', 1, '¨', 8),
-(263, '0000-00-00 00:00:00', 1, 'Pici', 8),
-(264, '0000-00-00 00:00:00', 1, 'test', 8),
-(265, '0000-00-00 00:00:00', 1, 'test', 11),
-(266, '0000-00-00 00:00:00', 1, 'coeee', 11),
-(267, '0000-00-00 00:00:00', 1, 'coooe', 11),
-(268, '0000-00-00 00:00:00', 1, 'noobe', 11);
+INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id`, `isChatMessage`, `chat_id`) VALUES
+(18, '0000-00-00 00:00:00', 8, 'cus', 1, 0, 0),
+(19, '0000-00-00 00:00:00', 8, 'nazdar', 1, 0, 0),
+(20, '0000-00-00 00:00:00', 8, 'jak je?', 1, 0, 0),
+(21, '0000-00-00 00:00:00', 1, 'joo dobrý', 8, 0, 0),
+(22, '0000-00-00 00:00:00', 1, 'co ty?', 8, 0, 0),
+(23, '0000-00-00 00:00:00', 1, 'Ahoj', 9, 0, 0),
+(24, '0000-00-00 00:00:00', 1, 'Jak je?', 9, 0, 0),
+(25, '0000-00-00 00:00:00', 9, '👹', 1, 0, 0),
+(26, '0000-00-00 00:00:00', 1, '😂😂😂', 9, 0, 0),
+(27, '0000-00-00 00:00:00', 1, 'Ty jsi noob ', 9, 0, 0),
+(28, '0000-00-00 00:00:00', 9, 'Koukni se na moji stěnu ', 1, 0, 0),
+(29, '0000-00-00 00:00:00', 1, 'Proč?', 9, 0, 0),
+(30, '0000-00-00 00:00:00', 1, '😐😐😐', 9, 0, 0),
+(31, '0000-00-00 00:00:00', 9, '🤣', 1, 0, 0),
+(32, '0000-00-00 00:00:00', 9, '😮‍💨', 1, 0, 0),
+(33, '0000-00-00 00:00:00', 1, '😂😂😂', 9, 0, 0),
+(34, '0000-00-00 00:00:00', 1, 'Pozdrav mamku', 9, 0, 0),
+(35, '0000-00-00 00:00:00', 9, 'Jak jako', 1, 0, 0),
+(36, '0000-00-00 00:00:00', 9, 'Přes tu aplikaci ?', 1, 0, 0),
+(37, '0000-00-00 00:00:00', 9, 'Nebo jak to myslíš ?', 1, 0, 0),
+(38, '0000-00-00 00:00:00', 9, 'Mám ti udělat svačinu ?', 1, 0, 0),
+(39, '0000-00-00 00:00:00', 9, 'Hej', 1, 0, 0),
+(40, '0000-00-00 00:00:00', 9, '🎄', 1, 0, 0),
+(41, '0000-00-00 00:00:00', 1, 'Jo pls', 9, 0, 0),
+(42, '0000-00-00 00:00:00', 1, 'No jako přes tu aplikaci', 9, 0, 0),
+(43, '0000-00-00 00:00:00', 1, '👾', 9, 0, 0),
+(44, '0000-00-00 00:00:00', 1, 'Ahoj mami!💖', 10, 0, 0),
+(45, '0000-00-00 00:00:00', 10, 'Ahooooj', 1, 0, 0),
+(46, '0000-00-00 00:00:00', 10, '😲', 1, 0, 0),
+(47, '0000-00-00 00:00:00', 1, '❤️👍🏻✅', 10, 0, 0),
+(48, '0000-00-00 00:00:00', 11, 'Ahoj', 1, 0, 0),
+(49, '0000-00-00 00:00:00', 1, 'Nazdaar⚽️', 11, 0, 0),
+(50, '0000-00-00 00:00:00', 11, 'Suoer vysledek', 1, 0, 0),
+(51, '0000-00-00 00:00:00', 11, 'Dvě vítězství 💪', 1, 0, 0),
+(52, '0000-00-00 00:00:00', 11, 'Ahoj', 9, 0, 0),
+(53, '0000-00-00 00:00:00', 12, '1', 1, 0, 0),
+(54, '0000-00-00 00:00:00', 1, 'pepego)', 12, 0, 0),
+(224, '0000-00-00 00:00:00', 1, 'tesst', 15, 0, 0),
+(225, '0000-00-00 00:00:00', 1, 'ahoj', 15, 0, 0),
+(226, '0000-00-00 00:00:00', 1, 'fj', 15, 0, 0),
+(227, '0000-00-00 00:00:00', 15, 'nmec', 12, 0, 0),
+(228, '0000-00-00 00:00:00', 15, 'pepego', 1, 0, 0),
+(229, '0000-00-00 00:00:00', 15, 'pepego', 1, 0, 0),
+(230, '0000-00-00 00:00:00', 1, 'noob', 15, 0, 0),
+(231, '0000-00-00 00:00:00', 1, 'noboo', 15, 0, 0),
+(232, '0000-00-00 00:00:00', 1, 'b', 15, 0, 0),
+(233, '0000-00-00 00:00:00', 1, 'b', 15, 0, 0),
+(234, '0000-00-00 00:00:00', 1, 'b', 15, 0, 0),
+(235, '0000-00-00 00:00:00', 1, 'd', 15, 0, 0),
+(236, '0000-00-00 00:00:00', 15, 'haah', 1, 0, 0),
+(237, '0000-00-00 00:00:00', 15, 'noob', 1, 0, 0),
+(238, '0000-00-00 00:00:00', 1, 'ahoj :)', 16, 0, 0),
+(239, '0000-00-00 00:00:00', 1, 'jhaajajaj', 16, 0, 0),
+(240, '0000-00-00 00:00:00', 1, 'noobe', 16, 0, 0),
+(241, '0000-00-00 00:00:00', 16, 'avoj', 1, 0, 0),
+(242, '0000-00-00 00:00:00', 1, ':)', 16, 0, 0),
+(243, '0000-00-00 00:00:00', 16, 'tonjsem ja ', 1, 0, 0),
+(244, '0000-00-00 00:00:00', 1, '😍😍', 16, 0, 0),
+(245, '0000-00-00 00:00:00', 16, '🥺🥺🥺🥺🥺', 1, 0, 0),
+(246, '0000-00-00 00:00:00', 1, '🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺🥺', 16, 0, 0),
+(247, '0000-00-00 00:00:00', 1, 'ahoj', 11, 0, 0),
+(248, '0000-00-00 00:00:00', 1, 'jak je?', 11, 0, 0),
+(249, '0000-00-00 00:00:00', 11, 'Dneska bomba⚽️', 1, 0, 0),
+(250, '0000-00-00 00:00:00', 1, 'Azoj', 8, 0, 0),
+(251, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8, 0, 0),
+(252, '0000-00-00 00:00:00', 1, 'jhahahah', 8, 0, 0),
+(253, '0000-00-00 00:00:00', 1, 'Ahoj', 11, 0, 0),
+(254, '0000-00-00 00:00:00', 8, 'ahoj', 1, 0, 0),
+(255, '0000-00-00 00:00:00', 8, 'pepego', 1, 0, 0),
+(256, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8, 0, 0),
+(257, '0000-00-00 00:00:00', 1, 'noob', 8, 0, 0),
+(258, '0000-00-00 00:00:00', 1, 'paneboze', 8, 0, 0),
+(259, '0000-00-00 00:00:00', 1, 'achjo', 8, 0, 0),
+(260, '0000-00-00 00:00:00', 1, '¨', 8, 0, 0),
+(261, '0000-00-00 00:00:00', 1, '¨', 8, 0, 0),
+(262, '0000-00-00 00:00:00', 1, '¨', 8, 0, 0),
+(263, '0000-00-00 00:00:00', 1, 'Pici', 8, 0, 0),
+(264, '0000-00-00 00:00:00', 1, 'test', 8, 0, 0),
+(265, '0000-00-00 00:00:00', 1, 'test', 11, 0, 0),
+(266, '0000-00-00 00:00:00', 1, 'coeee', 11, 0, 0),
+(267, '0000-00-00 00:00:00', 1, 'coooe', 11, 0, 0),
+(268, '0000-00-00 00:00:00', 1, 'noobe', 11, 0, 0),
+(269, '0000-00-00 00:00:00', 8, 'test', 1, 0, 0),
+(270, '0000-00-00 00:00:00', 8, 'test', 1, 0, 0),
+(271, '0000-00-00 00:00:00', 1, 'ahouj', 8, 0, 0),
+(272, '0000-00-00 00:00:00', 1, 'test', 8, 0, 0),
+(273, '0000-00-00 00:00:00', 1, 'test', 8, 0, 0),
+(274, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8, 0, 0),
+(275, '0000-00-00 00:00:00', 8, 'lol wym', 1, 0, 0),
+(276, '0000-00-00 00:00:00', 1, 'test', 8, 0, 0),
+(277, '0000-00-00 00:00:00', 1, 'tes', 8, 0, 0),
+(278, '0000-00-00 00:00:00', 8, 'ahoj?', 1, 0, 0),
+(279, '0000-00-00 00:00:00', 8, 'ahoj?', 1, 0, 0),
+(280, '0000-00-00 00:00:00', 8, 'ajoj', 1, 0, 0),
+(281, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
+(282, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
+(283, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
+(284, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
+(285, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
+(290, '0000-00-00 00:00:00', 1, 'achjo', 1, 1, 1),
+(291, '0000-00-00 00:00:00', 1, 'noobe', 1, 1, 1),
+(292, '0000-00-00 00:00:00', 1, 'achjo toto je fucked up', 1, 1, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifications`
+-- Struktura tabulky `notifications`
 --
 
 CREATE TABLE `notifications` (
@@ -138,17 +181,10 @@ CREATE TABLE `notifications` (
   `reciever_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
---
--- Dumping data for table `notifications`
---
-
-INSERT INTO `notifications` (`id`, `content`, `date`, `type`, `origin_id`, `reciever_id`) VALUES
-(1, 'ahoj more tady zinant', '2021-11-02 14:09:15', 'message', 9, 1);
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktura tabulky `users`
 --
 
 CREATE TABLE `users` (
@@ -163,7 +199,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `users`
+-- Vypisuji data pro tabulku `users`
 --
 
 INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`, `friends_id`, `online`) VALUES
@@ -177,66 +213,79 @@ INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`, `
 (16, 'd97d87d4da285adebd7f7b322eaf12930392eb65e51c1062de307ecb6552bab2', 'jana.placha123@seznam.cz', 'tojsemjazabijak', 739716379, '1998-04-10', '', 0);
 
 --
--- Indexes for dumped tables
+-- Indexy pro exportované tabulky
 --
 
 --
--- Indexes for table `messages`
+-- Indexy pro tabulku `groupchat`
+--
+ALTER TABLE `groupchat`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexy pro tabulku `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`) USING BTREE,
-  ADD KEY `reciever_id` (`reciever_id`);
+  ADD KEY `reciever_id` (`reciever_id`),
+  ADD KEY `chat_id` (`chat_id`);
 
 --
--- Indexes for table `notifications`
+-- Indexy pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `reciever_id` (`reciever_id`),
-  ADD KEY `origin_id` (`origin_id`) USING BTREE;
+  ADD UNIQUE KEY `origin_id` (`origin_id`),
+  ADD KEY `reciever_id` (`reciever_id`);
 
 --
--- Indexes for table `users`
+-- Indexy pro tabulku `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pro tabulky
 --
 
 --
--- AUTO_INCREMENT for table `messages`
+-- AUTO_INCREMENT pro tabulku `groupchat`
+--
+ALTER TABLE `groupchat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=269;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=293;
 
 --
--- AUTO_INCREMENT for table `notifications`
+-- AUTO_INCREMENT pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- Constraints for dumped tables
+-- Omezení pro exportované tabulky
 --
 
 --
--- Constraints for table `messages`
+-- Omezení pro tabulku `messages`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`reciever_id`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `notifications`
+-- Omezení pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`origin_id`) REFERENCES `users` (`id`),

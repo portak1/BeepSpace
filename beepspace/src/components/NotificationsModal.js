@@ -10,32 +10,26 @@ import { useState } from "react";
 export default function NotificationsModal(params) {
     const requestHandler = new RequestHandler();
     const userController = new UserController();
-    var userArray = [];
+    var notificationsArray = [];
 
-    userArray = requestHandler.jSONrequester("Notifications",[
+    notificationsArray = requestHandler.jSONrequester("Notifications",[
         new ParameterHandler("type","GET"),
         new ParameterHandler("user", userController.getUser().username)
     ])
 
-    console.log(userArray)
+    const removeNotification = (key) =>{
+        setNotifications(notifications.filter(item => item.notId == key));
+     }
 
-    const [notifications,setNotifications] = useState(userArray.map((data,id)=>{
+    const [notifications,setNotifications] = useState((notificationsArray==false)? [] : notificationsArray.map((data,id)=>{
         if(data.type =="message"){
-            return <Notification key={id} notId={data.id} user={data.user} content={data.content}  />;
+            return <Notification  socket={params.socket} removeNotification={removeNotification} key={id} notId={data.id} user={data.user} content={data.content}  />;
         }else{
-           return <Notification key={id} notId={data.id}  addNotification={true} user={data.user} />
+           return <Notification socket={params.socket} removeNotification={removeNotification} key={id} notId={data.id}  addNotification={true} user={data.user} />
         }
     }));
 
-    const removeNotification = (key) =>{
-        
-       var index = notifications.map((data,id)=>{
-            if(data.key == key) return id;
-        })
-        
-        setNotifications(notifications.splice(index,1))
-        
-    }
+    
 
     
 

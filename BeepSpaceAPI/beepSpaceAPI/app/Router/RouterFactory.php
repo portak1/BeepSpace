@@ -15,12 +15,15 @@ final class RouterFactory
 	public static function createRouter(): RouteList
 	{
 		$router = new RouteList;
-		$router->addRoute('Message?[create=<create>][&user=<user>][&reciever=<reciever>][&content=<content>][&date=<date>]',array(
+		$router->addRoute('Message?[create=<create>][&user=<user>][&reciever=<reciever>][&content=<content>][&date=<date>][&isChatMessage=<isChatMessage>][&chatId=<chatId>]',array(
 			'presenter' => 'Message',
 			'action'    => 'default',
 			'create'    => 0,
+			'reciever' => '',
 			'content'   => '',
-			'date'      =>''
+			'date'      =>'',
+			'isChatMessage' => false,
+			'chatId' =>0
 		));
 		$router->addRoute('User?[username=<username>][&password=<password>][&email=<email>][&id=<id>][&id2=<id2>][&number=<number>][&birth=<birth>][&type=<type>]',array(
 			'presenter'=> 'User',
@@ -44,6 +47,12 @@ final class RouterFactory
 			'addNotification' => 0,
 			'id' => 0,
 			'user' => ''
+		));
+		$router->addRoute(('Groupchat?[type=<type>][&user=<user>][&id=<id>]'),array(
+			'presenter' => 'Groupchat',
+			'action'    => 'default',
+			'user' => '',
+			'id'   => 0
 		));
 
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');

@@ -15,14 +15,20 @@ export default function Notification(props) {
             new ParameterHandler("reciever", userController.getUser().username),
             new ParameterHandler("id", props.notId)
         ])
+        props.socket.emit("addUser", {
+            localUser: userController.getUser().username,
+            username: props.user
+        })
+        props.removeNotification(props.notId);
     }
 
     const declineFriend = () => {
         requestHandler.jSONrequester("Notifications", [
-            new ParameterHandler("type", "REMOVE"),
-            new ParameterHandler("user", props.user),
+            new ParameterHandler("type", "REMOVEONE"),
+            new ParameterHandler("id", props.notId),
         ])
 
+        props.removeNotification(props.notId);
     }
 
 
@@ -32,7 +38,7 @@ export default function Notification(props) {
             <div class="col-2"><i class="fas fa-user-friends"></i></div>
             <div class="col-4">{props.user}</div>
             <div class=" tlacitko col-3"><button onClick={addFriend} class="btn w-100 btnPridat btnPrijmout btn-success"><i class="fas fa-check"></i></button></div>
-            <div class="tlacitko col-3"><button onCanPlay={declineFriend} class="btn w-100 btnOdebrat btnOdmitnout btn-gray"><i class="fas fa-times"></i></button></div>
+            <div class="tlacitko col-3"><button onClick={declineFriend} class="btn w-100 btnOdebrat btnOdmitnout btn-gray"><i class="fas fa-times"></i></button></div>
 
         </div>);
 

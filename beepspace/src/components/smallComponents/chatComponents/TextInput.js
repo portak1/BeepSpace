@@ -8,8 +8,13 @@ export default class TextInput extends Component {
 
     sendMessage() {
         if(this.input.current.value !=''){
-            this.props.sendMessageFunction(this.input.current.value);
-            this.input.current.value = ''
+            if(this.props.isChatMessage){
+                this.props.sendGroupchatMessage(this.input.current.value);
+                this.input.current.value = ''
+            }else{
+                this.props.sendMessageFunction(this.input.current.value);
+                this.input.current.value = ''
+            }
         }
     }
 
