@@ -10,21 +10,21 @@ export default function InviteUser(params){
 
     const addFriend = () =>{
         requestHandler.jSONrequester("Notifications",[
-            new ParameterHandler("type", "CREATE"),
+            new ParameterHandler("type", "INVITE"),
             new ParameterHandler("user",userController.getUser().username),
             new ParameterHandler("reciever",params.name),
             new ParameterHandler("date", new Date()),
-            new ParameterHandler("content", "new friend request from "+params.name),
+            new ParameterHandler("content", "new invite request from "+params.name),
             new ParameterHandler("addNotification",1)
         ])
     }
 
 
-    if(!params.friendsState){
-        button = <div class=" tlacitko col-4"><button onClick={addFriend} class="btn btnPridat btn-success">Přidat</button></div>;
+    if(!params.groupState){
+        button = <div class=" tlacitko col-4"><button onClick={addFriend} class="btn btnPridat btn-success">Pozvat</button></div>;
         
  }else{
-       button = <div class="tlacitko col-4"><button class="btn btnOdebrat btn-gray">Přátelé</button></div>;
+       button = <div class="tlacitko col-4"><button class="btn btnOdebrat btn-gray">Již v chatu</button></div>;
     }
 
     return(

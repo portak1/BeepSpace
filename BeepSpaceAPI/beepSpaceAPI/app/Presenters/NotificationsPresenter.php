@@ -25,8 +25,7 @@ class NotificationsPresenter extends Nette\Application\UI\Presenter
             $data = [
                 "state" => $this->notificationsManager->removeNotification($user)
             ];
-        }
-        else if ($type == "REMOVEONE") {
+        }else if ($type == "REMOVEONE") {
             $data = [
                 "state" => $this->notificationsManager->removeNotificationByID($id)
             ];
@@ -35,6 +34,10 @@ class NotificationsPresenter extends Nette\Application\UI\Presenter
         } else if ($type == "CONFIRM") {
             $data = [
                 "state" => $this->notificationsManager->confirmFriendRequest($user,$reciever,$id)
+            ];
+        }else if($type == "INVITE"){
+            $data = [
+                "state" => $this->notificationsManager->createInviteNotification($user, $reciever, $date, $content, $addNotification)
             ];
         } else {
             $data = [

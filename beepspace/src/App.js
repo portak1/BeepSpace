@@ -22,13 +22,14 @@ var userHolder = "";
 var isGroupchat =false;
 var index = 0;
 let indexForRecieve = 1;
+var groupchatId;
 
 function App() {
 
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io("http://172.20.10.3:3001/");
+  const socket = io("http://10.0.2.15:3001/");
   socket.on("connect", () => {
     if (userController.isLoggedIn()) {
       socket.emit("userJoin", {
@@ -54,6 +55,7 @@ function App() {
   const [messages, setMessages] = useState();
   const [modalShow, setModalShow] = useState(false);
   const [NModalShow, setNModalShow] = useState(false);
+  const [inviteModalShow,setInviteModalShow] = useState(false);
   
   // function to handle sidebar user click
   const handleInputUser = (inputValue) => {
@@ -67,6 +69,10 @@ function App() {
   }
   const setAnotherModal = () =>{
     setNModalShow(!NModalShow);
+  }
+
+  const setInviteModalState = () =>{
+    setInviteModalShow(!inviteModalShow);
   }
   window.onfocus = function () {
     socket.emit("userJoin", {
@@ -111,8 +117,9 @@ function App() {
     userHolder = chatUser;
     if(isGroupchat){
     
-      setMessages(getChatMessages(userController.getUser().username, chatUser))
+      setMessages(getChatMessages(userController.getUser().username, groupchatId))
     }else{
+      groupchatId = null;
       setMessages(getMessages(userController.getUser().username, chatUser))
 
     }
@@ -142,9 +149,10 @@ function App() {
     }
   })
 
-  const handleInputGroupchat = (groupchatID) =>{
+  const handleInputGroupchat = (groupchatID,groupchatName) =>{
     isGroupchat = true;
-    setChatUser(groupchatID);
+    groupchatId = groupchatID;
+    setChatUser(groupchatName);
   
   }
 
@@ -154,7 +162,7 @@ function App() {
       {checkIfReady()}
       <div id="main" class="text-center">
         <a class="sidebar-toggle-btn trigger-toggle-sidebar"><span class="line"></span><span class="line"></span><span class="line"></span><span class="line line-angle1"></span><span class="line line-angle2"></span></a>
-        <ChatHandler messages={messages} chatUser={chatUser} isChatGroupchat={isGroupchat} />
+        <ChatHandler messages={messages} chatUser={chatUser} openInviteModal={setInviteModalState} isChatGroupchat={isGroupchat} />
         <TextInput chatUser={chatUser} sendMessageFunction={sendMessage} isChatMessage={isGroupchat} sendGroupchatMessage={sendGroupchatMessage} />
 
 
@@ -162,7 +170,7 @@ function App() {
       <Sidebar setModalShow={setModalState} setNModalShow={setAnotherModal} socket={socket} handleInputUser={handleInputUser} handleInputGroupchat={handleInputGroupchat}></Sidebar>
       <FriendModal closeModal={setModalState} state={modalShow} />
       <NotificationsModal socket={socket} closeModal={setAnotherModal} state={NModalShow}/>
-      <ModalInviteGroupchat/>
+      <ModalInviteGroupchat groupchatID={groupchatId} closeModal={setInviteModalState} state={inviteModalShow}/>
     </div>
 
 

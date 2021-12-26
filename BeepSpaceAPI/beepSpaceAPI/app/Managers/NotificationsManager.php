@@ -82,6 +82,20 @@ class NotificationsManager
     }
 
 
+    public function createInviteNotification($user,$reciever,$date,$content,$addFriend){
+        $userId= $this->userManager->convertNameToID($user);
+        $recieverId= $this->userManager->convertNameToID($reciever);
+
+            $result = $this->controller->sql("SELECT * FROM notifications WHERE origin_id ='$userId' AND reciever_id='$recieverId' AND type='invite'");
+            foreach($result as $row){
+                return "already sended";
+            }
+      
+        
+         $this->controller->sql("INSERT INTO notifications (content, date, type, origin_id,reciever_id) VALUES ('$content','$date','invite','$userId','$recieverId') ");
+         return "sent";
+        
+    }
 
     public function confirmFriendRequest($user, $reciever,$id){
         $result = $this->controller->sql("SELECT id FROM users WHERE username='$user'");

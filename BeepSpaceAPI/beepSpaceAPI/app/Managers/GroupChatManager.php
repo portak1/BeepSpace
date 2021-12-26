@@ -49,7 +49,7 @@ class GroupChatManager
     public function isInOneChat($name,$groupchatID){
         $id = $this->userManager->returnUser($name);
         $groupchat = $this->returnGroupchat($groupchatID);        
-        $this->isInChat($id,$groupchat->users);
+        return $this->isInChat($id,$groupchat->users);
     }
     
 
