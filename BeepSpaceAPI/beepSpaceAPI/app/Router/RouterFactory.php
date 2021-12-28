@@ -48,11 +48,13 @@ final class RouterFactory
 			'id' => 0,
 			'user' => ''
 		));
-		$router->addRoute(('Groupchat?[type=<type>][&user=<user>][&id=<id>]'),array(
+		$router->addRoute(('Groupchat?[type=<type>][&user=<user>][&id=<id>][&name=<name>][&color=<color>]'),array(
 			'presenter' => 'Groupchat',
 			'action'    => 'default',
 			'user' => '',
-			'id'   => 0
+			'id'   => 0,
+			'name' => '',
+			'color'   => ''
 		));
 
 		$router->addRoute('<presenter>/<action>[/<id>]', 'Homepage:default');

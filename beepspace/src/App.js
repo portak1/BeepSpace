@@ -13,6 +13,7 @@ import Message from './components/smallComponents/chatComponents/message';
 import FriendModal from './components/smallComponents/chatComponents/modal';
 import NotificationsModal from './components/NotificationsModal';
 import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupchat';
+import ModalGroupchat from './components/smallComponents/modalGroupchat';
 
 const requestHandler = new RequestHandler();
 const userController = new UserController();
@@ -29,7 +30,7 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io("http://10.0.2.15:3001/");
+  const socket = io("http://172.20.10.3:3001/");
   socket.on("connect", () => {
     if (userController.isLoggedIn()) {
       socket.emit("userJoin", {
@@ -56,7 +57,7 @@ function App() {
   const [modalShow, setModalShow] = useState(false);
   const [NModalShow, setNModalShow] = useState(false);
   const [inviteModalShow,setInviteModalShow] = useState(false);
-  
+  const [createModalShow,setCreateModalShow] = useState(false);
   // function to handle sidebar user click
   const handleInputUser = (inputValue) => {
     socket.emit("joinChannel", { channel: inputValue });
@@ -71,6 +72,9 @@ function App() {
     setNModalShow(!NModalShow);
   }
 
+  const setCreateModalState = () =>{
+    setCreateModalShow(!createModalShow);
+  }
   const setInviteModalState = () =>{
     setInviteModalShow(!inviteModalShow);
   }
@@ -167,10 +171,11 @@ function App() {
 
 
       </div>
-      <Sidebar setModalShow={setModalState} setNModalShow={setAnotherModal} socket={socket} handleInputUser={handleInputUser} handleInputGroupchat={handleInputGroupchat}></Sidebar>
+      <Sidebar setModalShow={setModalState} setNModalShow={setAnotherModal} setCModalShow={setCreateModalState} socket={socket} handleInputUser={handleInputUser} handleInputGroupchat={handleInputGroupchat}></Sidebar>
       <FriendModal closeModal={setModalState} state={modalShow} />
       <NotificationsModal socket={socket} closeModal={setAnotherModal} state={NModalShow}/>
       <ModalInviteGroupchat groupchatID={groupchatId} closeModal={setInviteModalState} state={inviteModalShow}/>
+      <ModalGroupchat closeModal={setCreateModalState} state={createModalShow} />
     </div>
 
 

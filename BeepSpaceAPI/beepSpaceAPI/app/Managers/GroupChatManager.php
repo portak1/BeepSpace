@@ -53,6 +53,12 @@ class GroupChatManager
     }
     
 
+    public function createGroupchat($name,$color,$userID){
+        $newColor = "#" . $color;
+        $this->controller->sql("INSERT INTO groupchat(name,color,users) VALUES ('$name','$newColor','$userID') ");
+        return true;
+    }
+
     public function isInChat($id,$users){
             $array = explode(",",$users);    
             if (($key = array_search($id, $array)) !== false){

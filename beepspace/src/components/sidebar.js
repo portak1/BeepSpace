@@ -46,7 +46,7 @@ function Sidebar(props) {
             groupChatRendered = true;
             return arr.map((data, id) =>{
                 console.log(data)
-                return <SidebarGroupchat key={id} handleInputGroupchat={props.handleInputGroupchat} groupchatID={data.id} name={data.name}/>
+                return <SidebarGroupchat handleInputUser={props.handleInputUser} key={id} handleInputGroupchat={props.handleInputGroupchat} socket={props.socket} groupchatID={data.id} name={data.name}/>
             })
         }
     }
@@ -141,7 +141,7 @@ function Sidebar(props) {
                 </div>
                 <menu class="menu-segment">
                     <ul class="chat">
-                        <li class="title">Groupchats<span class="icon"><a class="addGroup">+</a></span></li>
+                        <li class="title">Groupchats<span class="icon"><a onClick={props.setCModalShow} class="addGroup">+</a></span></li>
                         {groupchatArray}
 
                     </ul>
