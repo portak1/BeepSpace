@@ -30,6 +30,19 @@ export default function SidebarGroupchat(props) {
   const [activeUsers, setActiveUsers] = useState(generateArray(proxArr))
 
 
+  props.socket.on("joinedChanel",function(data){
+    if(data.channelID==props.groupchatID){
+      setActiveUsers(activeUsers=>[...activeUsers,<div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser}  user={userController.getUser().username} online={data.online} socket={props.socket} reciever={data.user} /></div>])
+    }
+  })
+
+  props.socket.on("disconnectedChanel",function(data){
+    if(data.channelID==props.groupchatID){
+      setActiveUsers(activeUsers.filter(item => item.reciever == data.user))
+    }
+  })
+
+
   return (
     <div class="wholeSidebarGroupchat">
       <li ><a href="#" onClick={handleChange}>{props.name}<span></span></a></li>

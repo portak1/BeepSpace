@@ -30,9 +30,6 @@ export default function ModalGroupchat(params) {
             name.current.value = "";
             color.current.value = "";
         }
-
-       
-
     }
 
 

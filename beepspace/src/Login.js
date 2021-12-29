@@ -37,7 +37,7 @@ function Login() {
                                 </div>
 
                                 <div className="text-center">
-                                    Nemáte účet? registrujte se<a class="text-center" href="../register"> zde
+                                    Nemáte účet? Registrujte se<a class="text-center" href="../register"> zde
                                     </a>
                                 </div>
 

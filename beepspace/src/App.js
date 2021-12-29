@@ -30,7 +30,7 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io("http://172.20.10.3:3001/");
+  const socket = io("http://10.0.2.15:3001/");
   socket.on("connect", () => {
     if (userController.isLoggedIn()) {
       socket.emit("userJoin", {
@@ -63,6 +63,19 @@ function App() {
     socket.emit("joinChannel", { channel: inputValue });
     isGroupchat = false;
     setChatUser(inputValue);
+    if(groupchatId){
+      requestHandler.jSONrequester("Groupchat",[
+        new ParameterHandler("type","REMOVE-ACTIVE-USER"),
+        new ParameterHandler("id",groupchatId),
+        new ParameterHandler("name", userController.getUser().username)
+      ]);
+      socket.emit("disconnectChanel",{
+        channelID : groupchatId,
+        user: userController.getUser().id
+      })
+    groupchatId = null;
+    }
+   
   }
 
   const setModalState = () => {
@@ -157,7 +170,21 @@ function App() {
     isGroupchat = true;
     groupchatId = groupchatID;
     setChatUser(groupchatName);
-  
+    requestHandler.jSONrequester("Groupchat",[
+      new ParameterHandler("type","REMOVE-ACTIVE-USER"),
+      new ParameterHandler("id",groupchatID),
+      new ParameterHandler("name", userController.getUser().username)
+    ])
+    requestHandler.jSONrequester("Groupchat",[
+      new ParameterHandler("type","ADD-ACTIVE-USER"),
+      new ParameterHandler("id",groupchatID),
+      new ParameterHandler("name", userController.getUser().username)
+    ])
+
+    socket.emit("joinChanel",{
+      channelID : groupchatID,
+      user: userController.getUser().id
+    })
   }
 
   //rendering app

@@ -58,9 +58,12 @@ class GroupChatManager
         $addUserID = $this->userManager->convertNameToID($name);
         $result = $this->controller->sql("SELECT connected_users FROM groupchat WHERE id='$id'");
         foreach($result as $row){
+            if (($key = array_search($addUserID, explode(",",$row->connected_users))) !== false) {
+                return;
+            }
             $finalArray = $row->connected_users . ','.$addUserID;
         }
-        $result = $this->controller->sql("INSERT INTO groupchat(connected_users) VALUES ('$finalArray')");
+        $result = $this->controller->sql("UPDATE groupchat SET connected_users='$finalArray'");
         return true;
     }
 
@@ -72,7 +75,8 @@ class GroupChatManager
             $key = array_search($removeActiveUserID,$finalArray);
             unset($finalArray[$key]);
         }
-        $result = $this->controller->sql("INSERT INTO groupchat(connected_users) VALUES ('$finalArray')");
+        $finalArray = implode(",",$finalArray);
+        $result = $this->controller->sql("UPDATE groupchat SET connected_users='$finalArray'");
         return true;
     }
 
