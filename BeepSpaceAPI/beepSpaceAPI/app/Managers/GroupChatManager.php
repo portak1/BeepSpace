@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Entity\GroupChat as GroupChat;
+use App\Entity\User;
 use DatabaseController as Controller;
 use UserManager as UserManager;
 class GroupChatManager
@@ -50,6 +51,46 @@ class GroupChatManager
         $id = $this->userManager->returnUser($name);
         $groupchat = $this->returnGroupchat($groupchatID);        
         return $this->isInChat($id,$groupchat->users);
+    }
+
+
+    public function addActiveUser($id,$name){
+        $addUserID = $this->userManager->convertNameToID($name);
+        $result = $this->controller->sql("SELECT connected_users FROM groupchat WHERE id='$id'");
+        foreach($result as $row){
+            $finalArray = $row->connected_users . ','.$addUserID;
+        }
+        $result = $this->controller->sql("INSERT INTO groupchat(connected_users) VALUES ('$finalArray')");
+        return true;
+    }
+
+    public function removeActiveUser($id,$name){
+        $removeActiveUserID = $this->userManager->convertNameToID($name);
+        $result = $this->controller->sql("SELECT connected_users FROM groupchat WHERE id='$id'");
+        foreach($result as $row){
+            $finalArray = explode(",",$row->connected_users);
+            $key = array_search($removeActiveUserID,$finalArray);
+            unset($finalArray[$key]);
+        }
+        $result = $this->controller->sql("INSERT INTO groupchat(connected_users) VALUES ('$finalArray')");
+        return true;
+    }
+
+    public function activeUsers($groupchatID){
+        $userArray = array();
+
+        $result = $this->controller->sql("SELECT connected_users FROM groupchat where id='$groupchatID'");
+        foreach($result as $row){
+            $activeUsersID = explode(",",$row->connected_users);
+            foreach($activeUsersID as $row2){
+                $result2 = $this->controller->sql("SELECT * FROM users WHERE id='$row2'");
+                foreach($result2 as $row3){
+                    array_push($userArray,new User($row3->username,$row3->id,$row3->email,$row3->number,$row3->birth,$row3->online));
+                }
+            }
+        }
+        return $userArray;
+
     }
     
 
