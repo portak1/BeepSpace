@@ -37,7 +37,7 @@ final class RouterFactory
 			'birth'    => '',		
 			 'type'	   => 'login'
 		));
-		$router->addRoute('Notifications?[type=<type>][&user=<user>][&reciever=<reciever>][&content=<content>][&date=<date>][&id=<id>][&addNotification=<addNotification>]',array(
+		$router->addRoute('Notifications?[type=<type>][&user=<user>][&reciever=<reciever>][&content=<content>][&date=<date>][&id=<id>][&addNotification=<addNotification>][&groupchatID=<groupchatID>]',array(
 			'presenter' => 'Notifications',
 			'action'    => 'default',
 			'type'    => "GET",
@@ -46,7 +46,8 @@ final class RouterFactory
 			'date'      =>'',
 			'addNotification' => 0,
 			'id' => 0,
-			'user' => ''
+			'user' => '',
+			'groupchatID' =>0
 		));
 		$router->addRoute(('Groupchat?[type=<type>][&user=<user>][&id=<id>][&name=<name>][&color=<color>]'),array(
 			'presenter' => 'Groupchat',

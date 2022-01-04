@@ -30,11 +30,11 @@ function Register() {
                             <form method="post" onSubmit={handleThis}>
                                
                                 <div class="form-group">
-                                    <label for="exampleInputUsername1">uživatelské jméno</label>
+                                    <label for="exampleInputUsername1">Uživatelské jméno</label>
                                     <input type="text" class="form-control form-control-sm" name="USER" id="exampleInputUsername1" required></input>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">e-mail</label>
+                                    <label for="exampleInputEmail1">E-mail</label>
                                     <input type="text" class="form-control form-control-sm" name="EMAIL" id="exampleInputEmail1" aria-describedby="emailHelp" required></input>
                                 </div>
                                 <div class="form-group">
@@ -46,7 +46,7 @@ function Register() {
                                     <input type="password" class="form-control form-control-sm" name="CONFIRM_PASSWORD" id="exampleInputPassword2" required></input>
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputNumber1">telefonní číslo</label>
+                                    <label for="exampleInputNumber1">Telefonní číslo</label>
                                     <input type="number" class="form-control form-control-sm" name="USER" id="exampleInputNumber1" required></input>
                                 </div>
                                 <div class="form-group">
@@ -55,7 +55,7 @@ function Register() {
                                 </div>
 
                                 <div className="text-center">
-                                    Již máte účet? pihlašte se<a class="text-center" href="../login"> zde
+                                    Již máte účet? Přihlašte se<a class="text-center" href="../login"> zde
                                     </a>
                                 </div>
 

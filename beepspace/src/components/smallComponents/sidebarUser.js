@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UserController from "../../Controllers/UserController";
 
 
 var user;
@@ -6,6 +7,7 @@ var reciever;
 var chatHandler;
 var classess;
 function SidebarUser(props) {
+    const userController = new UserController();
 
     if(props.online == 1){
         classess = "ball online"
@@ -18,7 +20,7 @@ function SidebarUser(props) {
     user = props.user;
     reciever = props.reciever;
     chatHandler = props.chatHandler;
-    const handleChange = () => props.handleInputUser(props.reciever);
+    const handleChange = () => userController.getUser().username == props.reciever ? null : props.handleInputUser(props.reciever);
 
 
     props.socket.on("clientOnline", function (data) {

@@ -8,7 +8,10 @@ export default function SidebarGroupchat(props) {
 
   const requestHandler = new RequestHandler();
   var rendered = false;
-  const handleChange = () => props.handleInputGroupchat(props.groupchatID, props.name)
+  const handleChange = () =>{
+    props.handleInputGroupchat(props.groupchatID, props.name)
+    setActiveUsers(activeUsers=>[...activeUsers,<div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser}  user={userController.getUser().username} online={true} socket={props.socket} reciever={userController.getUser().username} /></div>])
+  }
   const userController = new UserController();
   var proxArr = requestHandler.jSONrequester("Groupchat", [
     new ParameterHandler("type", "ACTIVE-USERS"),
@@ -20,8 +23,8 @@ export default function SidebarGroupchat(props) {
     if (!rendered) {
       rendered = true;
       return arr.map((data, id) => {
-        console.log(data);
-        return <div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser} key={id} user={userController.getUser().username} online={data.online} socket={props.socket} reciever={data.name} /></div>
+        console.log(data)
+        return <div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser} key={id} user={userController.getUser().username} online={true} socket={props.socket} reciever={data.name} /></div>
 
       })
     }
@@ -32,7 +35,7 @@ export default function SidebarGroupchat(props) {
 
   props.socket.on("joinedChanel",function(data){
     if(data.channelID==props.groupchatID){
-      setActiveUsers(activeUsers=>[...activeUsers,<div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser}  user={userController.getUser().username} online={data.online} socket={props.socket} reciever={data.user} /></div>])
+      setActiveUsers(activeUsers=>[...activeUsers,<div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser}  user={userController.getUser().username} online={true} socket={props.socket} reciever={data.user.username} /></div>])
     }
   })
 

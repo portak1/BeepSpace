@@ -32,6 +32,8 @@ io.on('connection', function (socket) {
     });
   })
 
+  
+
   socket.on("addUser", function (data) {
 
     socket.broadcast.emit("addLocalUser", {

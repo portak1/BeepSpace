@@ -8,7 +8,7 @@ class User extends React.Component{
     number = "";
     birth = "";
     id = null;
-
+    
 
     constructor(username,email,number,birth, id){
         super();

@@ -41,7 +41,7 @@ function Sidebar(props) {
         }
     }
 
-    const generateGroupChatArray = (arr) =>{
+    const generateGroupChatArray = (arr) =>{        
         if(!groupChatRendered){
             groupChatRendered = true;
             return arr.map((data, id) =>{
@@ -50,6 +50,8 @@ function Sidebar(props) {
             })
         }
     }
+
+    
 
     const [userArray, setUserArray] = useState(generateArray(proxArray));
     const [groupchatArray,setGroupchatArray] = useState(generateGroupChatArray(proxGroupArray));

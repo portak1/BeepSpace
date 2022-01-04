@@ -43,7 +43,6 @@ class GroupChatManager
         $result = $this->controller->sql("SELECT id, name, color, users, connected_users FROM groupchat WHERE id='$id'");
         foreach($result as $row){            
                return new GroupChat($row->id,$row->name,$row->color,$row->users,$row->connected_users);
-            
         }
     }
 
@@ -53,6 +52,18 @@ class GroupChatManager
         return $this->isInChat($id,$groupchat->users);
     }
 
+    public function acceptInvite($id,$name){
+        $userID = $this->userManager->convertNameToID($name);
+        $result = $this->controller->sql("SELECT users FROM groupchat WHERE id='$id'");
+        foreach($result as $row){
+            if (($key = array_search($userID, explode(",",$row->users))) !== false) {
+                return false;
+            }
+            $finalStringArr= $row->users . ",".$userID;
+        }
+        $result = $this->controller->sql("UPDATE groupchat SET users='$finalStringArr' WHERE id='$id'");
+        return true;
+    }
 
     public function addActiveUser($id,$name){
         $addUserID = $this->userManager->convertNameToID($name);
@@ -63,20 +74,21 @@ class GroupChatManager
             }
             $finalArray = $row->connected_users . ','.$addUserID;
         }
-        $result = $this->controller->sql("UPDATE groupchat SET connected_users='$finalArray'");
+        $result = $this->controller->sql("UPDATE groupchat SET connected_users='$finalArray' WHERE id='$id'");
         return true;
     }
 
-    public function removeActiveUser($id,$name){
+    public function removeActiveUser($name){
         $removeActiveUserID = $this->userManager->convertNameToID($name);
-        $result = $this->controller->sql("SELECT connected_users FROM groupchat WHERE id='$id'");
+        $result = $this->controller->sql("SELECT id,connected_users FROM groupchat");
         foreach($result as $row){
             $finalArray = explode(",",$row->connected_users);
             $key = array_search($removeActiveUserID,$finalArray);
             unset($finalArray[$key]);
+            $finalArray = implode(",",$finalArray);
+            $result = $this->controller->sql("UPDATE groupchat SET connected_users='$finalArray' WHERE id='$row->id'");
         }
-        $finalArray = implode(",",$finalArray);
-        $result = $this->controller->sql("UPDATE groupchat SET connected_users='$finalArray'");
+       
         return true;
     }
 

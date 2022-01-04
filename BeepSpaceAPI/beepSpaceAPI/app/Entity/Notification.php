@@ -34,17 +34,26 @@ class Notification{
      *  @var bool
      */
     public $type;
+/**
+     *  @var int
+     */
+    public $groupchatID;
 
 
-    public function __construct($id,$user,$reciever,$date,$content,$type){
+
+    public function __construct($id,$user,$reciever,$date,$content,$type,$groupchatID){
         $this->setUser($user);
         $this->setDate($date);
         $this->setContent($content);
         $this->setReciever($reciever);
         $this->setType($type);
         $this->setId($id);
+        $this->setGroupchatID($groupchatID);
     }
 
+    private function setGroupchatID($groupchatID){
+        $this->groupchatID = $groupchatID;
+    }
     private function setId($id){
         $this->id = $id;
     }

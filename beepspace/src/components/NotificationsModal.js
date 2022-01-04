@@ -23,9 +23,11 @@ export default function NotificationsModal(params) {
 
     const [notifications,setNotifications] = useState((notificationsArray==false)? [] : notificationsArray.map((data,id)=>{
         if(data.type =="message"){
-            return <Notification  socket={params.socket} removeNotification={removeNotification} key={id} notId={data.id} user={data.user} content={data.content}  />;
+            return <Notification  socket={params.socket} type={"message"} removeNotification={removeNotification} key={id} notId={data.id} user={data.user} content={data.content}  />;
+        }else if(data.type == "invite"){
+            return <Notification  socket={params.socket} type={"invite"} groupchatID={data.groupchatID} removeNotification={removeNotification} key={id} notId={data.id} user={data.user} content={data.content}  />;
         }else{
-           return <Notification socket={params.socket} removeNotification={removeNotification} key={id} notId={data.id}  addNotification={true} user={data.user} />
+           return <Notification socket={params.socket} type={"add"} removeNotification={removeNotification} key={id} notId={data.id}  addNotification={true} user={data.user} />
         }
     }));
 
@@ -45,7 +47,6 @@ export default function NotificationsModal(params) {
                     <div class="col-8"><h2>notifikace</h2></div>
                     <div class="col-2"></div>
                     <div class="col-1 text-right "><button class="btn modalCloseButton" onClick={params.closeModal}><i class="far fa-times-circle"></i></button></div>
-
                 </div>
             </Modal.Header>
             <Modal.Body>

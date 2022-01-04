@@ -71,18 +71,18 @@ class NotificationsManager
         }
         
 
-        $result = $this->controller->sql("SELECT id,content,date,type,origin_id FROM notifications WHERE reciever_id = '$userId'");
+        $result = $this->controller->sql("SELECT id,content,date,type,origin_id, groupchat_id FROM notifications WHERE reciever_id = '$userId'");
         foreach($result as $row){
             
             
-            array_push($returningArray,new Notification($row->id,$this->userManager->returnUserById($row->origin_id)->name,$user,$row->date,$row->content,$row->type));
+            array_push($returningArray,new Notification($row->id,$this->userManager->returnUserById($row->origin_id)->name,$user,$row->date,$row->content,$row->type,$row->groupchat_id));
         }
 
         return $returningArray;
     }
 
 
-    public function createInviteNotification($user,$reciever,$date,$content,$addFriend){
+    public function createInviteNotification($user,$reciever,$date,$content,$groupchatID){
         $userId= $this->userManager->convertNameToID($user);
         $recieverId= $this->userManager->convertNameToID($reciever);
 
@@ -92,7 +92,7 @@ class NotificationsManager
             }
       
         
-         $this->controller->sql("INSERT INTO notifications (content, date, type, origin_id,reciever_id) VALUES ('$content','$date','invite','$userId','$recieverId') ");
+         $this->controller->sql("INSERT INTO notifications (content, date, type, origin_id,reciever_id,groupchat_id) VALUES ('$content','$date','invite','$userId','$recieverId','$groupchatID') ");
          return "sent";
         
     }

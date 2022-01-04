@@ -60,13 +60,10 @@ function App() {
   const [createModalShow,setCreateModalShow] = useState(false);
   // function to handle sidebar user click
   const handleInputUser = (inputValue) => {
-    socket.emit("joinChannel", { channel: inputValue });
     isGroupchat = false;
     setChatUser(inputValue);
-    if(groupchatId){
       requestHandler.jSONrequester("Groupchat",[
         new ParameterHandler("type","REMOVE-ACTIVE-USER"),
-        new ParameterHandler("id",groupchatId),
         new ParameterHandler("name", userController.getUser().username)
       ]);
       socket.emit("disconnectChanel",{
@@ -74,7 +71,7 @@ function App() {
         user: userController.getUser().id
       })
     groupchatId = null;
-    }
+    
    
   }
 
@@ -168,13 +165,12 @@ function App() {
 
   const handleInputGroupchat = (groupchatID,groupchatName) =>{
     isGroupchat = true;
-    groupchatId = groupchatID;
-    setChatUser(groupchatName);
     requestHandler.jSONrequester("Groupchat",[
       new ParameterHandler("type","REMOVE-ACTIVE-USER"),
-      new ParameterHandler("id",groupchatID),
       new ParameterHandler("name", userController.getUser().username)
     ])
+    groupchatId = groupchatID;
+    setChatUser(groupchatName);
     requestHandler.jSONrequester("Groupchat",[
       new ParameterHandler("type","ADD-ACTIVE-USER"),
       new ParameterHandler("id",groupchatID),
@@ -183,7 +179,7 @@ function App() {
 
     socket.emit("joinChanel",{
       channelID : groupchatID,
-      user: userController.getUser().id
+      user: userController.getUser()
     })
   }
 
