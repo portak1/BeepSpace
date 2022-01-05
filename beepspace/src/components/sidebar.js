@@ -6,16 +6,20 @@ import ParameterHandler from '../Handlers/ParameterHandler';
 import SidebarGroupchat from './smallComponents/SidebarGroupchat';
 import $ from 'jquery';
 import React from 'react';
+import { useRef } from 'react';
 const userController = new UserController();
 const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
 var rendered = false;
 var groupChatRendered = false;
+
 var renderUser = {
     username: "",
     rendered: false
 }
 var proxGroupArray = [];
 function Sidebar(props) {
+
+    const removeActiveUserRef = useRef();
     var proxArray = requestHandler.jSONrequester("User", [
         new ParameterHandler("type", "ALL")
     ]);
@@ -41,12 +45,18 @@ function Sidebar(props) {
         }
     }
 
+    
+    const removeActiveUser = (username) =>{
+        console.log("test");
+        removeActiveUserRef.current.removeActiveUserInChat(username);
+    }
+
     const generateGroupChatArray = (arr) =>{        
         if(!groupChatRendered){
             groupChatRendered = true;
             return arr.map((data, id) =>{
                 console.log(data)
-                return <SidebarGroupchat handleInputUser={props.handleInputUser} key={id} handleInputGroupchat={props.handleInputGroupchat} socket={props.socket} groupchatID={data.id} name={data.name}/>
+                return <SidebarGroupchat ref={removeActiveUserRef} handleInputUser={props.handleInputUser} userRemovingFunction={removeActiveUser} key={id} handleInputGroupchat={props.handleInputGroupchat} socket={props.socket} groupchatID={data.id} name={data.name}/>
             })
         }
     }
@@ -121,7 +131,7 @@ function Sidebar(props) {
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <button class="btn topBoxButton w-100" onClick={props.setNModalShow}><i class="fas fa-mail-bulk"></i>   </button>
+                                <button class="btn topBoxButton w-100" onClick={props.setNModalShow}><i class="fas fa-mail-bulk"></i></button>
 
                             </div>
                         </div>
@@ -129,10 +139,10 @@ function Sidebar(props) {
 
                         <div id="callButtons" class="row d-none">
                             <div class="col">
-                                <button class="btn topBoxButton"><i class="fas fa-search"></i></button>
+                                <button class="btn topBoxButton"><i class="fas fa-microphone-slash"></i></button>
                             </div>
                             <div class="col">
-                                <button class="btn topBoxButton"><i class="fab fa-connectdevelop"></i></button>
+                                <button class="btn topBoxButton"><i class="fas fa-headphones-alt"></i></button>
                             </div>
                             <div class="col">
                                 <button onClick={logOut} class="btn topBoxButton"><i class="fas fa-sign-out-alt"></i></button>

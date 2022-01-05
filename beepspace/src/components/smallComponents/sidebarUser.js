@@ -22,6 +22,8 @@ function SidebarUser(props) {
     chatHandler = props.chatHandler;
     const handleChange = () => userController.getUser().username == props.reciever ? null : props.handleInputUser(props.reciever);
 
+    
+
 
     props.socket.on("clientOnline", function (data) {
         if (data.user != user)

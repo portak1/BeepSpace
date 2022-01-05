@@ -19,14 +19,15 @@ io.on('connection', function (socket) {
 
 
   socket.on("joinChanel", function (data) {
-    socket.broadcast.emit("joinedChanel", {
+    socket.emit("joinedChanel", {
       channelID: data.channelID,
       user: data.user
     });
   })
 
   socket.on("disconnectChanel", function (data) {
-    socket.broadcast.emit("disconnectedChanel", {
+    console.log(data.user + " disconnected from " + data.channelID )
+    socket.emit("disconnectedChanel", {
       channelID: data.channelID,
       user: data.user
     });

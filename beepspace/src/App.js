@@ -72,7 +72,6 @@ function App() {
       })
     groupchatId = null;
     
-   
   }
 
   const setModalState = () => {
@@ -177,6 +176,10 @@ function App() {
       new ParameterHandler("name", userController.getUser().username)
     ])
 
+    socket.emit("disconnectChanel",{
+      channelID : groupchatId,
+      user: userController.getUser().id
+    })
     socket.emit("joinChanel",{
       channelID : groupchatID,
       user: userController.getUser()
