@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.0
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Počítač: 127.0.0.1
--- Vytvořeno: Sob 18. pro 2021, 11:30
--- Verze serveru: 10.4.18-MariaDB
--- Verze PHP: 8.0.3
+-- Host: 127.0.0.1
+-- Generation Time: Jan 09, 2022 at 11:11 PM
+-- Server version: 10.4.21-MariaDB
+-- PHP Version: 8.0.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Databáze: `beepspace`
+-- Database: `beepspace`
 --
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `groupchat`
+-- Table structure for table `groupchat`
 --
 
 CREATE TABLE `groupchat` (
@@ -36,16 +36,19 @@ CREATE TABLE `groupchat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Vypisuji data pro tabulku `groupchat`
+-- Dumping data for table `groupchat`
 --
 
 INSERT INTO `groupchat` (`id`, `name`, `color`, `users`, `connected_users`) VALUES
-(1, 'pepegacChat', '#FFFFFFFF', '1,', '1,');
+(1, 'pepegacChat', '#FFFFFFFF', '1,8,17', ''),
+(5, 'skupina 1', '#00ff04', '1', ',1'),
+(6, 'Janicka skupina', '#000000', '1', ''),
+(7, 'kokot', '#000000', '8', '');
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `messages`
+-- Table structure for table `messages`
 --
 
 CREATE TABLE `messages` (
@@ -59,7 +62,7 @@ CREATE TABLE `messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Vypisuji data pro tabulku `messages`
+-- Dumping data for table `messages`
 --
 
 INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id`, `isChatMessage`, `chat_id`) VALUES
@@ -164,12 +167,30 @@ INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id
 (285, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
 (290, '0000-00-00 00:00:00', 1, 'achjo', 1, 1, 1),
 (291, '0000-00-00 00:00:00', 1, 'noobe', 1, 1, 1),
-(292, '0000-00-00 00:00:00', 1, 'achjo toto je fucked up', 1, 1, 1);
+(292, '0000-00-00 00:00:00', 1, 'achjo toto je fucked up', 1, 1, 1),
+(293, '0000-00-00 00:00:00', 1, 'ahoj', 17, 0, 0),
+(294, '0000-00-00 00:00:00', 17, 'sauu', 1, 0, 0),
+(295, '0000-00-00 00:00:00', 1, 'jak se mas?', 17, 0, 0),
+(296, '0000-00-00 00:00:00', 17, 'ale ghetto', 1, 0, 0),
+(297, '0000-00-00 00:00:00', 1, '🤣', 17, 0, 0),
+(298, '0000-00-00 00:00:00', 17, '😻', 1, 0, 0),
+(299, '0000-00-00 00:00:00', 1, '🍿🍿🍿🍿🍿🍿', 17, 0, 0),
+(300, '0000-00-00 00:00:00', 17, '🤎', 1, 0, 0),
+(301, '0000-00-00 00:00:00', 1, '🥣', 17, 0, 0),
+(302, '0000-00-00 00:00:00', 17, '🥣🥣🥣🥣🥣', 1, 0, 0),
+(303, '0000-00-00 00:00:00', 1, '🥞🥞🥞🥞🥞🥞🥞🥞🥞🥞🥞🥞🥞🥞🥞🥞🥞', 17, 0, 0),
+(304, '0000-00-00 00:00:00', 1, '🥞🥞🥞🥞🥞🥞', 17, 0, 0),
+(305, '0000-00-00 00:00:00', 1, '🥞', 17, 0, 0),
+(306, '0000-00-00 00:00:00', 17, '🍵🍵', 1, 0, 0),
+(307, '0000-00-00 00:00:00', 17, '🕸🦄🦧🐑🦮🦙🦩🦥🐾🦡🦫🌝🌬🌫', 1, 0, 0),
+(308, '0000-00-00 00:00:00', 1, 'achjo', 8, 0, 0),
+(309, '0000-00-00 00:00:00', 1, 'ahoj', 8, 0, 0),
+(310, '0000-00-00 00:00:00', 1, 'ahoj', 8, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `notifications`
+-- Table structure for table `notifications`
 --
 
 CREATE TABLE `notifications` (
@@ -178,13 +199,22 @@ CREATE TABLE `notifications` (
   `date` datetime NOT NULL,
   `type` text COLLATE utf16_czech_ci NOT NULL,
   `origin_id` int(11) NOT NULL,
-  `reciever_id` int(11) NOT NULL
+  `reciever_id` int(11) NOT NULL,
+  `groupchat_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `content`, `date`, `type`, `origin_id`, `reciever_id`, `groupchat_id`) VALUES
+(67, 'new invite request from hrouzek', '0000-00-00 00:00:00', 'invite', 1, 8, 1),
+(68, 'new invite request from janickakocicka', '0000-00-00 00:00:00', 'invite', 1, 17, 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -199,7 +229,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Vypisuji data pro tabulku `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`, `friends_id`, `online`) VALUES
@@ -210,20 +240,21 @@ INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`, `
 (11, 'd099cf21d256abaa7bae2330dca322b6eb79274b2191249168215be6150ab05b', 'janport@centrum.cz', 'Klayman', 724143676, '1972-09-15', '1', 0),
 (12, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'pepega@gmail.com', 'honzik', 123, '2021-11-23', '', 0),
 (15, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'honzaMASIOFMmlkmff', 'honza', 23442, '0004-03-31', '', 0),
-(16, 'd97d87d4da285adebd7f7b322eaf12930392eb65e51c1062de307ecb6552bab2', 'jana.placha123@seznam.cz', 'tojsemjazabijak', 739716379, '1998-04-10', '', 0);
+(16, 'd97d87d4da285adebd7f7b322eaf12930392eb65e51c1062de307ecb6552bab2', 'jana.placha123@seznam.cz', 'tojsemjazabijak', 739716379, '1998-04-10', '', 0),
+(17, 'dd14c479f8f7da226853502b555d530862e13a4a265219877584801e3e250d2b', 'jana.placha123@seznam.cz', 'janickakocicka', 739716379, '2005-05-05', ',1', 1);
 
 --
--- Indexy pro exportované tabulky
+-- Indexes for dumped tables
 --
 
 --
--- Indexy pro tabulku `groupchat`
+-- Indexes for table `groupchat`
 --
 ALTER TABLE `groupchat`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexy pro tabulku `messages`
+-- Indexes for table `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
@@ -232,60 +263,61 @@ ALTER TABLE `messages`
   ADD KEY `chat_id` (`chat_id`);
 
 --
--- Indexy pro tabulku `notifications`
+-- Indexes for table `notifications`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `origin_id` (`origin_id`),
-  ADD KEY `reciever_id` (`reciever_id`);
+  ADD KEY `reciever_id` (`reciever_id`),
+  ADD KEY `origin_id` (`origin_id`) USING BTREE,
+  ADD KEY `groupchat_id` (`groupchat_id`);
 
 --
--- Indexy pro tabulku `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT pro tabulky
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT pro tabulku `groupchat`
+-- AUTO_INCREMENT for table `groupchat`
 --
 ALTER TABLE `groupchat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT pro tabulku `messages`
+-- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=293;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=311;
 
 --
--- AUTO_INCREMENT pro tabulku `notifications`
+-- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
--- AUTO_INCREMENT pro tabulku `users`
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- Omezení pro exportované tabulky
+-- Constraints for dumped tables
 --
 
 --
--- Omezení pro tabulku `messages`
+-- Constraints for table `messages`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`reciever_id`) REFERENCES `users` (`id`);
 
 --
--- Omezení pro tabulku `notifications`
+-- Constraints for table `notifications`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`origin_id`) REFERENCES `users` (`id`),
