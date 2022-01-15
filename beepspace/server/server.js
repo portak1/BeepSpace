@@ -23,6 +23,10 @@ io.on('connection', function (socket) {
       channelID: data.channelID,
       user: data.user
     });
+    socket.broadcast.emit("joinedChanel", {
+      channelID: data.channelID,
+      user: data.user
+    });
   })
 
   socket.on("disconnectChanel", function (data) {
@@ -31,9 +35,20 @@ io.on('connection', function (socket) {
       channelID: data.channelID,
       user: data.user
     });
+    socket.broadcast.emit("disconnectedChanel",{
+      channelID: data.channelID,
+      user: data.user
+    })
   })
 
   
+
+  socket.on("notification",function(data){
+    socket.broadcast.emit("newNotification",{
+      reciever: data.reciever,
+      
+    })
+  })
 
   socket.on("addUser", function (data) {
 

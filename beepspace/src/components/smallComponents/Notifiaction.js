@@ -63,7 +63,6 @@ export default function Notification(props) {
             new ParameterHandler("type", "GET-GROUPCHAT"),
             new ParameterHandler("id",props.groupchatID)
         ]);
-        console.log(groupchat);
         return (<div class="row w-100 userLine">
         <div class="col-2"><i class="fas fa-user-friends"></i></div>
         <div class="col-4">{groupchat.name}</div>

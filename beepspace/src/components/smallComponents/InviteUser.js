@@ -6,7 +6,6 @@ export default function InviteUser(params){
     const requestHandler = new RequestHandler();
     const userController = new UserController();
     var button = null;
-    console.log(params.friendsState)
 
     const addFriend = () =>{
         requestHandler.jSONrequester("Notifications",[
@@ -15,11 +14,14 @@ export default function InviteUser(params){
             new ParameterHandler("reciever",params.name),
             new ParameterHandler("date", new Date()),
             new ParameterHandler("content", "new invite request from "+params.name),
-            new ParameterHandler("addNotification",1)
+            new ParameterHandler("addNotification",1),
+            new ParameterHandler("groupchatID",params.groupchatID)
         ])
     }
 
 
+    console.log(params.groupchatID);
+    console.log(params.groupState)
     if(!params.groupState){
         button = <div class=" tlacitko col-4"><button onClick={addFriend} class="btn btnPridat btn-success">Pozvat</button></div>;
         

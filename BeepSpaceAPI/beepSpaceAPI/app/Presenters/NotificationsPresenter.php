@@ -37,7 +37,7 @@ class NotificationsPresenter extends Nette\Application\UI\Presenter
             ];
         }else if($type == "INVITE"){
             $data = [
-                "state" => $this->notificationsManager->createInviteNotification($user, $reciever, $date, $content, $addNotification,$groupchatID)
+                "state" => $this->notificationsManager->createInviteNotification($user, $reciever, $date, $content,$groupchatID)
             ];
         } else {
             $data = [

@@ -47,9 +47,9 @@ class GroupChatManager
     }
 
     public function isInOneChat($name,$groupchatID){
-        $id = $this->userManager->returnUser($name);
-        $groupchat = $this->returnGroupchat($groupchatID);        
-        return $this->isInChat($id,$groupchat->users);
+        $user = $this->userManager->returnUser($name);
+        $groupchat = $this->returnGroupchat($groupchatID); 
+        return $this->isInChat($user->id,$groupchat->users);
     }
 
     public function acceptInvite($id,$name){
@@ -117,7 +117,7 @@ class GroupChatManager
     }
 
     public function isInChat($id,$users){
-            $array = explode(",",$users);    
+            $array = explode(",",$users);   
             if (($key = array_search($id, $array)) !== false){
                 return true;
             }

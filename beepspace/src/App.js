@@ -30,7 +30,7 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io("http://10.0.2.15:3001/");
+  const socket = io("http://10.20.9.89:3001/");
   socket.on("connect", () => {
     if (userController.isLoggedIn()) {
       socket.emit("userJoin", {
@@ -68,7 +68,7 @@ function App() {
       ]);
       socket.emit("disconnectChanel",{
         channelID : groupchatId,
-        user: userController.getUser().id
+        user: userController.getUser().username
       })
     groupchatId = null;
     
@@ -178,7 +178,7 @@ function App() {
 
     socket.emit("disconnectChanel",{
       channelID : groupchatId,
-      user: userController.getUser().id
+      user: userController.getUser().username
     })
     socket.emit("joinChanel",{
       channelID : groupchatID,
@@ -216,7 +216,6 @@ function checkIfReady() {
 }
 
 function getChatMessages(user, groupchatID){
-  console.log(user,groupchatID); 
   return messageController.returnAllMesages(requestHandler.jSONrequester("Message",[
     new ParameterHandler("user", user),
     new ParameterHandler("chatId", groupchatID),

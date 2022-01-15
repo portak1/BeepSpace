@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.1.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 09, 2022 at 11:11 PM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.12
+-- Počítač: 127.0.0.1
+-- Vytvořeno: Sob 15. led 2022, 11:18
+-- Verze serveru: 10.4.18-MariaDB
+-- Verze PHP: 8.0.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `beepspace`
+-- Databáze: `beepspace`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `groupchat`
+-- Struktura tabulky `groupchat`
 --
 
 CREATE TABLE `groupchat` (
@@ -36,19 +36,20 @@ CREATE TABLE `groupchat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `groupchat`
+-- Vypisuji data pro tabulku `groupchat`
 --
 
 INSERT INTO `groupchat` (`id`, `name`, `color`, `users`, `connected_users`) VALUES
-(1, 'pepegacChat', '#FFFFFFFF', '1,8,17', ''),
-(5, 'skupina 1', '#00ff04', '1', ',1'),
-(6, 'Janicka skupina', '#000000', '1', ''),
-(7, 'kokot', '#000000', '8', '');
+(1, 'Projekty chat', '#FFFFFFFF', '1,8,17', ',1'),
+(5, 'General Chat', '#00ff04', '1', ''),
+(6, '4.ITA', '#000000', '1', ''),
+(7, 'LCDP fun club', '#000000', '8', ''),
+(10, 'obhajoby', '#1814ff', '1,18', '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `messages`
+-- Struktura tabulky `messages`
 --
 
 CREATE TABLE `messages` (
@@ -62,15 +63,10 @@ CREATE TABLE `messages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `messages`
+-- Vypisuji data pro tabulku `messages`
 --
 
 INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id`, `isChatMessage`, `chat_id`) VALUES
-(18, '0000-00-00 00:00:00', 8, 'cus', 1, 0, 0),
-(19, '0000-00-00 00:00:00', 8, 'nazdar', 1, 0, 0),
-(20, '0000-00-00 00:00:00', 8, 'jak je?', 1, 0, 0),
-(21, '0000-00-00 00:00:00', 1, 'joo dobrý', 8, 0, 0),
-(22, '0000-00-00 00:00:00', 1, 'co ty?', 8, 0, 0),
 (23, '0000-00-00 00:00:00', 1, 'Ahoj', 9, 0, 0),
 (24, '0000-00-00 00:00:00', 1, 'Jak je?', 9, 0, 0),
 (25, '0000-00-00 00:00:00', 9, '👹', 1, 0, 0),
@@ -129,42 +125,11 @@ INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id
 (247, '0000-00-00 00:00:00', 1, 'ahoj', 11, 0, 0),
 (248, '0000-00-00 00:00:00', 1, 'jak je?', 11, 0, 0),
 (249, '0000-00-00 00:00:00', 11, 'Dneska bomba⚽️', 1, 0, 0),
-(250, '0000-00-00 00:00:00', 1, 'Azoj', 8, 0, 0),
-(251, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8, 0, 0),
-(252, '0000-00-00 00:00:00', 1, 'jhahahah', 8, 0, 0),
 (253, '0000-00-00 00:00:00', 1, 'Ahoj', 11, 0, 0),
-(254, '0000-00-00 00:00:00', 8, 'ahoj', 1, 0, 0),
-(255, '0000-00-00 00:00:00', 8, 'pepego', 1, 0, 0),
-(256, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8, 0, 0),
-(257, '0000-00-00 00:00:00', 1, 'noob', 8, 0, 0),
-(258, '0000-00-00 00:00:00', 1, 'paneboze', 8, 0, 0),
-(259, '0000-00-00 00:00:00', 1, 'achjo', 8, 0, 0),
-(260, '0000-00-00 00:00:00', 1, '¨', 8, 0, 0),
-(261, '0000-00-00 00:00:00', 1, '¨', 8, 0, 0),
-(262, '0000-00-00 00:00:00', 1, '¨', 8, 0, 0),
-(263, '0000-00-00 00:00:00', 1, 'Pici', 8, 0, 0),
-(264, '0000-00-00 00:00:00', 1, 'test', 8, 0, 0),
 (265, '0000-00-00 00:00:00', 1, 'test', 11, 0, 0),
 (266, '0000-00-00 00:00:00', 1, 'coeee', 11, 0, 0),
 (267, '0000-00-00 00:00:00', 1, 'coooe', 11, 0, 0),
 (268, '0000-00-00 00:00:00', 1, 'noobe', 11, 0, 0),
-(269, '0000-00-00 00:00:00', 8, 'test', 1, 0, 0),
-(270, '0000-00-00 00:00:00', 8, 'test', 1, 0, 0),
-(271, '0000-00-00 00:00:00', 1, 'ahouj', 8, 0, 0),
-(272, '0000-00-00 00:00:00', 1, 'test', 8, 0, 0),
-(273, '0000-00-00 00:00:00', 1, 'test', 8, 0, 0),
-(274, '0000-00-00 00:00:00', 1, 'ty jsi noob', 8, 0, 0),
-(275, '0000-00-00 00:00:00', 8, 'lol wym', 1, 0, 0),
-(276, '0000-00-00 00:00:00', 1, 'test', 8, 0, 0),
-(277, '0000-00-00 00:00:00', 1, 'tes', 8, 0, 0),
-(278, '0000-00-00 00:00:00', 8, 'ahoj?', 1, 0, 0),
-(279, '0000-00-00 00:00:00', 8, 'ahoj?', 1, 0, 0),
-(280, '0000-00-00 00:00:00', 8, 'ajoj', 1, 0, 0),
-(281, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
-(282, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
-(283, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
-(284, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
-(285, '0000-00-00 00:00:00', 8, 'f', 1, 0, 0),
 (290, '0000-00-00 00:00:00', 1, 'achjo', 1, 1, 1),
 (291, '0000-00-00 00:00:00', 1, 'noobe', 1, 1, 1),
 (292, '0000-00-00 00:00:00', 1, 'achjo toto je fucked up', 1, 1, 1),
@@ -183,14 +148,38 @@ INSERT INTO `messages` (`id`, `message_date`, `user_id`, `content`, `reciever_id
 (305, '0000-00-00 00:00:00', 1, '🥞', 17, 0, 0),
 (306, '0000-00-00 00:00:00', 17, '🍵🍵', 1, 0, 0),
 (307, '0000-00-00 00:00:00', 17, '🕸🦄🦧🐑🦮🦙🦩🦥🐾🦡🦫🌝🌬🌫', 1, 0, 0),
-(308, '0000-00-00 00:00:00', 1, 'achjo', 8, 0, 0),
-(309, '0000-00-00 00:00:00', 1, 'ahoj', 8, 0, 0),
-(310, '0000-00-00 00:00:00', 1, 'ahoj', 8, 0, 0);
+(319, '0000-00-00 00:00:00', 8, 'Ahoj😀', 1, 0, 0),
+(320, '0000-00-00 00:00:00', 1, 'Ahoj :))', 8, 0, 0),
+(321, '0000-00-00 00:00:00', 8, 'Jak se máš?👳🏿‍♂️🤿', 1, 0, 0),
+(322, '0000-00-00 00:00:00', 1, 'Docela dobrý, co ty?😍😂😊😊', 8, 0, 0),
+(323, '0000-00-00 00:00:00', 8, 'Hele taky to jde🏦', 1, 0, 0),
+(324, '0000-00-00 00:00:00', 8, 'Nechtěl bys zajít na snídani?🥧🍰🥞🧇', 1, 0, 0),
+(325, '0000-00-00 00:00:00', 1, 'tyjo moc rád! v kolik sraz?🕥', 8, 0, 0),
+(326, '0000-00-00 00:00:00', 8, 'V 7:15?👵🏿', 1, 0, 0),
+(327, '0000-00-00 00:00:00', 1, 'Jasný! měj se', 8, 0, 0),
+(328, '0000-00-00 00:00:00', 8, 'Čaukyy xXx🥰😍😚😈😈🤤🥵🥵🥵💦💦💦', 1, 0, 0),
+(329, '0000-00-00 00:00:00', 1, 'ahoj', 17, 0, 0),
+(330, '0000-00-00 00:00:00', 17, 'ahoj', 1, 0, 0),
+(331, '0000-00-00 00:00:00', 1, 'jak se mas', 17, 0, 0),
+(332, '0000-00-00 00:00:00', 17, 'coje ti do toho', 1, 0, 0),
+(333, '0000-00-00 00:00:00', 1, '-_-', 17, 0, 0),
+(334, '0000-00-00 00:00:00', 17, 'uchyle', 1, 0, 0),
+(335, '0000-00-00 00:00:00', 1, 'more tak chcipni ty rakle', 17, 0, 0),
+(336, '0000-00-00 00:00:00', 1, 'gazde', 17, 0, 0),
+(337, '0000-00-00 00:00:00', 17, 'no gazde', 1, 0, 0),
+(338, '0000-00-00 00:00:00', 1, 'hm hm', 17, 0, 0),
+(339, '0000-00-00 00:00:00', 1, 'achjo', 17, 0, 0),
+(340, '0000-00-00 00:00:00', 17, 'gadze kdyztak', 1, 0, 0),
+(341, '0000-00-00 00:00:00', 1, 'á', 17, 0, 0),
+(342, '0000-00-00 00:00:00', 1, 'cus', 17, 0, 0),
+(343, '0000-00-00 00:00:00', 1, 'ahoj', 18, 0, 0),
+(344, '0000-00-00 00:00:00', 18, 'ahoj', 1, 0, 0),
+(345, '0000-00-00 00:00:00', 18, '💟💟', 1, 0, 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifications`
+-- Struktura tabulky `notifications`
 --
 
 CREATE TABLE `notifications` (
@@ -204,17 +193,17 @@ CREATE TABLE `notifications` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `notifications`
+-- Vypisuji data pro tabulku `notifications`
 --
 
 INSERT INTO `notifications` (`id`, `content`, `date`, `type`, `origin_id`, `reciever_id`, `groupchat_id`) VALUES
-(67, 'new invite request from hrouzek', '0000-00-00 00:00:00', 'invite', 1, 8, 1),
-(68, 'new invite request from janickakocicka', '0000-00-00 00:00:00', 'invite', 1, 17, 1);
+(73, 'new invite request from janickakocicka', '0000-00-00 00:00:00', 'invite', 1, 17, 8),
+(74, 'new invite request from Pepa', '0000-00-00 00:00:00', 'invite', 1, 8, 6);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Struktura tabulky `users`
 --
 
 CREATE TABLE `users` (
@@ -229,32 +218,33 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16 COLLATE=utf16_czech_ci;
 
 --
--- Dumping data for table `users`
+-- Vypisuji data pro tabulku `users`
 --
 
 INSERT INTO `users` (`id`, `password`, `email`, `username`, `number`, `birth`, `friends_id`, `online`) VALUES
-(1, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'honzaport@seznam.cz', 'admin', 601543636, '2003-04-10', '11,8', 1),
-(8, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'hrouzek@noob123.com', 'hrouzek', 601543636, '2021-11-27', ',1', 1),
-(9, '3fca867ff2af052b4ce704b3c022b286a2427ec466499a34231c42393e9ca5d4', 'annaportova07@gmail.com', 'Andulilinka', 606071697, '2021-11-17', '', 0),
+(1, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'honzaport@seznam.cz', 'admin', 601543636, '2003-04-10', '11,8,9,17,18', 1),
+(8, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'hrouzek@noob123.com', 'Pepa', 601543636, '2021-11-27', ',1', 0),
+(9, '3fca867ff2af052b4ce704b3c022b286a2427ec466499a34231c42393e9ca5d4', 'annaportova07@gmail.com', 'Andulilinka', 606071697, '2021-11-17', '1', 0),
 (10, '01cfc1a0bc86dad5a725d776ff1864d1afd748dd932fc86e5406680da66bd147', 'portova.hana@seznam.cz', 'Haminka', 607123687, '1974-02-24', '', 0),
 (11, 'd099cf21d256abaa7bae2330dca322b6eb79274b2191249168215be6150ab05b', 'janport@centrum.cz', 'Klayman', 724143676, '1972-09-15', '1', 0),
-(12, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'pepega@gmail.com', 'honzik', 123, '2021-11-23', '', 0),
+(12, 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'pepega@gmail.com', 'honzik', 123, '2021-11-23', 'é', 0),
 (15, '6893a9af7ef872feeea9364307ce13bdc05e251d98cd18a6f1bce8f3dfbeb5c8', 'honzaMASIOFMmlkmff', 'honza', 23442, '0004-03-31', '', 0),
 (16, 'd97d87d4da285adebd7f7b322eaf12930392eb65e51c1062de307ecb6552bab2', 'jana.placha123@seznam.cz', 'tojsemjazabijak', 739716379, '1998-04-10', '', 0),
-(17, 'dd14c479f8f7da226853502b555d530862e13a4a265219877584801e3e250d2b', 'jana.placha123@seznam.cz', 'janickakocicka', 739716379, '2005-05-05', ',1', 1);
+(17, 'dd14c479f8f7da226853502b555d530862e13a4a265219877584801e3e250d2b', 'jana.placha123@seznam.cz', 'janickakocicka', 739716379, '2005-05-05', ',1', 0),
+(18, '56b1db8133d9eb398aabd376f07bf8ab5fc584ea0b8bd6a1770200cb613ca005', 'vrata@gmail.com', 'vratislavinko', 234234231, '2022-01-18', ',1', 1);
 
 --
--- Indexes for dumped tables
+-- Indexy pro exportované tabulky
 --
 
 --
--- Indexes for table `groupchat`
+-- Indexy pro tabulku `groupchat`
 --
 ALTER TABLE `groupchat`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `messages`
+-- Indexy pro tabulku `messages`
 --
 ALTER TABLE `messages`
   ADD PRIMARY KEY (`id`),
@@ -263,7 +253,7 @@ ALTER TABLE `messages`
   ADD KEY `chat_id` (`chat_id`);
 
 --
--- Indexes for table `notifications`
+-- Indexy pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`),
@@ -272,52 +262,52 @@ ALTER TABLE `notifications`
   ADD KEY `groupchat_id` (`groupchat_id`);
 
 --
--- Indexes for table `users`
+-- Indexy pro tabulku `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pro tabulky
 --
 
 --
--- AUTO_INCREMENT for table `groupchat`
+-- AUTO_INCREMENT pro tabulku `groupchat`
 --
 ALTER TABLE `groupchat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `messages`
+-- AUTO_INCREMENT pro tabulku `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=311;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=346;
 
 --
--- AUTO_INCREMENT for table `notifications`
+-- AUTO_INCREMENT pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pro tabulku `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- Constraints for dumped tables
+-- Omezení pro exportované tabulky
 --
 
 --
--- Constraints for table `messages`
+-- Omezení pro tabulku `messages`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`reciever_id`) REFERENCES `users` (`id`);
 
 --
--- Constraints for table `notifications`
+-- Omezení pro tabulku `notifications`
 --
 ALTER TABLE `notifications`
   ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`origin_id`) REFERENCES `users` (`id`),

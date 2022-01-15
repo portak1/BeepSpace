@@ -1,4 +1,13 @@
+import AOS from 'aos';
+import { useEffect } from 'react';
+
 function Message(props) {
+
+    useEffect(() => {
+        AOS.init();
+    }, []);
+
+
     var classes = "message";
     var owner = "";
     if (props.last) {
@@ -11,7 +20,7 @@ function Message(props) {
     }
     return (
 
-        <div class={owner}>
+        <div data-aos={"fade-down"} class={owner}>
             <div class={classes}>
                 {props.content}
             </div>

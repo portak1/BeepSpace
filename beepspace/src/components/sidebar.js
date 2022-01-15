@@ -7,6 +7,7 @@ import SidebarGroupchat from './smallComponents/SidebarGroupchat';
 import $ from 'jquery';
 import React from 'react';
 import { useRef } from 'react';
+import { useEffect } from 'react';
 const userController = new UserController();
 const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
 var rendered = false;
@@ -16,17 +17,62 @@ var renderUser = {
     username: "",
     rendered: false
 }
-var proxGroupArray = [];
-function Sidebar(props) {
 
-    const removeActiveUserRef = useRef();
-    var proxArray = requestHandler.jSONrequester("User", [
-        new ParameterHandler("type", "ALL")
-    ]);
-    proxGroupArray = requestHandler.jSONrequester("Groupchat",[
+function Sidebar(props) {
+    var proxGroupArray = requestHandler.jSONrequester("Groupchat",[
         new ParameterHandler("type", "ALL"),
         new ParameterHandler("user", userController.getUser().username)
     ]);
+    var proxArray = requestHandler.jSONrequester("User", [
+        new ParameterHandler("type", "ALL")
+    ]);
+
+    useEffect(() => {
+        
+
+        props.socket.on("addLocalUser", function (data) {
+
+
+
+            if (data.origin == userController.getUser().username) {
+                var newUser = requestHandler.jSONrequester("User", [
+                    new ParameterHandler("type", "ONE"),
+                    new ParameterHandler("username", data.reciever)
+                ]);
+                if (renderUser.username != newUser.name) {
+                    renderUser.username = newUser.name;
+                    renderUser.rendered = false;
+                }
+                if (!renderUser.rendered) {
+                    setUserArray(userArray => [...userArray, <SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} online={newUser.online} socket={props.socket} reciever={newUser.name} />])
+                    renderUser.rendered = true;
+                }
+                return;
+            } else if (data.reciever == userController.getUser().username) {
+                var newUser = requestHandler.jSONrequester("User", [
+                    new ParameterHandler("type", "ONE"),
+                    new ParameterHandler("username", data.origin)
+                ]);
+    
+                if (renderUser.username != newUser.name) {
+                    renderUser.username = newUser.name;
+                    renderUser.rendered = false;
+                }
+                if (!renderUser.rendered) {
+                    setUserArray(userArray => [...userArray, <SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} online={newUser.online} socket={props.socket} reciever={newUser.name} />])
+                    renderUser.rendered = true;
+                }
+                return;
+    
+            }
+    
+            return;
+        })
+      }, []);
+
+
+      
+   
     const generateArray = (arr) => {
         if (!rendered) {
             rendered = true;
@@ -45,18 +91,15 @@ function Sidebar(props) {
         }
     }
 
-    
-    const removeActiveUser = (username) =>{
-        console.log("test");
-        removeActiveUserRef.current.removeActiveUserInChat(username);
-    }
 
+    
+  
     const generateGroupChatArray = (arr) =>{        
         if(!groupChatRendered){
             groupChatRendered = true;
             return arr.map((data, id) =>{
                 console.log(data)
-                return <SidebarGroupchat ref={removeActiveUserRef} handleInputUser={props.handleInputUser} userRemovingFunction={removeActiveUser} key={id} handleInputGroupchat={props.handleInputGroupchat} socket={props.socket} groupchatID={data.id} name={data.name}/>
+                return <SidebarGroupchat handleInputUser={props.handleInputUser} color={data.color}  key={id} handleInputGroupchat={props.handleInputGroupchat} socket={props.socket} groupchatID={data.id} name={data.name}/>
             })
         }
     }
@@ -66,44 +109,7 @@ function Sidebar(props) {
     const [userArray, setUserArray] = useState(generateArray(proxArray));
     const [groupchatArray,setGroupchatArray] = useState(generateGroupChatArray(proxGroupArray));
 
-    props.socket.on("addLocalUser", function (data) {
-
-
-
-        if (data.origin == userController.getUser().username) {
-            var newUser = requestHandler.jSONrequester("User", [
-                new ParameterHandler("type", "ONE"),
-                new ParameterHandler("username", data.reciever)
-            ]);
-            if (renderUser.username != newUser.name) {
-                renderUser.username = newUser.name;
-                renderUser.rendered = false;
-            }
-            if (!renderUser.rendered) {
-                setUserArray(userArray => [...userArray, <SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} online={newUser.online} socket={props.socket} reciever={newUser.name} />])
-                renderUser.rendered = true;
-            }
-            return;
-        } else if (data.reciever == userController.getUser().username) {
-            var newUser = requestHandler.jSONrequester("User", [
-                new ParameterHandler("type", "ONE"),
-                new ParameterHandler("username", data.origin)
-            ]);
-
-            if (renderUser.username != newUser.name) {
-                renderUser.username = newUser.name;
-                renderUser.rendered = false;
-            }
-            if (!renderUser.rendered) {
-                setUserArray(userArray => [...userArray, <SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} online={newUser.online} socket={props.socket} reciever={newUser.name} />])
-                renderUser.rendered = true;
-            }
-            return;
-
-        }
-
-        return;
-    })
+  
     const logOut = () => {
         userController.logOut(props.socket);
     }
@@ -153,7 +159,7 @@ function Sidebar(props) {
                 </div>
                 <menu class="menu-segment">
                     <ul class="chat">
-                        <li class="title">Groupchats<span class="icon"><a onClick={props.setCModalShow} class="addGroup">+</a></span></li>
+                        <li class="title">Prostory<span class="icon"><a onClick={props.setCModalShow} class="addGroup">+</a></span></li>
                         {groupchatArray}
 
                     </ul>
@@ -162,7 +168,7 @@ function Sidebar(props) {
                 <div class="separator"></div>
                 <div class="menu-segment">
                     <ul class="chat">
-                        <li class="title">Chat <span class="icon"></span></li>
+                        <li class="title">Seznam přátel <span class="icon"></span></li>
                         {userArray}
 
 
