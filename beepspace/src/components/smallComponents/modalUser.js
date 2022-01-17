@@ -14,9 +14,18 @@ export default function ModalUser(params){
             new ParameterHandler("user",userController.getUser().username),
             new ParameterHandler("reciever",params.name),
             new ParameterHandler("date", new Date()),
-            new ParameterHandler("content", "new friend request from "+params.name),
+            new ParameterHandler("content", "nová žádost o přátelství od "+userController.getUser().username),
             new ParameterHandler("addNotification",1)
         ])
+
+        params.socket.emit("notification",{
+            reciever: params.name,
+            origin: userController.getUser().id,
+            type: "add",
+            content: "nová žádost o přátelství od " + userController.getUser().username,
+            date: new Date(),
+            groupchatID: null
+        })
     }
 
 

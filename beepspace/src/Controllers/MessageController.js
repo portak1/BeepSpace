@@ -6,8 +6,11 @@ import UserController from "./UserController";
 class MessageController extends React.Component {
 
 
-  constructor() {
+  socket;
+
+  constructor(socket) {
     super();
+    this.socket = socket;
     this.requestHandler = new RequestHandler();
     this.userController = new UserController();
   }
@@ -54,6 +57,26 @@ class MessageController extends React.Component {
       new ParameterHandler("content", content),
       new ParameterHandler("date", new Date())]
     )
+
+    this.requestHandler.jSONrequester("Notifications",[
+      new ParameterHandler("type", "CREATE"),
+      new ParameterHandler("user",this.userController.getUser().username),
+      new ParameterHandler("reciever",reciever),
+      new ParameterHandler("date", new Date()),
+      new ParameterHandler("content",content),
+      new ParameterHandler("addNotification",0),
+      new ParameterHandler("groupchatID",0)
+  ])
+
+
+    this.socket.emit("notification",{
+      reciever: reciever,
+      origin:  this.userController.getUser().id,
+      type: "message",
+      content: content,
+      date: new Date(),
+      groupchatID: null
+  })
   }
 
   sendGroupchatMessage(content, chatId) {

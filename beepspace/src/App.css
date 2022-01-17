@@ -355,6 +355,35 @@ input[type="search"]
   color: white !important;
 }
 
+.userList{
+  height: 90%  !important;
+  margin-top: 7% !important;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 5px;
+  border: 3px solid #444a49;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: #1d2725;
+}
+.nadpis{
+  color: #A6B0B9 !important;
+  border-bottom: 3px solid #444a49;
+margin-bottom: 25px !important;
+}
+
+
+.userListUser{
+  color: #44777b;
+  width: 100% !important;
+  border-top: 1px solid rgba(77, 77, 77, 0.419);
+  border-bottom: 1px solid rgba(77, 77, 77, 0.419);
+  cursor: pointer;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 #sidebar .menu-segment li.title {
   text-transform: uppercase;
   font-weight: 600;

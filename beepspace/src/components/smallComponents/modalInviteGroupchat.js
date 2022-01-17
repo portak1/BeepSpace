@@ -28,7 +28,7 @@ export default function ModalInviteGroupchat(params) {
                     new ParameterHandler("id", params.groupchatID),
                     new ParameterHandler("user", user.name)
                 ])
-                setUsers(<InviteUser name={user.name} groupState={chatState} groupchatID={params.groupchatID} userId={user.id} />);
+                setUsers(<InviteUser name={user.name} socket={params.socket} groupState={chatState} groupchatID={params.groupchatID} userId={user.id} />);
 
             } else {
                 setUsers(null);
@@ -57,7 +57,7 @@ export default function ModalInviteGroupchat(params) {
                     new ParameterHandler("id", params.groupchatID),
                     new ParameterHandler("user", user.name)
                 ])
-                setUsers(<InviteUser name={user.name} groupState={chatState} groupchatID={params.groupchatID} userId={user.id} />);
+                setUsers(<InviteUser name={user.name} socket={params.socket} groupState={chatState} groupchatID={params.groupchatID} userId={user.id} />);
 
             } else {
                 setUsers(null);

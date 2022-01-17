@@ -13,10 +13,19 @@ export default function InviteUser(params){
             new ParameterHandler("user",userController.getUser().username),
             new ParameterHandler("reciever",params.name),
             new ParameterHandler("date", new Date()),
-            new ParameterHandler("content", "new invite request from "+params.name),
+            new ParameterHandler("content", "new invite request from "+userController.getUser().username),
             new ParameterHandler("addNotification",1),
             new ParameterHandler("groupchatID",params.groupchatID)
         ])
+
+        params.socket.emit("notification",{
+            reciever: params.name,
+            origin: userController.getUser().id,
+            type: "invite",
+            content: "nová žádost o přátelství od " + userController.getUser().username,
+            date: new Date(),
+            groupchatID: params.groupchatID
+        })
     }
 
 

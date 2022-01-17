@@ -4,7 +4,7 @@ import RequestHandler from "../Handlers/RequestHandler";
 import UserController from "../Controllers/UserController";
 import ParameterHandler from "../Handlers/ParameterHandler";
 import Notification from "./smallComponents/Notifiaction";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 export default function NotificationsModal(params) {
@@ -32,7 +32,29 @@ export default function NotificationsModal(params) {
     }));
 
     
-
+useEffect(() => {
+    params.socket.on("newNotification",function(data){
+        if(data.type =="message"){
+            setNotifications(notifications=>[...notifications,<Notification  socket={params.socket} type={"message"} removeNotification={removeNotification}  user={data.reciever} content={data.content}  />]) ;
+        }else{
+            notificationsArray = requestHandler.jSONrequester("Notifications",[
+                new ParameterHandler("type","GET"),
+                new ParameterHandler("user", userController.getUser().username)
+            ])
+            
+            setNotifications(notificationsArray.map((data,id)=>{
+                if(data.type =="message"){
+                    return <Notification  socket={params.socket} type={"message"} removeNotification={removeNotification} key={id} notId={data.id} user={data.user} content={data.content}  />;
+                }else if(data.type == "invite"){
+                    return <Notification  socket={params.socket} type={"invite"} groupchatID={data.groupchatID} removeNotification={removeNotification} key={id} notId={data.id} user={data.user} content={data.content}  />;
+                }else{
+                   return <Notification socket={params.socket} type={"add"} removeNotification={removeNotification} key={id} notId={data.id}  addNotification={true} user={data.user} />
+                }
+            }));
+        }
+    })
+    
+}, [])
     
 
 //<Notification addNotification={true} user="janicka" />

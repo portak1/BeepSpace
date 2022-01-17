@@ -44,9 +44,15 @@ io.on('connection', function (socket) {
   
 
   socket.on("notification",function(data){
+    console.log( data);
     socket.broadcast.emit("newNotification",{
       reciever: data.reciever,
-      
+      origin: data.origin,
+      type: data.type,
+      content: data.content,
+      date: data.date,
+      groupchatID: data.groupchatID,
+
     })
   })
 

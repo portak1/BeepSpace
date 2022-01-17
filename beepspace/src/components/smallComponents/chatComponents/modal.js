@@ -29,7 +29,7 @@ export default function FriendModal(params) {
                     new ParameterHandler("id2",user.id)
                 ])
                 console.log(friendsState)
-                setUsers(<ModalUser name={user.name} friendsState={friendsState.state} userId={user.id}/>);
+                setUsers(<ModalUser name={user.name} socket={params.socket} friendsState={friendsState.state} userId={user.id}/>);
                 
             }else {
             setUsers(null);
@@ -59,7 +59,7 @@ export default function FriendModal(params) {
                     new ParameterHandler("id2",user.id)
                 ])
                 console.log(friendsState)
-                setUsers(<ModalUser name={user.name} friendsState={friendsState.state} userId={user.id}/>);
+                setUsers(<ModalUser name={user.name} socket={params.socket} friendsState={friendsState.state} userId={user.id}/>);
                 
             }else {
             setUsers(null);

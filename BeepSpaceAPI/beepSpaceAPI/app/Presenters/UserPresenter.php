@@ -31,6 +31,9 @@ class UserPresenter extends Nette\Application\UI\Presenter
         if ($type == "ONE") {
             return $this->sendJson($this->userManager->returnUser($username));
         }
+        if($type == "ONE-BY-ID"){
+            return $this->sendJson($this->userManager->returnUser($this->userManager->convertIDtoName($id)->name));
+        }
         if ($type == "ADD-FRIEND") {
             return $this->sendJson([
                 "state" =>  $this->userManager->addFriend($id, $id2)
