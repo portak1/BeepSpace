@@ -41,10 +41,19 @@ io.on('connection', function (socket) {
     })
   })
 
+  socket.on("addChannel",(data)=>{
+    socket.broadcast.emit("addUserToGroupchat",{
+      user: data.localUser,
+      channelID: data.channel
+    })
+    socket.emit("addLocalChannel",{
+      channel: data.channel
+    })
+  })
+
   
 
   socket.on("notification",function(data){
-    console.log( data);
     socket.broadcast.emit("newNotification",{
       reciever: data.reciever,
       origin: data.origin,

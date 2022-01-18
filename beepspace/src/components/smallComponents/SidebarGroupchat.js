@@ -11,13 +11,22 @@ export default function SidebarGroupchat(props) {
   useEffect(() => {
     props.socket.on("joinedChanel", function (data) {
       if (data.channelID == props.groupchatID) {
-        setActiveUsers(activeUsers => [...activeUsers, <div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} online={true} socket={props.socket} reciever={data.user.username} /></div>])
+      
+
+        if(!activeUsers.some((item)=>{
+          return item.reciever !=data.user.username;
+        })){
+          setActiveUsers(activeUsers => [...activeUsers, <div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} online={true} socket={props.socket} reciever={data.user.username} /></div>])
+
+        }
       }
     })
 
     props.socket.on("disconnectedChanel", function (data) {
-       setActiveUsers(activeUsers.filter(pepegac => pepegac.reciever==data.user))
-      
+      setActiveUsers(activeUsers.filter((item)=>{
+         return item.reciever != data.user;
+       }))
+
       
     })
   }, []);

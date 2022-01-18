@@ -18,7 +18,10 @@ export default function NotificationsModal(params) {
     ])
 
     const removeNotification = (key) =>{
-        setNotifications(notifications.filter(item => item.notId == key));
+        setNotifications(notifications.filter((item)=>{
+            return item.notId != key;
+        }))
+
      }
 
     const [notifications,setNotifications] = useState((notificationsArray==false)? [] : notificationsArray.map((data,id)=>{
@@ -42,6 +45,7 @@ useEffect(() => {
                 new ParameterHandler("user", userController.getUser().username)
             ])
             
+            console.log(notificationsArray)
             setNotifications(notificationsArray.map((data,id)=>{
                 if(data.type =="message"){
                     return <Notification  socket={params.socket} type={"message"} removeNotification={removeNotification} key={id} notId={data.id} user={data.user} content={data.content}  />;

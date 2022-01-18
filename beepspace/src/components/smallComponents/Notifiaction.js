@@ -37,7 +37,18 @@ export default function Notification(props) {
             new ParameterHandler("type", "ACCEPT-INVITE"),
             new ParameterHandler("id", props.groupchatID),
             new ParameterHandler("user",userController.getUser().username)
+        ]) 
+        requestHandler.jSONrequester("Notifications", [
+            new ParameterHandler("type", "REMOVEONE"),
+            new ParameterHandler("id", props.notId),
         ])
+        props.socket.emit("addChannel", {
+            localUser: userController.getUser().username,
+            channel: props.groupchatID
+        })
+        
+        props.removeNotification(props.notId);
+
     }
 
 

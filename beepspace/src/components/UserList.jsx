@@ -16,16 +16,24 @@ export default function UserList(props){
     ])
     
   const userArray = Array.from(groupchat.users.split(","));
-    
-  listbarUsers = userArray.map((data, id) => {
+  
+
+  const [listbarUsers,setListbarUsers] = useState(userArray.map((data, id) => {
     var proxUser = requestHandler.jSONrequester("User",[
         new ParameterHandler("type", "ONE-BY-ID"),
         new ParameterHandler("id", data)
     ]);
     return <UserListUser handleInputUser={props.handleInputUser} key={id} user={proxUser.name} />
-  })
-  
+  }));
 
+
+  useEffect(() => {
+    props.socket.on("addUserToGroupchat",(data)=>{
+      if(data.channelID == props.groupchatID){
+          setListbarUsers(listbarUsers=>[...listbarUsers,<UserListUser handleInputUser={props.handleInputUser} user={data.user} />])
+      }
+    })
+  }, [])
 
     return(
         <div className="userList">

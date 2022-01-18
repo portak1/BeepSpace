@@ -68,6 +68,16 @@ function Sidebar(props) {
     
             return;
         })
+
+
+        props.socket.on("addLocalChannel",(data)=>{
+            proxGroupArray = requestHandler.jSONrequester("Groupchat",[
+                new ParameterHandler("type", "ALL"),
+                new ParameterHandler("user", userController.getUser().username)
+            ]);
+            groupChatRendered = !groupChatRendered;
+            setGroupchatArray(generateGroupChatArray(proxGroupArray));
+        })
       }, []);
 
 
@@ -98,7 +108,6 @@ function Sidebar(props) {
         if(!groupChatRendered){
             groupChatRendered = true;
             return arr.map((data, id) =>{
-                console.log(data)
                 return <SidebarGroupchat handleInputUser={props.handleInputUser} color={data.color}  key={id} handleInputGroupchat={props.handleInputGroupchat} socket={props.socket} groupchatID={data.id} name={data.name}/>
             })
         }

@@ -201,7 +201,7 @@ function App() {
       <TextInput chatUser={chatUser} sendMessageFunction={sendMessage} isChatMessage={isGroupchat} sendGroupchatMessage={sendGroupchatMessage} />
       </div>
       <div class=" col-md-3 h-100">
-        <UserList handleInputUser={handleInputUser} groupchatID={groupchatId}/>
+        <UserList handleInputUser={handleInputUser} socket={socket} groupchatID={groupchatId}/>
       </div>
       </div>)
     }
