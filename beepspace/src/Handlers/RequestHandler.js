@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import React from 'react';
-import { enviroment } from '../enviroment/enviroment';
+import { enviroment } from '../enviroments/enviroment';
 
 class RequestHandler extends React.Component {
 

@@ -16,7 +16,7 @@ import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupc
 import ModalGroupchat from './components/smallComponents/modalGroupchat';
 import NotificationBox from './components/NotificationBox';
 import UserList from './components/UserList';
-import { enviroment } from './enviroment/enviroment';
+import { enviroment } from './enviroments/enviroment';
 
 const requestHandler = new RequestHandler();
 const userController = new UserController();
