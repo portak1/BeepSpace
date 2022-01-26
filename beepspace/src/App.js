@@ -16,6 +16,7 @@ import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupc
 import ModalGroupchat from './components/smallComponents/modalGroupchat';
 import NotificationBox from './components/NotificationBox';
 import UserList from './components/UserList';
+import { enviroment } from './enviroment/enviroment';
 
 const requestHandler = new RequestHandler();
 const userController = new UserController();
@@ -32,7 +33,7 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io("http://10.0.2.15:3001/");
+  const socket = io("http://"+enviroment.LOCAL_IP+":3001/");
   messageController= new MessageController(socket);
   socket.on("connect", () => {
     if (userController.isLoggedIn()) {

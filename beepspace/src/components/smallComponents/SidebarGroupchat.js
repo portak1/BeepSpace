@@ -25,9 +25,7 @@ export default function SidebarGroupchat(props) {
     props.socket.on("disconnectedChanel", function (data) {
       setActiveUsers(activeUsers.filter((item)=>{
          return item.reciever != data.user;
-       }))
-
-      
+       }))      
     })
   }, []);
 

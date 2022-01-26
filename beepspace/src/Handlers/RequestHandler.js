@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import React from 'react';
+import { enviroment } from '../enviroment/enviroment';
 
 class RequestHandler extends React.Component {
 
@@ -17,7 +18,7 @@ class RequestHandler extends React.Component {
     jSONrequester(requestType, requestParameter) {
         var returnData = false;
         $.ajax({
-            url: this.pcUrl + requestType + "?" + this.parameterForming(requestParameter),
+            url: 'http://'+enviroment.LOCAL_IP + '/'+enviroment.API_ENDPOINT + requestType + "?" + this.parameterForming(requestParameter),
             async: false,
 
             success: function(data) {
