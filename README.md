@@ -50,7 +50,7 @@
     node server
   ```
     
- ##now browser should open
+ ## now browser should open
  
  ------------------------------------------------------------
 
