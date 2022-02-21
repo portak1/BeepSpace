@@ -15,7 +15,7 @@ class UserManager
 
     public function __construct()
     {
-        $this->controller = new Controller('mysql:host=localhost;dbname=beepspace', 'root', '');
+        $this->controller = new Controller('mysql:host=sql.endora.cz:3310;dbname=beepspace', 'beepspaceapi', 'Lofas125');
     }
 
 

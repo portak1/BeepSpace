@@ -14,7 +14,6 @@ import FriendModal from './components/smallComponents/chatComponents/modal';
 import NotificationsModal from './components/NotificationsModal';
 import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupchat';
 import ModalGroupchat from './components/smallComponents/modalGroupchat';
-import NotificationBox from './components/NotificationBox';
 import UserList from './components/UserList';
 import { enviroment } from './enviroments/enviroment';
 

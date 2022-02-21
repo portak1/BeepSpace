@@ -21,13 +21,7 @@ export default function SidebarGroupchat(props) {
           console.log('connected')
         }
       }
-    })
-
-    props.socket.on("disconnectedChanel", function (data) {
-      setActiveUsers(activeUsers.filter((item) => {
-        return item.props.children.props.reciever != data.user;
-      }))
-    })
+    });
   }, []);
 
   const requestHandler = new RequestHandler();
