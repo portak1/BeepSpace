@@ -97,16 +97,20 @@ class UserManager
 
     public function removeFriend($id, $id2){
         $array = explode(",",$this->getFriends($id));
-
+        $array2 = explode(",",$this->getFriends($id2));
         if (($key = array_search($id2, $array)) !== false) {
             unset($array[$key]);
             $implodedArray = implode(",", $array);
-            $result = $this->controller->sql("UPDATE users SET friends_id = '$implodedArray' WHERE id = '$id'");
-            foreach ($result as $row) {
-                return true;
+            $result = $this->controller->sql("UPDATE users SET friends_id = '$implodedArray' WHERE id = '$id'");        
+            if (($key = array_search($id, $array2)) !== false) {
+                unset($array2[$key]);
+                $implodedArray = implode(",", $array2);
+                $result = $this->controller->sql("UPDATE users SET friends_id = '$implodedArray' WHERE id = '$id2'");        
+                return false;
             }
-            return false;
         }
+
+
         return false;
 
 
@@ -127,28 +131,22 @@ class UserManager
     }
     
     public function setPause($id){
-        $result = $this->controller->sql("UPDATE users SET online = 3 WHERE id = '$id'");
-        foreach ($result as $row) {
-            return true;
-        }
-        return false;
+        $this->controller->sql("UPDATE users SET online = 3 WHERE id = '$id'");
+      
+        return true;
     }
 
     public function setOnline($id){
-        $result = $this->controller->sql("UPDATE users SET online = 1 WHERE id = '$id'");
-            foreach ($result as $row) {
-                return true;
-            }
-            return false;
-    }
+        $this->controller->sql("UPDATE users SET online = 1 WHERE id = '$id'");
+           
+            return true;
+        }
 
     public function setOffline($id){
-        $result = $this->controller->sql("UPDATE users SET online = 0 WHERE id = '$id'");
-            foreach ($result as $row) {
-                return true;
-            }
-            return false;
-    }
+        $this->controller->sql("UPDATE users SET online = 0 WHERE id = '$id'");
+           
+            return true;
+        }
 
 
     public function returnAllUsers()

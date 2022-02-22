@@ -27,10 +27,8 @@ export default function Notification(props) {
             new ParameterHandler("type", "REMOVEONE"),
             new ParameterHandler("id", props.notId),
         ])
-
         props.removeNotification(props.notId);
     }
-
 
     const acceptInvite = () =>{
         requestHandler.jSONrequester("Groupchat",[

@@ -17,30 +17,23 @@ function SidebarUser(props) {
         classess = "ball paused"
     }
     const [online, setOnline] = useState(props.online ? "ball online" :"ball offline"); 
-    user = props.user;
     reciever = props.reciever;
     chatHandler = props.chatHandler;
     const handleChange = () => userController.getUser().username == props.reciever ? null : props.handleInputUser(props.reciever);
 
-    
-
-
     props.socket.on("clientOnline", function (data) {
-        if (data.user != user)
             if (data.user == props.reciever) {
                 setOnline("ball online");
             }
     })
 
     props.socket.on("clientOffline", function (data) {
-        if (data.user != user)
             if (data.user == props.reciever) {
                 setOnline("ball offline");
             }
     })
 
     props.socket.on("clientPause", function (data) {
-        if (data.user != user)
             if (data.user == props.reciever) {
                 setOnline("ball paused");
             }

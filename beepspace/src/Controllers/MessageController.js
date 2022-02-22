@@ -71,7 +71,7 @@ class MessageController extends React.Component {
 
     this.socket.emit("notification",{
       reciever: reciever,
-      origin:  this.userController.getUser().id,
+      origin:  this.userController.getUser().username,
       type: "message",
       content: content,
       date: new Date(),

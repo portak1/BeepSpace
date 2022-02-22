@@ -1,63 +1,97 @@
-import UserController from "../../Controllers/UserController";
-import SidebarUser from "./sidebarUser";
-import { useState } from "react";
-import RequestHandler from "../../Handlers/RequestHandler";
-import ParameterHandler from "../../Handlers/ParameterHandler";
-import { useEffect } from "react";
+import UserController from '../../Controllers/UserController';
+import RequestHandler from '../../Handlers/RequestHandler';
+import ParameterHandler from '../../Handlers/ParameterHandler';
+import { useEffect } from 'react';
+import SidebarUser from './sidebarUser';
+import { useState, useRef } from 'react';
 
+const userController = new UserController();
 
 export default function SidebarGroupchat(props) {
+  var rendered = false;
+  const requestHandler = new RequestHandler();
+  const proxArr = requestHandler.jSONrequester('Groupchat', [
+    new ParameterHandler('type', 'ACTIVE-USERS'),
+    new ParameterHandler('id', props.groupchatID),
+  ]);
 
+  const generateArray = (arr) => {
+    return arr.map((data, id) => {
+      return (
+        <SidebarUser
+          handleInputUser={props.handleInputUser}
+          key={id}
+          user={userController.getUser().username}
+          online={true}
+          socket={props.socket}
+          reciever={data.name}
+        />
+      );
+    });
+  };
+  const [activeUsers, setActiveUsers] = useState(generateArray(proxArr));
+  const activeUsersRef = useRef(activeUsers);
+  activeUsersRef.current = activeUsers;
   useEffect(() => {
-
-    props.socket.on("joinedChanel", function (data) {
-      if (data.channelID == props.groupchatID) {
-        if (!activeUsers.some((item) => {
-          console.log(item.props.children.props.reciever);
-          console.log(data.user.username);
-          return item.props.children.props.reciever != data.user.username;
-        })) {
-          setActiveUsers(activeUsers => [...activeUsers, <div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} online={true} socket={props.socket} reciever={data.user.username} /></div>])
-          console.log('connected')
-        }
-      }
+    props.socket.on('joinedChannel', (data) => {
+      joinChannel(data);
+    });
+    props.socket.on('disconnectedChanel', function (data) {
+      setActiveUsers(
+        activeUsersRef.current.filter((item) => {
+          return item.props.reciever != data.user;
+        })
+      );
     });
   }, []);
 
-  const requestHandler = new RequestHandler();
-  var rendered = false;
-  var indexForUserUpdate = 0;
-  const handleChange = () => {
-    props.handleInputGroupchat(props.groupchatID, props.name)
-    // setActiveUsers(activeUsers => [...activeUsers, <div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser} user={userController.getUser().username} online={true} socket={props.socket} reciever={userController.getUser().username} /></div>])
-  }
-  const userController = new UserController();
-  var proxArr = requestHandler.jSONrequester("Groupchat", [
-    new ParameterHandler("type", "ACTIVE-USERS"),
-    new ParameterHandler("id", props.groupchatID)
-  ])
-
-
-  const generateArray = (arr) => {
-    if (!rendered) {
-      rendered = true;
-      return arr.map((data, id) => {
-        return <div class="ml-3"><SidebarUser handleInputUser={props.handleInputUser} key={id} user={userController.getUser().username} online={true} socket={props.socket} reciever={data.name} /></div>
-
-      })
+  const joinChannel = (data) => {
+    if (data.channelID == props.name) {
+      if (activeUsersRef.current.length) {
+        if (
+          !activeUsersRef.current.some((item) => {
+            return item.props.reciever == data.user;
+          })
+        ) {
+          setActiveUsers((activeUsers) => [
+            ...activeUsers,
+            <SidebarUser
+              handleInputUser={props.handleInputUser}
+              user={userController.getUser().username}
+              online={true}
+              socket={props.socket}
+              reciever={data.user}
+            />,
+          ]);
+        }
+      } else {
+        setActiveUsers((activeUsers) => [
+          ...activeUsers,
+          <SidebarUser
+            handleInputUser={props.handleInputUser}
+            user={userController.getUser().username}
+            online={true}
+            socket={props.socket}
+            reciever={data.user}
+          />,
+        ]);
+      }
     }
-  }
+  };
 
-  const [activeUsers, setActiveUsers] = useState(generateArray(proxArr))
-
-
+  const handleChange = () => {
+    props.handleInputGroupchat(props.groupchatID, props.name);
+  };
 
   return (
-    <div class="wholeSidebarGroupchat">
-      <li ><a href="#" style={{ color: props.color }} onClick={handleChange}>{props.name}<span></span></a></li>
-      {activeUsers}
+    <div class='wholeSidebarGroupchat'>
+      <li>
+        <a href='#' style={{ color: props.color }} onClick={handleChange}>
+          {props.name}
+          <span></span>
+        </a>
+      </li>
+      <div class='ml-3'>{activeUsers}</div>
     </div>
   );
 }
-
-
