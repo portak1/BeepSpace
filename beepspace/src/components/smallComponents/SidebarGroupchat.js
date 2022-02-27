@@ -24,7 +24,9 @@ export default function SidebarGroupchat(props) {
           user={userController.getUser().username}
           online={true}
           socket={props.socket}
+          activeUser={props.activeUser}
           reciever={data.name}
+          activeUser={props.activeUser}
         />
       );
     });
@@ -60,6 +62,7 @@ export default function SidebarGroupchat(props) {
               user={userController.getUser().username}
               online={true}
               socket={props.socket}
+              activeUser={props.activeUser}
               reciever={data.user}
             />,
           ]);
@@ -73,6 +76,7 @@ export default function SidebarGroupchat(props) {
             online={true}
             socket={props.socket}
             reciever={data.user}
+            activeUser={props.activeUser}
           />,
         ]);
       }

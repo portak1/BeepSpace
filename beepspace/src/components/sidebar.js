@@ -6,8 +6,8 @@ import ParameterHandler from '../Handlers/ParameterHandler';
 import SidebarGroupchat from './smallComponents/SidebarGroupchat';
 import $ from 'jquery';
 import React from 'react';
-import { useRef } from 'react';
 import { useEffect } from 'react';
+import SpaceCall from './SpaceCall';
 const userController = new UserController();
 const requestHandler = new RequestHandler(
   'http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/'
@@ -21,6 +21,8 @@ var renderUser = {
 };
 
 function Sidebar(props) {
+  const [mute, setMute] = useState(false);
+
   var proxGroupArray = requestHandler.jSONrequester('Groupchat', [
     new ParameterHandler('type', 'ALL'),
     new ParameterHandler('user', userController.getUser().username),
@@ -30,6 +32,37 @@ function Sidebar(props) {
   ]);
 
   useEffect(() => {
+    props.socket.on('groupchatCreated', (data) => {
+      if (data.id == userController.getUser().id) {
+        groupChatRendered = !groupChatRendered;
+        setGroupchatArray(
+          generateGroupChatArray(
+            requestHandler.jSONrequester('Groupchat', [
+              new ParameterHandler('type', 'ALL'),
+              new ParameterHandler('user', userController.getUser().username),
+            ])
+          )
+        );
+      }
+    });
+
+    props.socket.on('addLocalChannel', (data) => {
+      groupChatRendered = !groupChatRendered;
+      setGroupchatArray(
+        generateGroupChatArray(
+          requestHandler.jSONrequester('Groupchat', [
+            new ParameterHandler('type', 'ALL'),
+            new ParameterHandler('user', userController.getUser().username),
+          ])
+        )
+      );
+    });
+
+    props.socket.on('removeFriend', (data) => {
+      if (data.reciever == userController.getUser().username)
+        removeUser(data.origin);
+    });
+
     props.socket.on('addLocalUser', function (data) {
       if (data.origin == userController.getUser().username) {
         var newUser = requestHandler.jSONrequester('User', [
@@ -72,6 +105,7 @@ function Sidebar(props) {
               user={userController.getUser().username}
               online={newUser.online}
               socket={props.socket}
+              activeUser={props.activeUser}
               reciever={newUser.name}
             />,
           ]);
@@ -81,20 +115,6 @@ function Sidebar(props) {
       }
 
       return;
-    });
-
-    props.socket.on('addLocalChannel', (data) => {
-      proxGroupArray = requestHandler.jSONrequester('Groupchat', [
-        new ParameterHandler('type', 'ALL'),
-        new ParameterHandler('user', userController.getUser().username),
-      ]);
-      groupChatRendered = !groupChatRendered;
-      setGroupchatArray(generateGroupChatArray(proxGroupArray));
-    });
-
-    props.socket.on('removeFriend', (data) => {
-      if (data.reciever == userController.getUser().username)
-        removeUser(data.origin);
     });
   }, []);
 
@@ -126,6 +146,7 @@ function Sidebar(props) {
                 user={userController.getUser().username}
                 online={data.online}
                 socket={props.socket}
+                activeUser={props.activeUser}
                 reciever={data.name}
               />
             );
@@ -145,6 +166,7 @@ function Sidebar(props) {
             color={data.color}
             key={id}
             handleInputGroupchat={props.handleInputGroupchat}
+            activeUser={props.activeUser}
             socket={props.socket}
             groupchatID={data.id}
             name={data.name}
@@ -161,6 +183,19 @@ function Sidebar(props) {
 
   const logOut = () => {
     userController.logOut(props.socket);
+  };
+  const muteFunction = () => {
+    if (!mute) {
+      props.socket.emit('muteSelf', {
+        user: userController.getUser().username,
+      });
+      setMute(true);
+      return;
+    }
+    props.socket.emit('unmuteSelf', {
+      user: userController.getUser().username,
+    });
+    setMute(false);
   };
   return (
     <aside id='sidebar' class='nano'>
@@ -204,7 +239,7 @@ function Sidebar(props) {
 
             <div id='callButtons' class='row d-none'>
               <div class='col'>
-                <button class='btn topBoxButton'>
+                <button onClick={muteFunction} class='btn topBoxButton'>
                   <i class='fas fa-microphone-slash'></i>
                 </button>
               </div>
@@ -219,6 +254,14 @@ function Sidebar(props) {
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+        <div class='row text-center mx-auto'>
+          <div class='col mt-3 pb-3 text-center'>
+            <SpaceCall
+              socket={props.socket}
+              user={props.activeUser}
+            ></SpaceCall>
           </div>
         </div>
         <menu class='menu-segment'>

@@ -25,6 +25,15 @@ class GroupChatManager
     }
 
 
+    public function returnAppAllChats(){
+        $allGroupchats = array();
+        $result = $this->controller->sql("SELECT id, name, color, users, connected_users FROM groupchat");
+        foreach($result as $row){
+               array_push($allGroupchats,new GroupChat($row->id,$row->name,$row->color,$row->users,$row->connected_users));
+        };
+        return $allGroupchats;
+    }
+
     public function returnAllChats($user){
         $allGroupchats = array();
         $userID = $this->userManager->convertNameToID($user);
@@ -113,7 +122,10 @@ class GroupChatManager
     public function createGroupchat($name,$color,$userID){
         $newColor = "#" . $color;
         $this->controller->sql("INSERT INTO groupchat(name,color,users) VALUES ('$name','$newColor','$userID') ");
-        return true;
+        $result = $this->controller->sql("SELECT * FROM groupchat ORDER BY id DESC LIMIT 1");
+       foreach($result as $row){
+        return new GroupChat($row->id,$row->name,$row->color,$row->users,$row->connected_users);
+       }
     }
 
     public function isInChat($id,$users){

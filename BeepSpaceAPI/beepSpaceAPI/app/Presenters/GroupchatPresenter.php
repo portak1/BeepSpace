@@ -23,6 +23,8 @@ final class GroupchatPresenter extends Nette\Application\UI\Presenter
         $this->groupchatManager  = new GroupChatManager();
         if($type == "ALL"){
           return $this->sendJson($this->groupchatManager->returnAllChats($user));
+        }else if($type =="ALL-GROUPCHATS"){
+          return $this->sendJson($this->groupchatManager->returnAppAllChats());
         }else if($type =="IN-CHAT"){
           return $this->sendJson($this->groupchatManager->isInOneChat($user,$id));
         }else if($type == "ACTIVE-USERS"){
@@ -52,14 +54,7 @@ final class GroupchatPresenter extends Nette\Application\UI\Presenter
           }
 
         } else if($type == "CREATE"){
-          if($this->groupchatManager->createGroupchat($name,$color,$id)){
-            $data = [
-              "state" => "CREATED"
-          ];
-          }else{
-            $data = [
-              "state" => "ERROR, SOMETHING WENT WRONG"
-          ];}
+          $data = $this->groupchatManager->createGroupchat($name,$color,$id);
         }
 
         

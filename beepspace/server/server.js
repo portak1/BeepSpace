@@ -2,17 +2,33 @@ const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
 const app = express();
+const axios = require('axios');
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
     origin: '*',
     methods: ['GET', 'POST'],
+    transports: ['websocket', 'polling'],
+    credentials: true,
   },
 });
 
+var users = [];
+var groupchats = [];
+
+axios
+  .get(
+    'https://beepspaceapi.cekuj.net/BeepSpaceAPI/beepSpaceAPI/www/Groupchat?type=ALL-GROUPCHATS'
+  )
+  .then((res) => {
+    groupchats = res.data;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+
 io.on('connection', function (socket) {
   socket.on('joinChanel', function (data) {
-    console.log('join channel ' + data.channelID);
     socket.join(data.channelID);
     socket.broadcast.emit('joinedChannel', {
       channelID: data.channelID,
@@ -23,13 +39,7 @@ io.on('connection', function (socket) {
       user: data.user,
     });
   });
-
-  socket.on('join-room', (room, id) => {
-    console.log(`socket ${id} has joined room ${room}`);
-  });
   socket.on('disconnectChanel', function (data) {
-    socket.disconnect(data.channelID);
-    console.log(data.user + ' disconnected from ' + data.channelID);
     socket.emit('disconnectedChanel', {
       channelID: data.channelID,
       user: data.user,
@@ -39,6 +49,7 @@ io.on('connection', function (socket) {
       user: data.user,
     });
   });
+
   socket.on('addChannel', (data) => {
     socket.broadcast.emit('addUserToGroupchat', {
       user: data.localUser,
@@ -46,6 +57,24 @@ io.on('connection', function (socket) {
     });
     socket.emit('addLocalChannel', {
       channel: data.channel,
+    });
+  });
+
+  socket.on('createGroupchat', (data) => {
+    if (!groupchats.some((item) => item.name == data.groupchatID)) {
+      groupchats.push({
+        id: data.groupchatID,
+        name: data.name,
+        color: data.color,
+        users: data.users,
+        connectedUsers: data.connectedUsers,
+      });
+      console.log(groupchats);
+    }
+    socket.broadcast.emit('groupchatCreated', {
+      name: data.name,
+      color: data.color,
+      id: data.id,
     });
   });
 
@@ -86,6 +115,9 @@ io.on('connection', function (socket) {
   });
 
   socket.on('userJoin', function (data) {
+    if (users.find((element) => element == data.user) == undefined) {
+      users.push(data.user);
+    }
     socket.broadcast.emit('clientOnline', {
       user: data.user,
     });
@@ -95,8 +127,6 @@ io.on('connection', function (socket) {
   });
 
   socket.on('message2', function (data) {
-    console.log(data);
-    console.log(socket.channel);
     socket.broadcast.emit('message2', {
       origin: data.origin,
       reciever: data.reciever,
@@ -115,6 +145,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('disconnectUser', function (data) {
+    users = users.filter((item) => item != data.user);
     socket.broadcast.emit('clientOffline', {
       user: data.user,
     });
@@ -122,6 +153,48 @@ io.on('connection', function (socket) {
       user: data.user,
     });
     socket.disconnect();
+  });
+
+  socket.on('joinSpace', (data) => {
+    socket.broadcast.emit('pickCall', {
+      name: data.user,
+    });
+
+    socket.broadcast.emit('pickCall', {
+      name: data.user,
+    });
+  });
+
+  socket.on('leaveSpace', (data) => {
+    socket.broadcast.emit('leaveCall', {
+      name: data.user,
+      belongsTo: data.connectTo,
+    });
+    socket.emit('leaveCall', {
+      name: data.user,
+      belongsTo: data.connectTo,
+    });
+  });
+  socket.on('muteSelf', (data) => {
+    socket.broadcast.emit('mute', {
+      name: data.user,
+      belongsTo: data.connectTo,
+    });
+    socket.emit('mute', {
+      name: data.user,
+      belongsTo: data.connectTo,
+    });
+  });
+
+  socket.on('unmuteSelf', (data) => {
+    socket.broadcast.emit('unmute', {
+      name: data.user,
+      belongsTo: data.connectTo,
+    });
+    socket.emit('unmute', {
+      name: data.user,
+      belongsTo: data.connectTo,
+    });
   });
 });
 

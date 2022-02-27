@@ -15,14 +15,11 @@ import NotificationsModal from './components/NotificationsModal';
 import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupchat';
 import ModalGroupchat from './components/smallComponents/modalGroupchat';
 import UserList from './components/UserList';
-import { enviroment } from './enviroments/enviroment';
-
 const requestHandler = new RequestHandler();
 const userController = new UserController();
 var messageController = null;
 
 var userHolder = '';
-var isGroupchat = false;
 var index = 0;
 let indexForRecieve = 1;
 var groupchatId;
@@ -31,7 +28,7 @@ function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io('http://' + enviroment.LOCAL_IP + ':3001/');
+  const socket = io('http://localhost:3001/');
   messageController = new MessageController(socket);
   socket.on('connect', () => {
     if (userController.isLoggedIn()) {
@@ -58,9 +55,10 @@ function App() {
   const [NModalShow, setNModalShow] = useState(false);
   const [inviteModalShow, setInviteModalShow] = useState(false);
   const [createModalShow, setCreateModalShow] = useState(false);
+  const [isGroupchat, setIsGroupchat] = useState(false);
   // function to handle sidebar user click
   const handleInputUser = (inputValue) => {
-    isGroupchat = false;
+    setIsGroupchat(false);
     setChatUser(inputValue);
     requestHandler.jSONrequester('Groupchat', [
       new ParameterHandler('type', 'REMOVE-ACTIVE-USER'),
@@ -166,7 +164,7 @@ function App() {
   });
 
   const handleInputGroupchat = (groupchatID, groupchatName) => {
-    isGroupchat = true;
+    setIsGroupchat(true);
     requestHandler.jSONrequester('Groupchat', [
       new ParameterHandler('type', 'REMOVE-ACTIVE-USER'),
       new ParameterHandler('name', userController.getUser().username),
@@ -260,6 +258,8 @@ function App() {
         socket={socket}
         handleInputUser={handleInputUser}
         handleInputGroupchat={handleInputGroupchat}
+        isGroupchat={isGroupchat}
+        activeUser={chatUser}
       ></Sidebar>
       <FriendModal
         closeModal={setModalState}
@@ -280,6 +280,7 @@ function App() {
       <ModalGroupchat
         closeModal={setCreateModalState}
         state={createModalShow}
+        socket={socket}
       />
     </div>
   );
