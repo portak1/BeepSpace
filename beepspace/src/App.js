@@ -2,7 +2,7 @@ import './App.css';
 import $ from 'jquery';
 import Sidebar from './components/sidebar';
 import ChatHandler from './Handlers/ChatHandler';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import UserController from './Controllers/UserController';
 import ParameterHandler from './Handlers/ParameterHandler';
 import RequestHandler from './Handlers/RequestHandler';
@@ -15,6 +15,7 @@ import NotificationsModal from './components/NotificationsModal';
 import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupchat';
 import ModalGroupchat from './components/smallComponents/modalGroupchat';
 import UserList from './components/UserList';
+import { enviroment } from './enviroments/enviroment';
 const requestHandler = new RequestHandler();
 const userController = new UserController();
 var messageController = null;
@@ -25,7 +26,7 @@ let indexForRecieve = 1;
 var groupchatId;
 var socket;
 if (userController.isLoggedIn()) {
-  socket = io('http://localhost:3001/');
+  socket = io('http://' + enviroment.LOCAL_IP + ':3001/');
 }
 
 function App() {
@@ -59,6 +60,39 @@ function App() {
   const [inviteModalShow, setInviteModalShow] = useState(false);
   const [createModalShow, setCreateModalShow] = useState(false);
   const [isGroupchat, setIsGroupchat] = useState(false);
+
+  useEffect(() => {
+    navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
+      var mediaRecorder = new MediaRecorder(data);
+      let chunks = [];
+      mediaRecorder.onstart = function (e) {
+        chunks = [];
+      };
+      mediaRecorder.ondataavailable = function (e) {
+        chunks.push(e.data);
+      };
+      mediaRecorder.onstop = function (e) {
+        var blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
+        socket.emit('radio', blob);
+      };
+
+      // Start recording
+      mediaRecorder.start();
+      // Stop recording after 5 seconds and broadcast it to server
+      setInterval(function () {
+        mediaRecorder.stop();
+        setTimeout(() => console.log(chunks), 10);
+        mediaRecorder.start();
+      }, 10);
+    });
+    socket.on('voice', function (arrayBuffer) {
+      var blob = new Blob([arrayBuffer], { type: 'audio/ogg; codecs=opus' });
+      var audio = document.createElement('audio');
+      audio.src = window.URL.createObjectURL(blob);
+      audio.play();
+    });
+  }, []);
+
   // function to handle sidebar user click
   const handleInputUser = (inputValue) => {
     setIsGroupchat(false);

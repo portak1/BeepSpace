@@ -35,17 +35,10 @@ function SidebarUser(props) {
       }
     });
     props.socket.on('unmute', (data) => {
-      console.log('unmute');
       if (data.name == props.reciever) {
         setMuted(false);
       }
     });
-
-    if (props.reciever == userController.getUser().username) {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
-        console.log(data);
-      });
-    }
   }, []);
 
   if (props.online == 1) {

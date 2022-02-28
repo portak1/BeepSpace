@@ -27,7 +27,6 @@ axios
   });
 
 io.on('connection', function (socket) {
-
   var currentUser;
 
   socket.on('joinChanel', function (data) {
@@ -85,9 +84,11 @@ io.on('connection', function (socket) {
     });
   });
 
-  socket.on("chatOpen", (data) => {
+  socket.on('chatOpen', (data) => {
     currentUser.activeChannel = '';
-    users[users.indexOf(users.find((element) => element.name == currentUser.name))].activeChannel = '';
+    users[
+      users.indexOf(users.find((element) => element.name == currentUser.name))
+    ].activeChannel = '';
   });
 
   socket.on('unfriend', (data) => {
@@ -125,26 +126,27 @@ io.on('connection', function (socket) {
       users.push({
         name: data.user,
         userID: socket.id,
-        activeChannel: ''
+        activeChannel: '',
       });
       currentUser = {
         name: data.user,
         userID: socket.id,
-        activeChannel: ''
+        activeChannel: '',
       };
     } else {
-      users[users.indexOf(users.find((element) => element.name == data.user))] = {
+      users[
+        users.indexOf(users.find((element) => element.name == data.user))
+      ] = {
         name: data.user,
         userID: socket.id,
-        activeChannel: ''
+        activeChannel: '',
       };
       currentUser = {
         name: data.user,
         userID: socket.id,
-        activeChannel: ''
+        activeChannel: '',
       };
     }
-    console.log(currentUser);
     socket.broadcast.emit('clientOnline', {
       user: data.user,
     });
@@ -155,12 +157,14 @@ io.on('connection', function (socket) {
 
   socket.on('message2', function (data) {
     if (users.some((element) => data.reciever == element.name)) {
-      socket.to(users.find((element) => data.reciever == element.name).userID).emit('message2', {
-        origin: data.origin,
-        reciever: data.reciever,
-        message: data.content,
-        index: data.index,
-      });
+      socket
+        .to(users.find((element) => data.reciever == element.name).userID)
+        .emit('message2', {
+          origin: data.origin,
+          reciever: data.reciever,
+          message: data.content,
+          index: data.index,
+        });
     }
   });
 
@@ -185,12 +189,20 @@ io.on('connection', function (socket) {
   });
 
   socket.on('joinSpace', (data) => {
+    currentUser.activeChannel = data.connectTo;
+    users[
+      users.indexOf(users.find((element) => element.name == currentUser.name))
+    ].activeChannel = data.connectTo;
     socket.broadcast.emit('pickCall', {
       name: data.user,
     });
-    currentUser.activeChannel = data.connectTo;
-    users[users.indexOf(users.find((element) => element.name == currentUser.name))].activeChannel = data.connectTo;
+    socket.emit('pickCall', {
+      name: data.user,
+    });
+  });
 
+  socket.on('radio', (data) => {
+    socket.broadcast.emit('voice', data);
   });
 
   socket.on('leaveSpace', (data) => {
@@ -204,8 +216,9 @@ io.on('connection', function (socket) {
     });
 
     currentUser.activeChannel = '';
-    users[users.indexOf(users.find((element) => element.name == currentUser.name))].activeChannel = '';
-
+    users[
+      users.indexOf(users.find((element) => element.name == currentUser.name))
+    ].activeChannel = '';
   });
   socket.on('muteSelf', (data) => {
     socket.broadcast.emit('mute', {
