@@ -67,7 +67,7 @@ function handleLogin(event) {
         $("#wrongCredetials").removeClass("fade");
         return;
     }
-    
+
     userController.logIn(response.name, response.email, response.number, response.birth, response.id);
 
 

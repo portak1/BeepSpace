@@ -35,6 +35,12 @@
   height: 100% !important;
   opacity: 0.6;
 }
+.wholeSidebarGroupchat {
+  margin-left: -50px !important;
+  padding-left: 30px;
+  margin-right: -20px !important;
+  border-bottom: 1px solid rgba(125, 125, 125, 0.156) !important;
+}
 
 html,
 body {

@@ -91,8 +91,9 @@ export default function SidebarGroupchat(props) {
     <div class='wholeSidebarGroupchat'>
       <li>
         <a href='#' style={{ color: props.color }} onClick={handleChange}>
-          {props.name}
-          <span></span>
+          <h4>
+            {props.name}
+          </h4>
         </a>
       </li>
       <div class='ml-3'>{activeUsers}</div>

@@ -15,7 +15,6 @@ const io = new Server(httpServer, {
 
 var users = [];
 var groupchats = [];
-
 axios
   .get(
     'https://beepspaceapi.cekuj.net/BeepSpaceAPI/beepSpaceAPI/www/Groupchat?type=ALL-GROUPCHATS'
@@ -28,6 +27,9 @@ axios
   });
 
 io.on('connection', function (socket) {
+
+  var currentUser;
+
   socket.on('joinChanel', function (data) {
     socket.join(data.channelID);
     socket.broadcast.emit('joinedChannel', {
@@ -69,7 +71,6 @@ io.on('connection', function (socket) {
         users: data.users,
         connectedUsers: data.connectedUsers,
       });
-      console.log(groupchats);
     }
     socket.broadcast.emit('groupchatCreated', {
       name: data.name,
@@ -82,6 +83,11 @@ io.on('connection', function (socket) {
     socket.emit('removeNotifications', {
       user: data.user,
     });
+  });
+
+  socket.on("chatOpen", (data) => {
+    currentUser.activeChannel = '';
+    users[users.indexOf(users.find((element) => element.name == currentUser.name))].activeChannel = '';
   });
 
   socket.on('unfriend', (data) => {
@@ -115,9 +121,30 @@ io.on('connection', function (socket) {
   });
 
   socket.on('userJoin', function (data) {
-    if (users.find((element) => element == data.user) == undefined) {
-      users.push(data.user);
+    if (!users.some((element) => element.name == data.user)) {
+      users.push({
+        name: data.user,
+        userID: socket.id,
+        activeChannel: ''
+      });
+      currentUser = {
+        name: data.user,
+        userID: socket.id,
+        activeChannel: ''
+      };
+    } else {
+      users[users.indexOf(users.find((element) => element.name == data.user))] = {
+        name: data.user,
+        userID: socket.id,
+        activeChannel: ''
+      };
+      currentUser = {
+        name: data.user,
+        userID: socket.id,
+        activeChannel: ''
+      };
     }
+    console.log(currentUser);
     socket.broadcast.emit('clientOnline', {
       user: data.user,
     });
@@ -127,12 +154,14 @@ io.on('connection', function (socket) {
   });
 
   socket.on('message2', function (data) {
-    socket.broadcast.emit('message2', {
-      origin: data.origin,
-      reciever: data.reciever,
-      message: data.content,
-      index: data.index,
-    });
+    if (users.some((element) => data.reciever == element.name)) {
+      socket.to(users.find((element) => data.reciever == element.name).userID).emit('message2', {
+        origin: data.origin,
+        reciever: data.reciever,
+        message: data.content,
+        index: data.index,
+      });
+    }
   });
 
   socket.on('userPause', function (data) {
@@ -159,10 +188,9 @@ io.on('connection', function (socket) {
     socket.broadcast.emit('pickCall', {
       name: data.user,
     });
+    currentUser.activeChannel = data.connectTo;
+    users[users.indexOf(users.find((element) => element.name == currentUser.name))].activeChannel = data.connectTo;
 
-    socket.broadcast.emit('pickCall', {
-      name: data.user,
-    });
   });
 
   socket.on('leaveSpace', (data) => {
@@ -174,6 +202,10 @@ io.on('connection', function (socket) {
       name: data.user,
       belongsTo: data.connectTo,
     });
+
+    currentUser.activeChannel = '';
+    users[users.indexOf(users.find((element) => element.name == currentUser.name))].activeChannel = '';
+
   });
   socket.on('muteSelf', (data) => {
     socket.broadcast.emit('mute', {

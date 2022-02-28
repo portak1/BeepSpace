@@ -23,12 +23,15 @@ var userHolder = '';
 var index = 0;
 let indexForRecieve = 1;
 var groupchatId;
+var socket;
+if (userController.isLoggedIn()) {
+  socket = io('http://localhost:3001/');
+}
 
 function App() {
   //check basic parameters for site
   checkIfReady();
   //connection to socket
-  const socket = io('http://localhost:3001/');
   messageController = new MessageController(socket);
   socket.on('connect', () => {
     if (userController.isLoggedIn()) {
@@ -109,7 +112,6 @@ function App() {
 
   //function for sending data to database and to socket
   const sendMessage = (content) => {
-    console.log('send: ' + messages);
     socket.emit('message2', {
       origin: userController.getUser().username,
       reciever: chatUser,
