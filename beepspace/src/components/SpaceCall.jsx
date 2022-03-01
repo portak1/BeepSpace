@@ -1,19 +1,24 @@
 import { useState } from "react";
 import UserController from "../Controllers/UserController";
+import useSound from 'use-sound';
+import joinSound from "../storage/sounds/JoinChannel.mp3";
 
 const userController = new UserController();
 
 export default function SpaceCall(props){
     const [connectedState,setConnectedState] = useState(false);
-
+    const [playJoin] = useSound(
+      joinSound
+    );
   
+    
     const joinSpace = () =>{
-      console.log(connectedState);
       if(!connectedState){
         props.socket.emit("joinSpace",{
           user: userController.getUser().username,
           connectTo: props.user
         });
+        playJoin();
         setConnectedState(true);
         return;
       }

@@ -2,7 +2,7 @@ import './App.css';
 import $ from 'jquery';
 import Sidebar from './components/sidebar';
 import ChatHandler from './Handlers/ChatHandler';
-import { useState, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import UserController from './Controllers/UserController';
 import ParameterHandler from './Handlers/ParameterHandler';
 import RequestHandler from './Handlers/RequestHandler';
@@ -18,6 +18,7 @@ import UserList from './components/UserList';
 import { enviroment } from './enviroments/enviroment';
 const requestHandler = new RequestHandler();
 const userController = new UserController();
+
 var messageController = null;
 
 var userHolder = '';
@@ -25,6 +26,8 @@ var index = 0;
 let indexForRecieve = 1;
 var groupchatId;
 var socket;
+let soundChunks = [];
+var soundBlob;
 if (userController.isLoggedIn()) {
   socket = io('http://' + enviroment.LOCAL_IP + ':3001/');
 }
@@ -60,37 +63,76 @@ function App() {
   const [inviteModalShow, setInviteModalShow] = useState(false);
   const [createModalShow, setCreateModalShow] = useState(false);
   const [isGroupchat, setIsGroupchat] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [muted, setMuted] = useState(false);
+  const mutedRef = useRef(muted);
+  const isConnectedRef = useRef(isConnected);
+  isConnectedRef.current = isConnected;
+  mutedRef.current = muted;
 
   useEffect(() => {
-    console.log(process.env);
     navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
       var mediaRecorder = new MediaRecorder(data);
-      let chunks = [];
+
       mediaRecorder.onstart = function (e) {
-        chunks = [];
+        soundChunks = [];
       };
       mediaRecorder.ondataavailable = function (e) {
-        chunks.push(e.data);
+        if (isConnectedRef.current && !mutedRef.current) {
+          soundChunks.push(e.data);
+        } else {
+          soundChunks = [];
+        }
       };
       mediaRecorder.onstop = function (e) {
-        var blob = new Blob(chunks, { type: 'audio/ogg; codecs=opus' });
-        socket.emit('radio', blob);
+        if (isConnectedRef.current && !mutedRef.current) {
+          console.log('test');
+          var blob = new Blob(soundChunks, { type: 'audio/ogg; codecs=opus' });
+          socket.emit('radio', blob);
+        }
       };
 
       // Start recording
       mediaRecorder.start();
-      // Stop recording after 5 seconds and broadcast it to server
       setInterval(function () {
-        mediaRecorder.stop();
-        setTimeout(() => console.log(chunks), 10);
-        mediaRecorder.start();
-      }, 10);
+        if (isConnectedRef.current && !mutedRef.current) {
+          mediaRecorder.stop();
+          mediaRecorder.start();
+        }
+      }, 250);
     });
     socket.on('voice', function (arrayBuffer) {
-      var blob = new Blob([arrayBuffer], { type: 'audio/ogg; codecs=opus' });
-      var audio = document.createElement('audio');
-      audio.src = window.URL.createObjectURL(blob);
-      audio.play();
+      if (isConnectedRef.current) {
+        soundBlob = new Blob([arrayBuffer], { type: 'audio/ogg; codecs=opus' });
+        var audio = document.createElement('audio');
+        audio.src = window.URL.createObjectURL(soundBlob);
+        audio.play();
+      }
+    });
+
+    socket.on('pickCall', (data) => {
+      if (data.name == userController.getUser().username) {
+        soundBlob = null;
+        setIsConnected(true);
+      }
+    });
+    socket.on('leaveCall', (data) => {
+      if (data.name == userController.getUser().username) {
+        soundBlob = null;
+        setIsConnected(false);
+      }
+    });
+    socket.on('mute', (data) => {
+      if (data.name == userController.getUser().username) {
+        soundBlob = null;
+        setMuted(true);
+      }
+    });
+    socket.on('unmute', (data) => {
+      if (data.name == userController.getUser().username) {
+        soundBlob = null;
+        setMuted(false);
+      }
     });
   }, []);
 

@@ -27,9 +27,29 @@ axios
   });
 
 io.on('connection', function (socket) {
-  var currentUser;
+  var currentUser = {
+    name: '',
+    userID: '',
+    activeChannel: '',
+  };
 
   socket.on('joinChanel', function (data) {
+    socket.broadcast.emit('leaveCall', {
+      name: data.user,
+      belongsTo: data.connectTo,
+    });
+    socket.emit('leaveCall', {
+      name: data.user,
+      belongsTo: data.connectTo,
+    });
+
+    if (currentUser.activeChannel != '') {
+      socket.leave(currentUser.activeChannel);
+    }
+    currentUser.activeChannel = '';
+    users[
+      users.indexOf(users.find((element) => element.name == currentUser.name))
+    ].activeChannel = '';
     socket.join(data.channelID);
     socket.broadcast.emit('joinedChannel', {
       channelID: data.channelID,
@@ -61,6 +81,10 @@ io.on('connection', function (socket) {
     });
   });
 
+  socket.on('radio', (data) => {
+    socket.to(currentUser.activeChannel).emit('voice', data);
+  });
+
   socket.on('createGroupchat', (data) => {
     if (!groupchats.some((item) => item.name == data.groupchatID)) {
       groupchats.push({
@@ -85,7 +109,11 @@ io.on('connection', function (socket) {
   });
 
   socket.on('chatOpen', (data) => {
+    if (currentUser.activeChannel != '') {
+      socket.leave(currentUser.activeChannel);
+    }
     currentUser.activeChannel = '';
+    console.log(users);
     users[
       users.indexOf(users.find((element) => element.name == currentUser.name))
     ].activeChannel = '';
@@ -190,6 +218,7 @@ io.on('connection', function (socket) {
 
   socket.on('joinSpace', (data) => {
     currentUser.activeChannel = data.connectTo;
+    socket.join(currentUser.activeChannel);
     users[
       users.indexOf(users.find((element) => element.name == currentUser.name))
     ].activeChannel = data.connectTo;
@@ -198,11 +227,8 @@ io.on('connection', function (socket) {
     });
     socket.emit('pickCall', {
       name: data.user,
+      connectTo: data.connectTo,
     });
-  });
-
-  socket.on('radio', (data) => {
-    socket.broadcast.emit('voice', data);
   });
 
   socket.on('leaveSpace', (data) => {
@@ -215,6 +241,9 @@ io.on('connection', function (socket) {
       belongsTo: data.connectTo,
     });
 
+    if (currentUser.activeChannel != '') {
+      socket.leave(currentUser.activeChannel);
+    }
     currentUser.activeChannel = '';
     users[
       users.indexOf(users.find((element) => element.name == currentUser.name))
