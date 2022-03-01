@@ -62,6 +62,7 @@ function App() {
   const [isGroupchat, setIsGroupchat] = useState(false);
 
   useEffect(() => {
+    console.log(process.env);
     navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
       var mediaRecorder = new MediaRecorder(data);
       let chunks = [];
