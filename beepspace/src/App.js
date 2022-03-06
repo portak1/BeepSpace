@@ -29,7 +29,9 @@ var socket;
 let soundChunks = [];
 var soundBlob;
 if (userController.isLoggedIn()) {
-  socket = io('http://' + enviroment.LOCAL_IP + ':3001/');
+  socket = io(
+    'https://3001-5ea33ff2-d036-412a-b418-36b590421303.cs-europe-west4-bhnf.cloudshell.dev/'
+  );
 }
 
 function App() {
