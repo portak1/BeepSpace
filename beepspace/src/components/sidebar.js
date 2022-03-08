@@ -32,6 +32,10 @@ function Sidebar(props) {
   ]);
 
   useEffect(() => {
+    props.socket.on('kick', () => {
+      userController.logOut(props.socket);
+    })
+
     props.socket.on('groupchatCreated', (data) => {
       if (data.id == userController.getUser().id) {
         groupChatRendered = !groupChatRendered;

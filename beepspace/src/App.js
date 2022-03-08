@@ -29,10 +29,9 @@ var socket;
 let soundChunks = [];
 var soundBlob;
 if (userController.isLoggedIn()) {
-  socket = io(
-    'https://3001-5ea33ff2-d036-412a-b418-36b590421303.cs-europe-west4-bhnf.cloudshell.dev/'
-  );
+  socket = io('http://' + enviroment.LOCAL_IP + ':3001/');
 }
+
 
 function App() {
   //check basic parameters for site
@@ -43,12 +42,14 @@ function App() {
     if (userController.isLoggedIn()) {
       socket.emit('userJoin', {
         user: userController.getUser().username,
+        id: userController.getUser().id
       });
       requestHandler.jSONrequester('User', [
         new ParameterHandler('type', 'SET-ONLINE'),
         new ParameterHandler('id', userController.getUser().id),
       ]);
     }
+
   });
   socket.on('disconnect', () => {
     requestHandler.jSONrequester('User', [
@@ -73,6 +74,10 @@ function App() {
   mutedRef.current = muted;
 
   useEffect(() => {
+
+    setInterval(() => {
+      socket.emit('heartbeat');
+    }, 4999);
     navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
       var mediaRecorder = new MediaRecorder(data);
 
@@ -103,6 +108,10 @@ function App() {
         }
       }, 250);
     });
+
+
+
+
     socket.on('voice', function (arrayBuffer) {
       if (isConnectedRef.current) {
         soundBlob = new Blob([arrayBuffer], { type: 'audio/ogg; codecs=opus' });
@@ -172,6 +181,7 @@ function App() {
   window.onfocus = function () {
     socket.emit('userJoin', {
       user: userController.getUser().username,
+      id: userController.getUser().id
     });
     requestHandler.jSONrequester('User', [
       new ParameterHandler('type', 'SET-ONLINE'),

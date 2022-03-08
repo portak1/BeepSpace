@@ -26,7 +26,6 @@ export default function SidebarGroupchat(props) {
           socket={props.socket}
           activeUser={props.activeUser}
           reciever={data.name}
-          activeUser={props.activeUser}
         />
       );
     });
