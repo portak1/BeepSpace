@@ -28,37 +28,49 @@ axios
 
 setInterval(() => {
   console.log(users);
-  users.forEach(element => {
+  users.forEach((element) => {
     switch (element.status) {
       case 'CONNECTED':
-        element.status = 'QUESTIONING'
+        element.status = 'QUESTIONING';
         break;
 
       case 'QUESTIONING':
-        element.status = 'INTERROGATION'
+        element.status = 'INTERROGATION';
         break;
 
       case 'INTERROGATION':
-        users.splice(users.indexOf(users.find((item) => item.userID == element.userID)), 1);
+        users.splice(
+          users.indexOf(users.find((item) => item.userID == element.userID)),
+          1
+        );
         io.emit('disconnectedChanel', {
           channelID: element.activeChannel,
-          user: element.name
+          user: element.name,
+        });
+
+        io.emit('leaveCall', {
+          name: element.name,
         });
 
         io.emit('clientOffline', {
-          user: element.name
+          user: element.name,
         });
         axios
           .get(
-            'https://beepspaceapi.cekuj.net/BeepSpaceAPI/beepSpaceAPI/www/User?type=SET-OFFLINE&id=' + element.id
-          ).then(() => {
+            'https://beepspaceapi.cekuj.net/BeepSpaceAPI/beepSpaceAPI/www/User?type=SET-OFFLINE&id=' +
+              element.id
+          )
+          .then(() => {
             axios
               .get(
-                'https://beepspaceapi.cekuj.net/BeepSpaceAPI/beepSpaceAPI/www/Groupchat?type=REMOVE-ACTIVE-USER&name=' + element.name
-              ).catch((error) => {
+                'https://beepspaceapi.cekuj.net/BeepSpaceAPI/beepSpaceAPI/www/Groupchat?type=REMOVE-ACTIVE-USER&name=' +
+                  element.name
+              )
+              .catch((error) => {
                 console.error(error);
               });
-          }).catch((error) => {
+          })
+          .catch((error) => {
             console.error(error);
           });
         break;
@@ -66,15 +78,14 @@ setInterval(() => {
         break;
     }
   });
-}, 10000);
-
+}, 1000);
 
 io.on('connection', function (socket) {
   var currentUser = {
     name: '',
     userID: '',
     activeChannel: '',
-    status: ''
+    status: '',
   };
 
   socket.on('joinChanel', function (data) {
@@ -91,9 +102,16 @@ io.on('connection', function (socket) {
       socket.leave(currentUser.activeChannel);
     }
     currentUser.activeChannel = data.channelID;
-    users[
-      users.indexOf(users.find((element) => element.name == currentUser.name))
-    ].activeChannel = data.channelID;
+    if (
+      users[
+        users.indexOf(users.find((element) => element.name == currentUser.name))
+      ]
+    ) {
+      users[
+        users.indexOf(users.find((element) => element.name == currentUser.name))
+      ].activeChannel = data.channelID;
+    }
+
     socket.join(data.channelID);
     socket.broadcast.emit('joinedChannel', {
       channelID: data.channelID,
@@ -154,18 +172,20 @@ io.on('connection', function (socket) {
     if (currentUser.activeChannel != '') {
       socket.leave(currentUser.activeChannel);
     }
-    if (users[
-      users.indexOf(users.find((element) => element.name == data.user))
-    ]) {
-      currentUser.activeChannel = users[
-        users.indexOf(users.find((element) => element.name == data.user))
-      ].activeChannel;
+    if (
+      users[users.indexOf(users.find((element) => element.name == data.user))]
+    ) {
+      currentUser.activeChannel =
+        users[
+          users.indexOf(users.find((element) => element.name == data.user))
+        ].activeChannel;
       console.log(users);
       users[
         users.indexOf(users.find((element) => element.name == currentUser.name))
-      ].activeChannel = users[
-        users.indexOf(users.find((element) => element.name == data.user))
-      ].userID;
+      ].activeChannel =
+        users[
+          users.indexOf(users.find((element) => element.name == data.user))
+        ].userID;
     }
   });
 
@@ -200,12 +220,22 @@ io.on('connection', function (socket) {
   });
 
   socket.on('heartbeat', () => {
-    if (users[users.indexOf(users.find((element) => element.userID == currentUser.userID))]) {
-      users[users.indexOf(users.find((element) => element.userID == currentUser.userID))].status = 'CONNECTED';
+    if (
+      users[
+        users.indexOf(
+          users.find((element) => element.userID == currentUser.userID)
+        )
+      ]
+    ) {
+      users[
+        users.indexOf(
+          users.find((element) => element.userID == currentUser.userID)
+        )
+      ].status = 'CONNECTED';
     } else {
-      socket.emit("kick");
+      socket.emit('kick');
     }
-  })
+  });
 
   socket.on('userJoin', function (data) {
     if (!users.some((element) => element.name == data.user)) {
@@ -214,15 +244,14 @@ io.on('connection', function (socket) {
         id: data.id,
         userID: socket.id,
         activeChannel: '',
-        status: 'CONNECTED'
+        status: 'CONNECTED',
       });
       currentUser = {
         name: data.user,
         id: data.id,
         userID: socket.id,
         activeChannel: '',
-        status: 'CONNECTED'
-
+        status: 'CONNECTED',
       };
     } else {
       users[
@@ -232,14 +261,14 @@ io.on('connection', function (socket) {
         id: data.id,
         userID: socket.id,
         activeChannel: '',
-        status: 'CONNECTED'
+        status: 'CONNECTED',
       };
       currentUser = {
         name: data.user,
         id: data.id,
         userID: socket.id,
         activeChannel: '',
-        status: 'CONNECTED'
+        status: 'CONNECTED',
       };
     }
     socket.broadcast.emit('clientOnline', {

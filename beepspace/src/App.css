@@ -35,6 +35,18 @@
   height: 100% !important;
   opacity: 0.6;
 }
+
+a,
+div,
+button {
+  user-drag: none !important;
+  -webkit-user-select: none; /* Safari, Chrome */
+  -webkit-user-drag: none;
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE */
+  user-select: none; /* CSS3 */
+}
 .wholeSidebarGroupchat {
   margin-left: -50px !important;
   padding-left: 30px;

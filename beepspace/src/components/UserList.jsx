@@ -6,30 +6,32 @@ import UserListUser from "./UserListUser";
 
 const userController = new UserController();
 const requestHandler = new RequestHandler("http://localhost/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/");
-var groupchat = null;
 var listbarUsers = [];
 export default function UserList(props) {
-
-
-
   const [listbarUsers, setListbarUsers] = useState();
 
 
   useEffect(() => {
-    groupchat = requestHandler.jSONrequester("Groupchat", [
+    var userArray;
+    requestHandler.jSONrequester("Groupchat", [
       new ParameterHandler("type", "GET-GROUPCHAT"),
       new ParameterHandler("id", props.groupchatID)
-    ])
+    ]).then((data)=>{
+      userArray = Array.from(data.users.split(","));
+    }).then(()=>{
+      Promise.all(userArray.map((data, id) => {
+        return requestHandler.jSONrequester("User", [
+          new ParameterHandler("type", "ONE-BY-ID"),
+          new ParameterHandler("id", data)
+        ]).then((data)=>{
+         return <UserListUser handleInputUser={props.handleInputUser} key={id} user={data.name} />
+        })
+      })).then((data)=>{
+        setListbarUsers(data);
+      })
+    });
 
-    const userArray = Array.from(groupchat.users.split(","));
-
-    setListbarUsers(userArray.map((data, id) => {
-      var proxUser = requestHandler.jSONrequester("User", [
-        new ParameterHandler("type", "ONE-BY-ID"),
-        new ParameterHandler("id", data)
-      ]);
-      return <UserListUser handleInputUser={props.handleInputUser} key={id} user={proxUser.name} />
-    }))
+    
   }, [props.groupchatID])
 
 

@@ -32,7 +32,6 @@ if (userController.isLoggedIn()) {
   socket = io('http://' + enviroment.LOCAL_IP + ':3001/');
 }
 
-
 function App() {
   //check basic parameters for site
   checkIfReady();
@@ -42,14 +41,13 @@ function App() {
     if (userController.isLoggedIn()) {
       socket.emit('userJoin', {
         user: userController.getUser().username,
-        id: userController.getUser().id
+        id: userController.getUser().id,
       });
       requestHandler.jSONrequester('User', [
         new ParameterHandler('type', 'SET-ONLINE'),
         new ParameterHandler('id', userController.getUser().id),
       ]);
     }
-
   });
   socket.on('disconnect', () => {
     requestHandler.jSONrequester('User', [
@@ -60,7 +58,7 @@ function App() {
 
   //useStates for chat and chat settings
   const [chatUser, setChatUser] = useState();
-  const [messages, setMessages] = useState();
+  const [messages, setMessages] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [NModalShow, setNModalShow] = useState(false);
   const [inviteModalShow, setInviteModalShow] = useState(false);
@@ -74,10 +72,9 @@ function App() {
   mutedRef.current = muted;
 
   useEffect(() => {
-
-    setInterval(() => {
+    setInterval(async () => {
       socket.emit('heartbeat');
-    }, 4999);
+    }, 249);
     navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
       var mediaRecorder = new MediaRecorder(data);
 
@@ -108,9 +105,6 @@ function App() {
         }
       }, 250);
     });
-
-
-
 
     socket.on('voice', function (arrayBuffer) {
       if (isConnectedRef.current) {
@@ -181,7 +175,7 @@ function App() {
   window.onfocus = function () {
     socket.emit('userJoin', {
       user: userController.getUser().username,
-      id: userController.getUser().id
+      id: userController.getUser().id,
     });
     requestHandler.jSONrequester('User', [
       new ParameterHandler('type', 'SET-ONLINE'),
@@ -219,12 +213,16 @@ function App() {
   if (userHolder != chatUser && chatUser) {
     userHolder = chatUser;
     if (isGroupchat) {
-      setMessages(
-        getChatMessages(userController.getUser().username, groupchatId)
+      getChatMessages(userController.getUser().username, groupchatId).then(
+        (data) => {
+          setMessages(data);
+        }
       );
     } else {
       groupchatId = null;
-      setMessages(getMessages(userController.getUser().username, chatUser));
+      getMessages(userController.getUser().username, chatUser).then((data) => {
+        setMessages(data);
+      });
     }
   }
 
@@ -388,22 +386,28 @@ function checkIfReady() {
 }
 
 function getChatMessages(user, groupchatID) {
-  return messageController.returnAllMesages(
-    requestHandler.jSONrequester('Message', [
+  return requestHandler
+    .jSONrequester('Message', [
       new ParameterHandler('user', user),
       new ParameterHandler('chatId', groupchatID),
       new ParameterHandler('isChatMessage', 1),
     ])
-  );
+    .then((data) => {
+      return messageController.returnAllMesages(data).then((data) => {
+        return data;
+      });
+    });
 }
 
 function getMessages(user, reciever) {
-  return messageController.returnAllMesages(
-    requestHandler.jSONrequester('Message', [
+  return requestHandler
+    .jSONrequester('Message', [
       new ParameterHandler('user', user),
       new ParameterHandler('reciever', reciever),
     ])
-  );
+    .then((data) => {
+      return messageController.returnAllMesages(data);
+    });
 }
 
 $(document).ready(function ($) {

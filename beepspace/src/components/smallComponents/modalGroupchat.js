@@ -19,23 +19,25 @@ export default function ModalGroupchat(params) {
       return;
     }
     var currentColor = color.current.value.replace('#', '');
-    let result = requestHandler.jSONrequester('Groupchat', [
-      new ParameterHandler('type', 'CREATE'),
-      new ParameterHandler('name', name.current.value),
-      new ParameterHandler('color', currentColor),
-      new ParameterHandler('id', userController.getUser().id),
-    ]);
-    console.log(result);
-    params.socket.emit('createGroupchat', {
-      name: name.current.value,
-      color: currentColor,
-      id: userController.getUser().id,
-      groupchatID: result.id,
-      users: result.users,
-      connectedUsers: result.connectedUsers,
-    });
-    name.current.value = '';
-    color.current.value = '';
+    requestHandler
+      .jSONrequester('Groupchat', [
+        new ParameterHandler('type', 'CREATE'),
+        new ParameterHandler('name', name.current.value),
+        new ParameterHandler('color', currentColor),
+        new ParameterHandler('id', userController.getUser().id),
+      ])
+      .then((data) => {
+        params.socket.emit('createGroupchat', {
+          name: name.current.value,
+          color: currentColor,
+          id: userController.getUser().id,
+          groupchatID: data.id,
+          users: data.users,
+          connectedUsers: data.connectedUsers,
+        });
+        name.current.value = '';
+        color.current.value = '';
+      });
   };
 
   return (

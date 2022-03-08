@@ -8,12 +8,38 @@ import { useState, useRef } from 'react';
 const userController = new UserController();
 
 export default function SidebarGroupchat(props) {
+  useEffect(() => {
+    props.socket.on('joinedChannel', (data) => {
+      joinChannel(data);
+    });
+    props.socket.on('disconnectedChanel', function (data) {
+      setActiveUsers(
+        activeUsersRef.current.filter((item) => {
+          return item.props.reciever != data.user;
+        })
+      );
+    });
+    let cancel = false;
+    requestHandler
+      .jSONrequester('Groupchat', [
+        new ParameterHandler('type', 'ACTIVE-USERS'),
+        new ParameterHandler('id', props.groupchatID),
+      ])
+      .then((data) => {
+        if (cancel) return;
+        setActiveUsers(generateArray(data));
+      });
+    return () => {
+      cancel = true;
+    };
+  }, []);
+
   var rendered = false;
   const requestHandler = new RequestHandler();
-  const proxArr = requestHandler.jSONrequester('Groupchat', [
-    new ParameterHandler('type', 'ACTIVE-USERS'),
-    new ParameterHandler('id', props.groupchatID),
-  ]);
+
+  const [activeUsers, setActiveUsers] = useState([]);
+  const activeUsersRef = useRef(activeUsers);
+  activeUsersRef.current = activeUsers;
 
   const generateArray = (arr) => {
     return arr.map((data, id) => {
@@ -30,21 +56,6 @@ export default function SidebarGroupchat(props) {
       );
     });
   };
-  const [activeUsers, setActiveUsers] = useState(generateArray(proxArr));
-  const activeUsersRef = useRef(activeUsers);
-  activeUsersRef.current = activeUsers;
-  useEffect(() => {
-    props.socket.on('joinedChannel', (data) => {
-      joinChannel(data);
-    });
-    props.socket.on('disconnectedChanel', function (data) {
-      setActiveUsers(
-        activeUsersRef.current.filter((item) => {
-          return item.props.reciever != data.user;
-        })
-      );
-    });
-  }, []);
 
   const joinChannel = (data) => {
     if (data.channelID == props.name) {
@@ -90,9 +101,7 @@ export default function SidebarGroupchat(props) {
     <div class='wholeSidebarGroupchat'>
       <li>
         <a href='#' style={{ color: props.color }} onClick={handleChange}>
-          <h4>
-            {props.name}
-          </h4>
+          <h4>{props.name}</h4>
         </a>
       </li>
       <div class='ml-3'>{activeUsers}</div>
