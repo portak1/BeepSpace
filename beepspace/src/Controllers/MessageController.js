@@ -69,24 +69,26 @@ class MessageController extends React.Component {
       new ParameterHandler('date', new Date()),
     ]);
 
-    this.requestHandler.jSONrequester('Notifications', [
-      new ParameterHandler('type', 'CREATE'),
-      new ParameterHandler('user', this.userController.getUser().username),
-      new ParameterHandler('reciever', reciever),
-      new ParameterHandler('date', new Date()),
-      new ParameterHandler('content', content),
-      new ParameterHandler('addNotification', 0),
-      new ParameterHandler('groupchatID', 0),
-    ]);
-
-    this.socket.emit('notification', {
-      reciever: reciever,
-      origin: this.userController.getUser().username,
-      type: 'message',
-      content: content,
-      date: new Date(),
-      groupchatID: null,
-    });
+    this.requestHandler
+      .jSONrequester('Notifications', [
+        new ParameterHandler('type', 'CREATE'),
+        new ParameterHandler('user', this.userController.getUser().username),
+        new ParameterHandler('reciever', reciever),
+        new ParameterHandler('date', new Date()),
+        new ParameterHandler('content', content),
+        new ParameterHandler('addNotification', 0),
+        new ParameterHandler('groupchatID', 0),
+      ])
+      .then(() => {
+        this.socket.emit('notification', {
+          reciever: reciever,
+          origin: this.userController.getUser().username,
+          type: 'message',
+          content: content,
+          date: new Date(),
+          groupchatID: null,
+        });
+      });
   }
 
   sendGroupchatMessage(content, chatId) {

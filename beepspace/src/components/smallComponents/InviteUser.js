@@ -22,7 +22,6 @@ export default function InviteUser(params) {
         new ParameterHandler('groupchatID', params.groupchatID),
       ])
       .then((data) => {
-        console.log(data.state);
         if (data.state == 'sent') {
           params.socket.emit('notification', {
             reciever: params.name,

@@ -96,20 +96,17 @@ function App() {
         if (isConnectedRef.current && !mutedRef.current) {
           if (mediaRecorder.state == 'inactive') {
             mediaRecorder.start();
-            setTimeout(() => {
-
-            }, 250);
+            setTimeout(() => {}, 500);
           }
 
           mediaRecorder.stop();
           mediaRecorder.start();
         } else {
-          console.log(mediaRecorder.state);
           if (mediaRecorder.state == 'recording') {
             mediaRecorder.stop();
           }
         }
-      }, 250);
+      }, 500);
     });
 
     socket.on('voice', function (arrayBuffer) {
@@ -260,27 +257,31 @@ function App() {
 
   const handleInputGroupchat = (groupchatID, groupchatName) => {
     setIsGroupchat(true);
-    requestHandler.jSONrequester('Groupchat', [
-      new ParameterHandler('type', 'REMOVE-ACTIVE-USER'),
-      new ParameterHandler('name', userController.getUser().username),
-    ]).then(() => {
-      groupchatId = groupchatID;
-      setChatUser(groupchatName);
-      requestHandler.jSONrequester('Groupchat', [
-        new ParameterHandler('type', 'ADD-ACTIVE-USER'),
-        new ParameterHandler('id', groupchatID),
+    requestHandler
+      .jSONrequester('Groupchat', [
+        new ParameterHandler('type', 'REMOVE-ACTIVE-USER'),
         new ParameterHandler('name', userController.getUser().username),
-      ]).then(() => {
-        socket.emit('disconnectChanel', {
-          channelID: groupchatName,
-          user: userController.getUser().username,
-        });
-        socket.emit('joinChanel', {
-          channelID: groupchatName,
-          user: userController.getUser().username,
-        });
-      })
-    })
+      ])
+      .then(() => {
+        groupchatId = groupchatID;
+        setChatUser(groupchatName);
+        requestHandler
+          .jSONrequester('Groupchat', [
+            new ParameterHandler('type', 'ADD-ACTIVE-USER'),
+            new ParameterHandler('id', groupchatID),
+            new ParameterHandler('name', userController.getUser().username),
+          ])
+          .then(() => {
+            socket.emit('disconnectChanel', {
+              channelID: groupchatName,
+              user: userController.getUser().username,
+            });
+            socket.emit('joinChanel', {
+              channelID: groupchatName,
+              user: userController.getUser().username,
+            });
+          });
+      });
   };
 
   const renderChat = () => {
