@@ -75,6 +75,7 @@ function App() {
     setInterval(async () => {
       socket.emit('heartbeat');
     }, 249);
+    console.log('init');
     navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
       var mediaRecorder = new MediaRecorder(data);
 
@@ -82,26 +83,31 @@ function App() {
         soundChunks = [];
       };
       mediaRecorder.ondataavailable = function (e) {
-        if (isConnectedRef.current && !mutedRef.current) {
-          soundChunks.push(e.data);
-        } else {
-          soundChunks = [];
-        }
+        soundChunks.push(e.data);
       };
       mediaRecorder.onstop = function (e) {
-        if (isConnectedRef.current && !mutedRef.current) {
-          console.log('test');
-          var blob = new Blob(soundChunks, { type: 'audio/ogg; codecs=opus' });
-          socket.emit('radio', blob);
-        }
+        var blob = new Blob(soundChunks, { type: 'audio/ogg; codecs=opus' });
+        socket.emit('radio', blob);
       };
 
       // Start recording
       mediaRecorder.start();
       setInterval(function () {
         if (isConnectedRef.current && !mutedRef.current) {
+          if (mediaRecorder.state == 'inactive') {
+            mediaRecorder.start();
+            setTimeout(() => {
+
+            }, 250);
+          }
+
           mediaRecorder.stop();
           mediaRecorder.start();
+        } else {
+          console.log(mediaRecorder.state);
+          if (mediaRecorder.state == 'recording') {
+            mediaRecorder.stop();
+          }
         }
       }, 250);
     });
@@ -257,23 +263,24 @@ function App() {
     requestHandler.jSONrequester('Groupchat', [
       new ParameterHandler('type', 'REMOVE-ACTIVE-USER'),
       new ParameterHandler('name', userController.getUser().username),
-    ]);
-    groupchatId = groupchatID;
-    setChatUser(groupchatName);
-    requestHandler.jSONrequester('Groupchat', [
-      new ParameterHandler('type', 'ADD-ACTIVE-USER'),
-      new ParameterHandler('id', groupchatID),
-      new ParameterHandler('name', userController.getUser().username),
-    ]);
-
-    socket.emit('disconnectChanel', {
-      channelID: groupchatName,
-      user: userController.getUser().username,
-    });
-    socket.emit('joinChanel', {
-      channelID: groupchatName,
-      user: userController.getUser().username,
-    });
+    ]).then(() => {
+      groupchatId = groupchatID;
+      setChatUser(groupchatName);
+      requestHandler.jSONrequester('Groupchat', [
+        new ParameterHandler('type', 'ADD-ACTIVE-USER'),
+        new ParameterHandler('id', groupchatID),
+        new ParameterHandler('name', userController.getUser().username),
+      ]).then(() => {
+        socket.emit('disconnectChanel', {
+          channelID: groupchatName,
+          user: userController.getUser().username,
+        });
+        socket.emit('joinChanel', {
+          channelID: groupchatName,
+          user: userController.getUser().username,
+        });
+      })
+    })
   };
 
   const renderChat = () => {
