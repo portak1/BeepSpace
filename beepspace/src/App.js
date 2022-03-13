@@ -15,7 +15,6 @@ import NotificationsModal from './components/NotificationsModal';
 import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupchat';
 import ModalGroupchat from './components/smallComponents/modalGroupchat';
 import UserList from './components/UserList';
-import { enviroment } from './enviroments/enviroment';
 const requestHandler = new RequestHandler();
 const userController = new UserController();
 
@@ -29,7 +28,7 @@ var socket;
 let soundChunks = [];
 var soundBlob;
 if (userController.isLoggedIn()) {
-  socket = io('http://' + enviroment.LOCAL_IP + ':3001/');
+  socket = io('https://beepspace-app.ey.r.appspot.com/');
 }
 
 function App() {

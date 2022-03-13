@@ -3,13 +3,6 @@ import React from 'react';
 import { enviroment } from '../enviroments/enviroment';
 
 class RequestHandler extends React.Component {
-  url = 'http://10.20.9.89/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/';
-  pcUrl =
-    'http://10.0.2.15/githubProjects/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/';
-  homeUrl = 'http://10.0.2.157/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/';
-  janickaUrl =
-    'http://192.168.0.31/Github/BeepSpace/BeepSpaceAPI/beepSpaceAPI/www/';
-
   constructor() {
     super();
   }
