@@ -14,14 +14,14 @@ export default function NotificationsModal(params) {
   notificationsRef.current = notifications;
   const removeNotification = (key) => {
     setNotifications(
-      notificationsRef.current.filter((item) => {
+      notificationsRef.current?.filter((item) => {
         return item.props.notId != key;
       })
     );
   };
   const removeNotifacionForUser = (username) => {
     setNotifications(
-      notificationsRef.current.filter((item) => {
+      notificationsRef.current?.filter((item) => {
         if (item.props.type == 'message' && item.props.user == username) {
           console.log(item.props);
           requestHandler.jSONrequester('Notifications', [
@@ -37,7 +37,7 @@ export default function NotificationsModal(params) {
   useEffect(() => {
     requestHandler
       .jSONrequester('Notifications', [
-        new ParameterHandler('type', 'GET'),
+        new ParameterHandler('type', 'GETNOTIF'),
         new ParameterHandler('user', userController.getUser().username),
       ])
       .then((resultData) => {
@@ -89,7 +89,7 @@ export default function NotificationsModal(params) {
       if (data.reciever == userController.getUser().username) {
         requestHandler
           .jSONrequester('Notifications', [
-            new ParameterHandler('type', 'GET'),
+            new ParameterHandler('type', 'GETNOTIF'),
             new ParameterHandler('user', userController.getUser().username),
           ])
           .then((resultData) => {

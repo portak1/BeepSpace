@@ -5,6 +5,7 @@ declare(strict_types=1);
 use DatabaseController as Controller;
 use UserManager as UserManager;
 use App\Entity\Notification as Notification;
+
 class NotificationsManager
 {
 
@@ -19,134 +20,134 @@ class NotificationsManager
 
     public function __construct()
     {
-        $this->controller = new Controller('mysql:host=sql.endora.cz:3310;dbname=beepspace', 'beepspaceapi', 'Lofas125');
+        $this->controller = new Controller('mysql:host=localhost;dbname=beepspace', 'root', '');
         $this->userManager = new UserManager();
     }
 
 
 
-    public function createNewNotification($user,$reciever,$date,$content,$addFriend){
+    public function createNewNotification($user, $reciever, $date, $content, $addFriend)
+    {
         $typeNotif = "message";
         $result = $this->controller->sql("SELECT id FROM users WHERE username='$user'");
-        $userId = false;        
+        $userId = false;
         foreach ($result as $row) {
             $userId = $row->id;
         }
 
-        if(!$userId){
+        if (!$userId) {
             return "neexistuje zadaný uživatel";
         }
 
         $result = $this->controller->sql("SELECT id FROM users WHERE username='$reciever'");
-        $recieverId = false;        
+        $recieverId = false;
         foreach ($result as $row) {
             $recieverId = $row->id;
         }
 
-        if(!$recieverId){
+        if (!$recieverId) {
             return "neexistuje zadaný uživatel";
         }
-        if($addFriend){
+        if ($addFriend) {
             $typeNotif = "add";
             $result = $this->controller->sql("SELECT * FROM notifications WHERE origin_id ='$userId' AND reciever_id='$recieverId' AND type='$typeNotif'");
-            foreach($result as $row){
+            foreach ($result as $row) {
                 return "already sended";
             }
         }
-        
-         $this->controller->sql("INSERT INTO notifications (content, date, type, origin_id,reciever_id) VALUES ('$content','$date','$typeNotif','$userId','$recieverId') ");
-         return "sent";
-        }
+
+        $this->controller->sql("INSERT INTO notifications (content, date, type, origin_id,reciever_id) VALUES ('$content','$date','$typeNotif','$userId','$recieverId') ");
+        return "sent";
+    }
 
 
-    public function getNotification($user){
-        $returningArray = Array();
+    public function getNotification($user)
+    {
+        $returningArray = array();
         $result = $this->controller->sql("SELECT id FROM users WHERE username='$user'");
-        $userId = false;        
+        $userId = false;
         foreach ($result as $row) {
             $userId = $row->id;
         }
-        if(!$userId){
+        if (!$userId) {
             return "neexistuje zadaný uživatel";
         }
-        
+
 
         $result = $this->controller->sql("SELECT id,content,date,type,origin_id, groupchat_id FROM notifications WHERE reciever_id = '$userId'");
-        foreach($result as $row){
-            
-            
-            array_push($returningArray,new Notification($row->id,$this->userManager->returnUserById($row->origin_id)->name,$user,$row->date,$row->content,$row->type,$row->groupchat_id));
+        foreach ($result as $row) {
+
+
+            array_push($returningArray, new Notification($row->id, $this->userManager->returnUserById($row->origin_id)->name, $user, $row->date, $row->content, $row->type, $row->groupchat_id));
         }
 
         return $returningArray;
     }
 
 
-    public function createInviteNotification($user,$reciever,$date,$content,$groupchatID){
-        $userId= $this->userManager->convertNameToID($user);
-        $recieverId= $this->userManager->convertNameToID($reciever);
+    public function createInviteNotification($user, $reciever, $date, $content, $groupchatID)
+    {
+        $userId = $this->userManager->convertNameToID($user);
+        $recieverId = $this->userManager->convertNameToID($reciever);
 
-            $result = $this->controller->sql("SELECT * FROM notifications WHERE origin_id ='$userId' AND reciever_id='$recieverId' AND type='invite'");
-            foreach($result as $row){
-                return "already sended";
-            }
-      
-        
-         $this->controller->sql("INSERT INTO notifications (content, date, type, origin_id,reciever_id,groupchat_id) VALUES ('$content','$date','invite','$userId','$recieverId','$groupchatID') ");
-         return "sent";
-        
+        $result = $this->controller->sql("SELECT * FROM notifications WHERE origin_id ='$userId' AND reciever_id='$recieverId' AND type='invite'");
+        foreach ($result as $row) {
+            return "already sended";
+        }
+
+
+        $this->controller->sql("INSERT INTO notifications (content, date, type, origin_id,reciever_id,groupchat_id) VALUES ('$content','$date','invite','$userId','$recieverId','$groupchatID') ");
+        return "sent";
     }
 
-    public function confirmFriendRequest($user, $reciever,$id){
+    public function confirmFriendRequest($user, $reciever, $id)
+    {
         $result = $this->controller->sql("SELECT id FROM users WHERE username='$user'");
-        $userId = false;        
+        $userId = false;
         foreach ($result as $row) {
             $userId = $row->id;
         }
 
-        if(!$userId){
+        if (!$userId) {
             return "neexistuje zadaný uživatel";
         }
 
         $result = $this->controller->sql("SELECT id FROM users WHERE username='$reciever'");
-        $recieverId = false;        
+        $recieverId = false;
         foreach ($result as $row) {
             $recieverId = $row->id;
         }
 
-        if(!$recieverId){
+        if (!$recieverId) {
             return "neexistuje zadaný příjemce";
         }
 
-      
 
-        if($this->userManager->addFriend($userId,$recieverId)){
+
+        if ($this->userManager->addFriend($userId, $recieverId)) {
             $this->removeNotificationByID($id);
             return "confirmed";
         }
         return "something went WRONG";
-
-
-        
     }
 
 
-    public function removeNotification($origin){
+    public function removeNotification($origin)
+    {
         $result = $this->controller->sql("SELECT id FROM users WHERE username='$origin'");
-        $userId = false;        
+        $userId = false;
         foreach ($result as $row) {
             $userId = $row->id;
         }
-        if(!$userId){
+        if (!$userId) {
             return "neexistuje zadaný uživatel";
         }
-        
+
         $result = $this->controller->sql("DELETE FROM notifications WHERE origin_id = '$userId' AND type='message'");
-
     }
 
-    public function removeNotificationByID($id):void{
-         $this->controller->sql("DELETE FROM notifications WHERE id='$id'");
+    public function removeNotificationByID($id): void
+    {
+        $this->controller->sql("DELETE FROM notifications WHERE id='$id'");
     }
-    
 }
