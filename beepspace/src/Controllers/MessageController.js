@@ -71,13 +71,11 @@ class MessageController extends React.Component {
 
     this.requestHandler
       .jSONrequester('Notifications', [
-        new ParameterHandler('type', 'CREATE'),
+        new ParameterHandler('type', 'CREATENOTIF'),
         new ParameterHandler('user', this.userController.getUser().username),
         new ParameterHandler('reciever', reciever),
         new ParameterHandler('date', new Date()),
         new ParameterHandler('content', content),
-        new ParameterHandler('addNotification', 0),
-        new ParameterHandler('groupchatID', 0),
       ])
       .then(() => {
         this.socket.emit('notification', {

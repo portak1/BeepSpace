@@ -4,6 +4,7 @@ import RequestHandler from '../Handlers/RequestHandler';
 import UserController from '../Controllers/UserController';
 import ParameterHandler from '../Handlers/ParameterHandler';
 import Notification from './smallComponents/Notifiaction';
+import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
 
 export default function NotificationsModal(params) {

@@ -14,7 +14,10 @@ import FriendModal from './components/smallComponents/chatComponents/modal';
 import NotificationsModal from './components/NotificationsModal';
 import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupchat';
 import ModalGroupchat from './components/smallComponents/modalGroupchat';
+import { ToastContainer, toast } from 'react-toastify';
 import UserList from './components/UserList';
+import 'react-toastify/dist/ReactToastify.css';
+
 const requestHandler = new RequestHandler();
 const userController = new UserController();
 
@@ -65,6 +68,8 @@ function App() {
   const [isGroupchat, setIsGroupchat] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [muted, setMuted] = useState(false);
+  const chatUserRef = useRef(chatUser);
+  chatUserRef.current = chatUser;
   const mutedRef = useRef(muted);
   const isConnectedRef = useRef(isConnected);
   isConnectedRef.current = isConnected;
@@ -138,6 +143,46 @@ function App() {
       if (data.name == userController.getUser().username) {
         soundBlob = null;
         setMuted(false);
+      }
+    });
+
+    socket.on('newNotification', function (data) {
+      if (data.reciever == userController.getUser().username) {
+        if (data.type == 'message') {
+          if (data.origin == chatUserRef.current) return;
+          toast('📨 nová zpráva od ' + data.origin + '!', {
+            position: 'bottom-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          });
+        } else if (data.type == 'invite') {
+          toast(' 🗂️ nová pozvánka do ' + data.content + '!', {
+            position: 'bottom-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          });
+        } else {
+          toast(data.content, {
+            position: 'bottom-right',
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'dark',
+          });
+        }
       }
     });
   }, []);
@@ -333,6 +378,17 @@ function App() {
   //rendering app
   return (
     <div class='mainContainer'>
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {checkIfReady()}
       <div id='main' class='text-center'>
         <a class='sidebar-toggle-btn trigger-toggle-sidebar'>

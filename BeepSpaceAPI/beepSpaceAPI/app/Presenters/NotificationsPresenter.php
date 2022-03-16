@@ -17,7 +17,7 @@ class NotificationsPresenter extends Nette\Application\UI\Presenter
     public function renderDefault(string $type, string $user, string $reciever, string $content, int $id, string $date, bool $addNotification, int $groupchatID)
     {
         $this->notificationsManager = new NotificationsManager();
-        if ($type == "CREATE") {
+        if ($type == "CREATENOTIF") {
             $data = [
                 "state" => $this->notificationsManager->createNewNotification($user, $reciever, $date, $content, $addNotification)
             ];
