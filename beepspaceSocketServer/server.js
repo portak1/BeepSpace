@@ -9,7 +9,7 @@ const io = new Server(httpServer, {
     origin: '*',
     methods: ['GET', 'POST'],
     transports: ['websocket', 'polling'],
-    credentials: true,
+    credentials: false,
   },
 });
 
@@ -144,7 +144,29 @@ io.on('connection', function (socket) {
   });
 
   socket.on('radio', (data) => {
-    socket.to(currentUser.activeChannel).emit('voice', data);
+    if (
+      groupchats.find((element) => currentUser.activeChannel == element.name)
+    ) {
+      socket.to(currentUser.activeChannel).emit('voice', data);
+    } else if (
+      users[
+        users.indexOf(
+          users.find((element) => currentUser.activeChannel == element.name)
+        )
+      ]
+    ) {
+      socket
+        .to(
+          users[
+            users.indexOf(
+              users.find((element) => currentUser.activeChannel == element.name)
+            )
+          ].userID
+        )
+        .emit('voice', data);
+    } else {
+      return;
+    }
   });
 
   socket.on('createGroupchat', (data) => {

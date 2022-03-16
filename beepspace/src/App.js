@@ -28,7 +28,7 @@ var socket;
 let soundChunks = [];
 var soundBlob;
 if (userController.isLoggedIn()) {
-  socket = io('https://beepspace-app.ey.r.appspot.com/');
+  socket = io('https://beepspace-app.ey.r.appspot.com');
 }
 
 function App() {
@@ -111,8 +111,7 @@ function App() {
     socket.on('voice', function (arrayBuffer) {
       if (isConnectedRef.current) {
         soundBlob = new Blob([arrayBuffer], { type: 'audio/ogg; codecs=opus' });
-        var audio = document.createElement('audio');
-        audio.src = window.URL.createObjectURL(soundBlob);
+        var audio = new Audio(window.URL.createObjectURL(soundBlob));
         audio.play();
       }
     });

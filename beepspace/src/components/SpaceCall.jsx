@@ -32,16 +32,19 @@ export default function SpaceCall(props){
     }
 
 
-
-    return(
-      <div class='row'>
-        <div class='col-12'>
-          <button onClick={joinSpace} class='btn topBoxButton w-100'>
-            <i class="fas fa-satellite-dish"></i>
-            <h3>{props.user}</h3>
-          </button>
-        </div>
+if(props.user){
+  return(
+    <div class='row'>
+      <div class='col-12'>
+        <button onClick={joinSpace} class='btn topBoxButton w-100'>
+          <i class="fas fa-satellite-dish"></i>
+          <h3>{props.user}</h3>
+        </button>
       </div>
-
-    );
+    </div>
+  );
+}else{
+  return null;
+}
+    
 }
