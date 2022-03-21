@@ -87,6 +87,7 @@ class MessageController extends React.Component {
           groupchatID: null,
         });
       });
+
   }
 
   sendGroupchatMessage(content, chatId) {

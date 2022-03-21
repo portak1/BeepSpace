@@ -28,12 +28,13 @@ export default function Notification(props) {
       new ParameterHandler('user', props.user),
       new ParameterHandler('reciever', userController.getUser().username),
       new ParameterHandler('id', props.notId),
-    ]);
-    props.socket.emit('addUser', {
-      localUser: userController.getUser().username,
-      username: props.user,
+    ]).then(() => {
+      props.socket.emit('addUser', {
+        localUser: userController.getUser().username,
+        username: props.user,
+      });
+      props.removeNotification(props.notId);
     });
-    props.removeNotification(props.notId);
   };
 
   const decline = () => {

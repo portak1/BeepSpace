@@ -100,7 +100,7 @@ function App() {
         if (isConnectedRef.current && !mutedRef.current) {
           if (mediaRecorder.state == 'inactive') {
             mediaRecorder.start();
-            setTimeout(() => {}, 500);
+            setTimeout(() => { }, 500);
           }
 
           mediaRecorder.stop();
@@ -116,9 +116,15 @@ function App() {
     socket.on('voice', function (arrayBuffer) {
       if (isConnectedRef.current) {
         soundBlob = new Blob([arrayBuffer], { type: 'audio/ogg; codecs=opus' });
+
         var audio = new Audio(window.URL.createObjectURL(soundBlob));
         audio.play();
       }
+    });
+
+    document.addEventListener('touchstart', function () {
+      document.getElementsByTagName('audio')[0].play();
+      document.getElementsByTagName('audio')[0].pause();
     });
 
     socket.on('pickCall', (data) => {
