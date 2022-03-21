@@ -244,15 +244,11 @@ io.on('connection', function (socket) {
   socket.on('heartbeat', () => {
     if (
       users[
-        users.indexOf(
-          users.find((element) => element.userID == currentUser.userID)
-        )
+        users.indexOf(users.find((element) => element.name == currentUser.name))
       ]
     ) {
       users[
-        users.indexOf(
-          users.find((element) => element.userID == currentUser.userID)
-        )
+        users.indexOf(users.find((element) => element.name == currentUser.name))
       ].status = 'CONNECTED';
     } else {
       socket.emit('kick');
