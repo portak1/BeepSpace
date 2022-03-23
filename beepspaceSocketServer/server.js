@@ -58,13 +58,13 @@ setInterval(() => {
         axios
           .get(
             'https://beepspaceapi.cekuj.net/BeepSpaceAPI/beepSpaceAPI/www/User?type=SET-OFFLINE&id=' +
-              element.id
+            element.id
           )
           .then(() => {
             axios
               .get(
                 'https://beepspaceapi.cekuj.net/BeepSpaceAPI/beepSpaceAPI/www/Groupchat?type=REMOVE-ACTIVE-USER&name=' +
-                  element.name
+                element.name
               )
               .catch((error) => {
                 console.error(error);
@@ -78,7 +78,7 @@ setInterval(() => {
         break;
     }
   });
-}, 1000);
+}, 3000);
 
 io.on('connection', function (socket) {
   var currentUser = {
@@ -104,7 +104,7 @@ io.on('connection', function (socket) {
     currentUser.activeChannel = data.channelID;
     if (
       users[
-        users.indexOf(users.find((element) => element.name == currentUser.name))
+      users.indexOf(users.find((element) => element.name == currentUser.name))
       ]
     ) {
       users[
@@ -150,9 +150,9 @@ io.on('connection', function (socket) {
       socket.to(currentUser.activeChannel).emit('voice', data);
     } else if (
       users[
-        users.indexOf(
-          users.find((element) => currentUser.activeChannel == element.name)
-        )
+      users.indexOf(
+        users.find((element) => currentUser.activeChannel == element.name)
+      )
       ]
     ) {
       socket
@@ -244,7 +244,7 @@ io.on('connection', function (socket) {
   socket.on('heartbeat', () => {
     if (
       users[
-        users.indexOf(users.find((element) => element.name == currentUser.name))
+      users.indexOf(users.find((element) => element.name == currentUser.name))
       ]
     ) {
       users[
@@ -271,6 +271,7 @@ io.on('connection', function (socket) {
         activeChannel: '',
         status: 'CONNECTED',
       };
+      socket.emit("succesfullConnection");
     } else {
       users[
         users.indexOf(users.find((element) => element.name == data.user))
@@ -288,6 +289,7 @@ io.on('connection', function (socket) {
         activeChannel: '',
         status: 'CONNECTED',
       };
+      socket.emit("succesfullConnection");
     }
     socket.broadcast.emit('clientOnline', {
       user: data.user,

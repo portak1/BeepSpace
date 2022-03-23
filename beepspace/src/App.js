@@ -39,24 +39,7 @@ function App() {
   checkIfReady();
   //connection to socket
   messageController = new MessageController(socket);
-  socket.on('connect', () => {
-    if (userController.isLoggedIn()) {
-      socket.emit('userJoin', {
-        user: userController.getUser().username,
-        id: userController.getUser().id,
-      });
-      requestHandler.jSONrequester('User', [
-        new ParameterHandler('type', 'SET-ONLINE'),
-        new ParameterHandler('id', userController.getUser().id),
-      ]);
-    }
-  });
-  socket.on('disconnect', () => {
-    requestHandler.jSONrequester('User', [
-      new ParameterHandler('type', 'SET-OFFLINE'),
-      new ParameterHandler('id', userController.getUser().id),
-    ]);
-  });
+
 
   //useStates for chat and chat settings
   const [chatUser, setChatUser] = useState();
@@ -76,10 +59,25 @@ function App() {
   mutedRef.current = muted;
 
   useEffect(() => {
-    setInterval(async () => {
-      socket.emit('heartbeat');
-    }, 249);
-    console.log('init');
+    socket.on('connect', () => {
+      if (userController.isLoggedIn()) {
+        socket.emit('userJoin', {
+          user: userController.getUser().username,
+          id: userController.getUser().id,
+        });
+        requestHandler.jSONrequester('User', [
+          new ParameterHandler('type', 'SET-ONLINE'),
+          new ParameterHandler('id', userController.getUser().id),
+        ]);
+      }
+    });
+
+    socket.on("succesfullConnection", () => {
+      setInterval(async () => {
+        socket.emit('heartbeat');
+      }, 249);
+    })
+
     navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
       var mediaRecorder = new MediaRecorder(data);
 
@@ -125,6 +123,13 @@ function App() {
     document.addEventListener('touchstart', function () {
       document.getElementsByTagName('audio')[0].play();
       document.getElementsByTagName('audio')[0].pause();
+    });
+
+    socket.on('disconnect', () => {
+      requestHandler.jSONrequester('User', [
+        new ParameterHandler('type', 'SET-OFFLINE'),
+        new ParameterHandler('id', userController.getUser().id),
+      ]);
     });
 
     socket.on('pickCall', (data) => {
