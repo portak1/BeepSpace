@@ -15,14 +15,14 @@ import NotificationsModal from './components/NotificationsModal';
 import ModalInviteGroupchat from './components/smallComponents/modalInviteGroupchat';
 import ModalGroupchat from './components/smallComponents/modalGroupchat';
 import { ToastContainer, toast } from 'react-toastify';
+import useSound from 'use-sound';
 import UserList from './components/UserList';
 import 'react-toastify/dist/ReactToastify.css';
-
+import notificatinoSound from './storage/sounds/notif.mp3';
 const requestHandler = new RequestHandler();
 const userController = new UserController();
 
 var messageController = null;
-
 var userHolder = '';
 var index = 0;
 let indexForRecieve = 1;
@@ -35,11 +35,12 @@ if (userController.isLoggedIn()) {
 }
 
 function App() {
+  const [playNotificationSound] = useSound(notificatinoSound);
+
   //check basic parameters for site
   checkIfReady();
   //connection to socket
   messageController = new MessageController(socket);
-
 
   //useStates for chat and chat settings
   const [chatUser, setChatUser] = useState();
@@ -72,11 +73,11 @@ function App() {
       }
     });
 
-    socket.on("succesfullConnection", () => {
+    socket.on('succesfullConnection', () => {
       setInterval(async () => {
         socket.emit('heartbeat');
       }, 249);
-    })
+    });
 
     navigator.mediaDevices.getUserMedia({ audio: true }).then((data) => {
       var mediaRecorder = new MediaRecorder(data);
@@ -98,7 +99,7 @@ function App() {
         if (isConnectedRef.current && !mutedRef.current) {
           if (mediaRecorder.state == 'inactive') {
             mediaRecorder.start();
-            setTimeout(() => { }, 500);
+            setTimeout(() => {}, 500);
           }
 
           mediaRecorder.stop();
@@ -158,6 +159,7 @@ function App() {
     });
 
     socket.on('newNotification', function (data) {
+      playNotificationSound();
       if (data.reciever == userController.getUser().username) {
         if (data.type == 'message') {
           if (data.origin == chatUserRef.current) return;

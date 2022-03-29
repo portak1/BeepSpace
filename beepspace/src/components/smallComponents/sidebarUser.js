@@ -1,12 +1,16 @@
 import { useEffect, useState, useRef } from 'react';
 import UserController from '../../Controllers/UserController';
-import { Peer } from 'simple-peer';
+import useSound from 'use-sound';
+import muteSound from '../../storage/sounds/userMute.mp3';
+import unmuteSound from '../../storage/sounds/userUnmute.mp3';
 
 var user;
 var reciever;
 var chatHandler;
 var classess;
 function SidebarUser(props) {
+  const [playMute] = useSound(muteSound);
+  const [playUnmute] = useSound(unmuteSound);
   const userController = new UserController();
   const [onCall, setOnCall] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -31,11 +35,13 @@ function SidebarUser(props) {
 
     props.socket.on('mute', (data) => {
       if (data.name == props.reciever) {
+        playMute();
         setMuted(true);
       }
     });
     props.socket.on('unmute', (data) => {
       if (data.name == props.reciever) {
+        playMute();
         setMuted(false);
       }
     });
